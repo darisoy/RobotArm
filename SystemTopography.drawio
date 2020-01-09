@@ -1,1 +1,28 @@
-<mxfile host="www.draw.io" modified="2020-01-09T20:51:55.518Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36" version="12.5.1" etag="IggN5DcWiuHW-R1eQXN3" type="github"><diagram id="L-ai7fAyJBnf2PLU2uu1">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="www.draw.io" modified="2020-01-09T21:43:12.467Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36" etag="c4OlqTvX3-zHH8ZfiXEt" version="12.5.1" type="github">
+  <diagram id="L-ai7fAyJBnf2PLU2uu1" name="Page-1">
+    <mxGraphModel dx="856" dy="581" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="LJsphAcHxgrP_2_Ti7BV-1" value="M1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="LJsphAcHxgrP_2_Ti7BV-2" value="M2" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="230" y="180" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="LJsphAcHxgrP_2_Ti7BV-3" value="M3" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="340" y="180" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="LJsphAcHxgrP_2_Ti7BV-4" value="S1" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="180" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="LJsphAcHxgrP_2_Ti7BV-5" value="S2" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="180" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="LJsphAcHxgrP_2_Ti7BV-6" value="S3" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="180" width="60" height="60" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
