@@ -4,6 +4,7 @@
 
 
 BlueStepper::BlueStepper(){
+    
     //assign pins
     this->DIR = PB12;
     this->STEP = PB13;
@@ -14,6 +15,8 @@ BlueStepper::BlueStepper(){
     pinMode(this->STEP,OUTPUT); 
     pinMode(this->DIR,OUTPUT);
     setMode(0,0,0); //default
+
+    
 }
 
 
