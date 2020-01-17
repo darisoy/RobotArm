@@ -4,7 +4,6 @@
 
 
 BlueStepper::BlueStepper(){
-    
     //assign pins
     this->DIR = PB12;
     this->STEP = PB13;
@@ -12,11 +11,9 @@ BlueStepper::BlueStepper(){
     this->M1 = PB15;
     this->M0 = PA8;
     this->EN = PA9;
-    pinMode(this->STEP,OUTPUT); 
+    pinMode(this->STEP,OUTPUT);
     pinMode(this->DIR,OUTPUT);
     setMode(0,0,0); //default
-
-    
 }
 
 
@@ -31,11 +28,11 @@ void BlueStepper::returnToHome(){
 
 /************* Microstepping Indexer *******************
  * Mode2 | Mode1 | Mode0  |   Step Mode
- *   0   |   0   |   0    |   Full Step    
- *   0   |   0   |   1    |   Half Step   
- *   0   |   1   |   0    |   1/4 Step   
- *   0   |   1   |   1    |   1/8 Step   
- *   1   |   0   |   0    |   1/16 Step   
+ *   0   |   0   |   0    |   Full Step
+ *   0   |   0   |   1    |   Half Step
+ *   0   |   1   |   0    |   1/4 Step
+ *   0   |   1   |   1    |   1/8 Step
+ *   1   |   0   |   0    |   1/16 Step
  *   1   |   0   |   1    |   1/32 Step
  * ****************************************************/
 
@@ -47,9 +44,8 @@ void  BlueStepper::setMode(int m2, int m1, int m0){
     this->divisor = 1.8/stepResolution;
 }
 
- 
-void  BlueStepper::setPosition(float angle){
 
+void  BlueStepper::setPosition(float angle){
     int steps = calculateSteps(angle);
     int i;
     for(i=0; i<steps; i++){
@@ -57,7 +53,7 @@ void  BlueStepper::setPosition(float angle){
         digitalWrite(this->STEP, HIGH);
         delayMicroseconds(1000);
         digitalWrite(this->STEP, LOW);
-        delayMicroseconds(1000); 
+        delayMicroseconds(1000);
     }
 }
 
@@ -77,7 +73,6 @@ void  BlueStepper::disable(bool){
 }
 
 /** PRIVATE FUNCTIONS **/
-
 int BlueStepper::calculateSteps(float angle){
     return (int) (angle/this->divisor);
 }

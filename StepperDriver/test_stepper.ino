@@ -1,6 +1,6 @@
 #include <blue_stepper.h>
-const int stepPin = PB13; 
-const int dirPin = PB12;
+// const int stepPin = PB13; 
+// const int dirPin = PB12;
 
 BlueStepper s = BlueStepper();
 
