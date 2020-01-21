@@ -10,7 +10,7 @@ int DIRy = 6;
 int STEPz = 4;
 int DIRz = 7;
 int EN = 8;
-int DELAY = .5;
+int DELAY = 100; //microseconds
 
 void setup() {
   Serial.begin(9600);
@@ -37,53 +37,53 @@ int joyStick(int val){
 
 void motion(int x, int y, int z){
   switch(x){
-    case 0: delay(DELAY*2);
+    case 0: delayMicroseconds(DELAY*2);
             break;
     case 1: //Serial.println("Down");
             digitalWrite(DIRx, HIGH);
             digitalWrite(STEPx, HIGH);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             digitalWrite(STEPx, LOW);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             break;
     case 2: //Serial.println("Up");
             digitalWrite(DIRx, LOW);
             digitalWrite(STEPx, HIGH);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             digitalWrite(STEPx, LOW);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             break;
   }
   switch(y){
-    case 0: delay(DELAY*2);
+    case 0: delayMicroseconds(DELAY*2);
             break;
     case 1: digitalWrite(DIRy, HIGH);
             digitalWrite(STEPy, HIGH);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             digitalWrite(STEPy, LOW);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             break;
     case 2: digitalWrite(DIRy, LOW);
             digitalWrite(STEPy, HIGH);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             digitalWrite(STEPy, LOW);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             break;
   }
    switch(z){
-    case 0: delay(DELAY*2);
+    case 0: delayMicroseconds(DELAY*2);
             break;
     case 1: digitalWrite(DIRz, HIGH);
             digitalWrite(STEPz, HIGH);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             digitalWrite(STEPz, LOW);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             break;
     case 2: digitalWrite(DIRz, LOW);
             digitalWrite(STEPz, HIGH);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             digitalWrite(STEPz, LOW);
-            delay(DELAY);
+            delayMicroseconds(DELAY);
             break;
   }
 }

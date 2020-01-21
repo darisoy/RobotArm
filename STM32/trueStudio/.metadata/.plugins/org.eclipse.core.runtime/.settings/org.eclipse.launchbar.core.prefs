@@ -1,0 +1,7 @@
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
+configDescList=org.eclipse.launchbar.core.descriptorType.default\:ledBlink.elf,org.eclipse.launchbar.core.descriptorType.default\:ST-link_2
+eclipse.preferences.version=1
+org.eclipse.launchbar.core.descriptorType.default\:ST-link_2/activeLaunchMode=run
+org.eclipse.launchbar.core.descriptorType.default\:ST-link_2/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
+org.eclipse.launchbar.core.descriptorType.default\:ledBlink.elf/activeLaunchMode=debug
