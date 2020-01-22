@@ -14,7 +14,7 @@ GPIO.setup(PIN, GPIO.OUT)
 
 while True:
     GPIO.output(PIN, 1)
-    time.sleep(0.5)
+    time.sleep(0.6)
     GPIO.output(PIN, 0)
-    time.sleep(0.5)
+    time.sleep(0.6)
 
