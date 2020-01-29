@@ -12,9 +12,9 @@ PIN = int(sys.argv[1], 10)
 print(PIN)
 GPIO.setup(PIN, GPIO.OUT)
 
-while True:
+for i in range(30):
     GPIO.output(PIN, 1)
     time.sleep(0.6)
     GPIO.output(PIN, 0)
     time.sleep(0.6)
-
+GPIO.cleanup()

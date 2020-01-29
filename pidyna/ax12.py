@@ -141,7 +141,7 @@ class Ax12_2:
 
     def __init__(self):
         if(Ax12_2.port == None):
-            Ax12_2.port = Serial("/dev/ttyS0", baudrate=57600, timeout=1)
+            Ax12_2.port = Serial("/dev/ttyS0", baudrate=57600)
         if(not Ax12_2.gpioSet):
             GPIO.setwarnings(False)
             GPIO.setmode(GPIO.BCM)
@@ -169,7 +169,7 @@ class Ax12_2:
 
     def direction(self,d):
         GPIO.output(Ax12_2.RPI_DIRECTION_PIN, d)
-        sleep(Ax12_2.RPI_DIRECTION_SWITCH_DELAY)
+        #sleep(Ax12_2.RPI_DIRECTION_SWITCH_DELAY)
 
     def checksum(self,packet):
         crc_table = [
@@ -215,33 +215,33 @@ class Ax12_2:
     def readData(self,id):
         retval = None
         self.direction(Ax12_2.RPI_DIRECTION_RX)
-        reply = Ax12_2.port.read(8) # [0xff, 0xff,0xfd,0x00, origin, length_l,length_h,inst, error]
-        print(type(reply))
+        reply = Ax12_2.port.read(9) # [0xff, 0xff,0xfd,0x00, origin, length_l,length_h,inst, error]
+        #print(type(reply))
         print(reply.hex())
-        print(reply.hex()[0])
+        #print(reply.hex()[0])
         try:
-            assert ord(reply[0]) == 0xFF
+            assert reply[0] == 0xFF
         except:
             e = "Timeout on servo " + str(id)
             raise Ax12_2.timeoutError(e)
 
         try :
-            length = ord(reply[5])+(ord(reply[6])<<8) - 4
-            error = ord(reply[8])
+            length = reply[5]+(reply[6]<<8) - 4
+            error = reply[8]
 
-            if(error != 0):
-                print ("Error from servo: " + Ax12_2.dictErrors[error] + ' (code  ' + hex(error) + ')') #TODO might be wrong
-                retval = -error
+            #if(error != 0):
+            #    print ("Error from servo: " + Ax12_2.dictErrors[error] + ' (code  ' + hex(error) + ')') #TODO might be wrong
+            #    retval = -error
             # just reading error byte
-            elif(length == 0):
+            if(length == 0):
                 retval = error
-
             else:
                 retval = Ax12_2.port.read(length)
-            chksum = Ax12_2.port.read(2)
-            return retval
+            #chksum = Ax12_2.port.read(2)
+            #print(chksum)
         except Exception as detail:
             raise Ax12_2.axError(detail)
+        return retval
 
     def ping(self,id):
         self.direction(Ax12_2.RPI_DIRECTION_TX)
