@@ -130,7 +130,7 @@ class Ax12_2:
 
 
     # RPi constants
-    RPI_DIRECTION_PIN = 4 
+    RPI_DIRECTION_PIN = 4
     RPI_DIRECTION_TX = GPIO.HIGH
     RPI_DIRECTION_RX = GPIO.LOW
     RPI_DIRECTION_SWITCH_DELAY = 0.0001
@@ -249,7 +249,7 @@ class Ax12_2:
         outData = Ax12_2.PREFIX
         outData += bytes([id])
         outData += Ax12_2.PING_LEN
-        outData += bytes([Ax12_2.AX_PING]) 
+        outData += bytes([Ax12_2.AX_PING])
         print(outData.hex())
         outData += self.checksum(outData)
         print(outData.hex())
