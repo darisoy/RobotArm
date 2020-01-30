@@ -27,55 +27,29 @@
 extern "C" {
 #endif
 
-/* Includes ------------------------------------------------------------------*/
-#include "stm32f1xx_hal.h"
 
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Exported types ------------------------------------------------------------*/
-/* USER CODE BEGIN ET */
-
-/* USER CODE END ET */
-
-/* Exported constants --------------------------------------------------------*/
-/* USER CODE BEGIN EC */
-
-/* USER CODE END EC */
-
-/* Exported macro ------------------------------------------------------------*/
-/* USER CODE BEGIN EM */
-
-/* USER CODE END EM */
-
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
-/* Exported functions prototypes ---------------------------------------------*/
-void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define LED_Pin GPIO_PIN_3
-#define LED_GPIO_Port GPIOA
-#define DIR_Pin GPIO_PIN_12
-#define DIR_GPIO_Port GPIOB
-#define M2_Pin GPIO_PIN_13
-#define M2_GPIO_Port GPIOB
-#define M1_Pin GPIO_PIN_14
-#define M1_GPIO_Port GPIOB
-#define M0_Pin GPIO_PIN_15
-#define M0_GPIO_Port GPIOB
-#define STEP_Pin GPIO_PIN_8
-#define STEP_GPIO_Port GPIOA
-#define ENABLE_Pin GPIO_PIN_9
-#define ENABLE_GPIO_Port GPIOA
-#define DATA_DIR_Pin GPIO_PIN_5
-#define DATA_DIR_GPIO_Port GPIOB
+// #define LED_Pin GPIO_PIN_3
+// #define LED_GPIO_Port GPIOA
+// #define DIR_Pin GPIO_PIN_12
+// #define DIR_GPIO_Port GPIOB
+// #define M2_Pin GPIO_PIN_13
+// #define M2_GPIO_Port GPIOB
+// #define M1_Pin GPIO_PIN_14
+// #define M1_GPIO_Port GPIOB
+// #define M0_Pin GPIO_PIN_15
+// #define M0_GPIO_Port GPIOB
+// #define STEP_Pin GPIO_PIN_8
+// #define STEP_GPIO_Port GPIOA
+// #define ENABLE_Pin GPIO_PIN_9
+// #define ENABLE_GPIO_Port GPIOA
+// #define DATA_DIR_Pin GPIO_PIN_5
+// #define DATA_DIR_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
