@@ -122,18 +122,19 @@ class Ax12_2:
     LEFT = 0
     RIGTH = 1
     RX_TIME_OUT = 10
-    TX_DELAY_TIME = 0.00002
+    TX_DELAY_TIME = 0.002
 
     #//////////////////////////////////////////////////////////////// Protocol 2
     PREFIX = b'\xff\xff\xfd\x00'
     PING_LEN = b'\x03\x00'
+    WRITE_LEN = b'\x09\x00'
 
 
     # RPi constants
-    RPI_DIRECTION_PIN = 4 
+    RPI_DIRECTION_PIN = 23 
     RPI_DIRECTION_TX = GPIO.HIGH
     RPI_DIRECTION_RX = GPIO.LOW
-    RPI_DIRECTION_SWITCH_DELAY = 0.0001
+    RPI_DIRECTION_SWITCH_DELAY = 0.0007
 
     # static variables
     port = None
@@ -169,7 +170,7 @@ class Ax12_2:
 
     def direction(self,d):
         GPIO.output(Ax12_2.RPI_DIRECTION_PIN, d)
-        #sleep(Ax12_2.RPI_DIRECTION_SWITCH_DELAY)
+        sleep(Ax12_2.RPI_DIRECTION_SWITCH_DELAY)
 
     def checksum(self,packet):
         crc_table = [
@@ -215,10 +216,12 @@ class Ax12_2:
     def readData(self,id):
         retval = None
         self.direction(Ax12_2.RPI_DIRECTION_RX)
-        reply = Ax12_2.port.read(9) # [0xff, 0xff,0xfd,0x00, origin, length_l,length_h,inst, error]
-        #print(type(reply))
+        buf = b''
+        while buf[-4:] != Ax12_2.PREFIX:
+            buf += self.port.read(1)
+        reply = Ax12_2.port.read(5) # [0xff, 0xff,0xfd,0x00, origin, length_l,length_h,inst, error]
+        reply = buf[-4:]+reply
         print(reply.hex())
-        #print(reply.hex()[0])
         try:
             assert reply[0] == 0xFF
         except:
@@ -229,32 +232,36 @@ class Ax12_2:
             length = reply[5]+(reply[6]<<8) - 4
             error = reply[8]
 
-            #if(error != 0):
-            #    print ("Error from servo: " + Ax12_2.dictErrors[error] + ' (code  ' + hex(error) + ')') #TODO might be wrong
-            #    retval = -error
+            if(error != 0):
+                print ("Error from servo: " + Ax12_2.dictErrors[error] + ' (code  ' + hex(error) + ')') #TODO might be wrong
+                retval = -error
             # just reading error byte
+            
             if(length == 0):
-                retval = error
+                retval = bytes([error])
             else:
                 retval = Ax12_2.port.read(length)
             #chksum = Ax12_2.port.read(2)
             #print(chksum)
         except Exception as detail:
             raise Ax12_2.axError(detail)
+        sleep(0.0005)
         return retval
 
     def ping(self,id):
+        print(self.port.__dir__())
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
         outData = Ax12_2.PREFIX
         outData += bytes([id])
         outData += Ax12_2.PING_LEN
         outData += bytes([Ax12_2.AX_PING]) 
-        print(outData.hex())
+        #print(outData.hex())
         outData += self.checksum(outData)
         print(outData.hex())
         Ax12_2.port.write(outData)
-        #sleep(Ax12_2.TX_DELAY_TIME)
+        while self.port.out_waiting: continue
+        sleep(0.0008)
         return self.readData(id)
 
     def factoryReset(self,id, confirm = False):
@@ -293,7 +300,6 @@ class Ax12_2:
         Ax12_2.port.write(outData)
         sleep(Ax12_2.TX_DELAY_TIME)
         return self.readData(id)
-
     def setBaudRate(self, id, baudRate):
         return None
         self.direction(Ax12_2.RPI_DIRECTION_TX)
@@ -364,22 +370,24 @@ class Ax12_2:
         return self.readData(id)
 
     def move(self, id, position):
-        return None
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
-        p = [position&0xff, position>>8]
-        checksum = (~(id + Ax12_2.AX_GOAL_LENGTH + Ax12_2.AX_WRITE_DATA + Ax12_2.AX_GOAL_POSITION_L + p[0] + p[1]))&0xff
-        outData = chr(Ax12_2.AX_START)
-        outData += chr(Ax12_2.AX_START)
-        outData += chr(id)
-        outData += chr(Ax12_2.AX_GOAL_LENGTH)
-        outData += chr(Ax12_2.AX_WRITE_DATA)
-        outData += chr(Ax12_2.AX_GOAL_POSITION_L)
-        outData += chr(p[0])
-        outData += chr(p[1])
-        outData += chr(checksum)
+        p = [position&0xff, (position>>8)&0xff,0,0]
+        print(p)
+        outData = Ax12_2.PREFIX
+        outData += bytes([id])
+        outData += Ax12_2.WRITE_LEN
+        outData += bytes([Ax12_2.AX_WRITE_DATA])
+        #0x0074 is the goal position register
+        outData += b'\x74\x00'
+        outData += bytes(p)
+
+        outData += self.checksum(outData)
+        print(outData.hex())
         Ax12_2.port.write(outData)
-        sleep(Ax12_2.TX_DELAY_TIME)
+        while self.port.out_waiting: continue
+        sleep(0.0018)
+        print('data sent')
         return self.readData(id)
 
     def moveSpeed(self, id, position, speed):
@@ -401,7 +409,7 @@ class Ax12_2:
         outData += chr(s[1])
         outData += chr(checksum)
         Ax12_2.port.write(outData)
-        sleep(Ax12_2.TX_DELAY_TIME)
+        while self.port.out_waiting: continue
         return self.readData(id)
 
     def moveRW(self, id, position):
@@ -459,21 +467,23 @@ class Ax12_2:
         #sleep(Ax12_2.TX_DELAY_TIME)
 
     def setTorqueStatus(self, id, status):
-        return None
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
-        ts = 1 if ((status == True) or (status == 1)) else 0
-        checksum = (~(id + Ax12_2.AX_TORQUE_LENGTH + Ax12_2.AX_WRITE_DATA + Ax12_2.AX_TORQUE_STATUS + ts))&0xff
-        outData = chr(Ax12_2.AX_START)
-        outData += chr(Ax12_2.AX_START)
-        outData += chr(id)
-        outData += chr(Ax12_2.AX_TORQUE_LENGTH)
-        outData += chr(Ax12_2.AX_WRITE_DATA)
-        outData += chr(Ax12_2.AX_TORQUE_STATUS)
-        outData += chr(ts)
-        outData += chr(checksum)
+        outData = Ax12_2.PREFIX
+        outData += bytes([id])
+        outData += b'\x06\x00' #length write one param
+        outData += bytes([Ax12_2.AX_WRITE_DATA])
+        #0x0074 is the goal position register
+        outData += b'\x40\x00'
+        #0x200 is 512 = 512/4096 = 45 degrees
+        outData += b'\x01' if status else b'\x00'
+
+        outData += self.checksum(outData)
+        print(outData.hex())
         Ax12_2.port.write(outData)
-        sleep(Ax12_2.TX_DELAY_TIME)
+        while self.port.out_waiting: continue
+        sleep(0.0014)
+        print('data sent')
         return self.readData(id)
 
     def setLedStatus(self, id, status):

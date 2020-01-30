@@ -5,7 +5,22 @@ def main():
     servo_bus = Ax12_2()
     #packet = '\xff\xff\xfd\x00\x01\x03\x00\x01'
     #print(hex(servo_bus.checksum(packet)))
-    servo_bus.ping(4)
+    print("----ping start----")
+    print(servo_bus.ping(4).hex())
+    print(servo_bus.ping(5).hex())
+    print("----torque enable-")
+    print(servo_bus.setTorqueStatus(4,True))
+    print(servo_bus.setTorqueStatus(5,True))
+    print("----move start----")
+    #print(servo_bus.move(4, 116).hex())
+    #print(servo_bus.move(5, 116).hex())
+    while True:
+        servo_bus.move(4,1024)
+        servo_bus.move(5,1024)
+        time.sleep(2)
+        servo_bus.move(4,2048)
+        servo_bus.move(5,2048)
+        time.sleep(2)
 #    servo_bus.ping(1)
 #    while True:
 #        servo_bus.setLedStatus(1,True)
