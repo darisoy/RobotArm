@@ -1,0 +1,28 @@
+--cpu Cortex-M3
+"ee475\startup_stm32f103xb.o"
+"ee475\main.o"
+"ee475\stm32f1xx_it.o"
+"ee475\stm32f1xx_hal_msp.o"
+"ee475\utility.o"
+"ee475\stm32f1xx_hal_gpio_ex.o"
+"ee475\stm32f1xx_hal_adc.o"
+"ee475\stm32f1xx_hal_adc_ex.o"
+"ee475\stm32f1xx_hal.o"
+"ee475\stm32f1xx_hal_rcc.o"
+"ee475\stm32f1xx_hal_rcc_ex.o"
+"ee475\stm32f1xx_hal_gpio.o"
+"ee475\stm32f1xx_hal_dma.o"
+"ee475\stm32f1xx_hal_cortex.o"
+"ee475\stm32f1xx_hal_pwr.o"
+"ee475\stm32f1xx_hal_flash.o"
+"ee475\stm32f1xx_hal_flash_ex.o"
+"ee475\stm32f1xx_hal_exti.o"
+"ee475\stm32f1xx_hal_spi.o"
+"ee475\stm32f1xx_hal_tim.o"
+"ee475\stm32f1xx_hal_tim_ex.o"
+"ee475\stm32f1xx_hal_uart.o"
+"ee475\system_stm32f1xx.o"
+--library_type=microlib --strict --scatter "EE475\EE475.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "EE475.map" -o EE475\EE475.axf
