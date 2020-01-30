@@ -1,1 +1,1 @@
-ee475\comm.o: ..\Src\Comm.cpp
+ee475\comm.o: ..\src\Comm.cpp

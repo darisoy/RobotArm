@@ -1,9 +1,8 @@
-/* USER CODE BEGIN Header */
 /**
   ******************************************************************************
-  * @file           : main.h
-  * @brief          : Header for main.c file.
-  *                   This file contains the common defines of the application.
+  * File Name          : SPI.h
+  * Description        : This file provides code for the configuration
+  *                      of the SPI instances.
   ******************************************************************************
   * @attention
   *
@@ -17,47 +16,43 @@
   *
   ******************************************************************************
   */
-/* USER CODE END Header */
-
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
-
+#ifndef __spi_H
+#define __spi_H
 #ifdef __cplusplus
-extern "C" {
+ extern "C" {
 #endif
 
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
 
+/* USER CODE BEGIN Includes */
 
-/* USER CODE BEGIN EFP */
+/* USER CODE END Includes */
 
-/* USER CODE END EFP */
+extern SPI_HandleTypeDef hspi1;
 
-/* Private defines -----------------------------------------------------------*/
-// #define LED_Pin GPIO_PIN_3
-// #define LED_GPIO_Port GPIOA
-// #define DIR_Pin GPIO_PIN_12
-// #define DIR_GPIO_Port GPIOB
-// #define M2_Pin GPIO_PIN_13
-// #define M2_GPIO_Port GPIOB
-// #define M1_Pin GPIO_PIN_14
-// #define M1_GPIO_Port GPIOB
-// #define M0_Pin GPIO_PIN_15
-// #define M0_GPIO_Port GPIOB
-// #define STEP_Pin GPIO_PIN_8
-// #define STEP_GPIO_Port GPIOA
-// #define ENABLE_Pin GPIO_PIN_9
-// #define ENABLE_GPIO_Port GPIOA
-// #define DATA_DIR_Pin GPIO_PIN_5
-// #define DATA_DIR_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
+void MX_SPI1_Init(void);
+
+/* USER CODE BEGIN Prototypes */
+
+/* USER CODE END Prototypes */
+
 #ifdef __cplusplus
 }
 #endif
+#endif /*__ spi_H */
 
-#endif /* __MAIN_H */
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

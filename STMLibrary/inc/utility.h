@@ -20,26 +20,31 @@ extern "C" { // link CPP files
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
-
+#include <stdint.h>
 
 /* Private defines -----------------------------------------------------------*/
 #define LED             GPIO_PIN_3
-#define LED_Port        GPIOA
 #define DIR             GPIO_PIN_12
-#define DIR_Port        GPIOB
 #define M2              GPIO_PIN_13
-#define M2_Port         GPIOB
 #define M1              GPIO_PIN_14
-#define M1_Port         GPIOB
 #define M0              GPIO_PIN_15
-#define M0_Port         GPIOB
 #define STEP            GPIO_PIN_8
-#define STEP_Port       GPIOA
 #define ENABLE          GPIO_PIN_9
-#define ENABLE_Port     GPIOA
 #define DATA_DIR        GPIO_PIN_5
+
+#define LED_Port        GPIOA
+#define DIR_Port        GPIOB
+#define M2_Port         GPIOB
+#define M1_Port         GPIOB
+#define M0_Port         GPIOB
+#define STEP_Port       GPIOA
+#define ENABLE_Port     GPIOA
 #define DATA_DIR_Port   GPIOB
 
+
+/* Function Wrappers----------------------------------------------------------*/
+void digitalWrite(uint16_t pin, uint16_t state);
+void delay(uint16_t);
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
@@ -53,6 +58,7 @@ void MX_SPI1_Init(void);
 void MX_TIM2_Init(void);
 void MX_USART1_UART_Init(void);
 void MX_ADC1_Init(void);
+
 
 
 #ifdef __cplusplus

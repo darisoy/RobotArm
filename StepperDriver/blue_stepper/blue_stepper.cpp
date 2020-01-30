@@ -13,7 +13,7 @@ BlueStepper::BlueStepper(){
     this->EN = PA9;
     pinMode(this->STEP,OUTPUT);
     pinMode(this->DIR,OUTPUT);
-    setMode(0,0,0); //default
+    setMode(1,0,0); //default
 }
 
 
@@ -47,13 +47,19 @@ void  BlueStepper::setMode(int m2, int m1, int m0){
 
 void  BlueStepper::setPosition(float angle){
     int steps = calculateSteps(angle);
+    int curDelay = 100000;
+    int minDelay = 1000;
+    int decrement = 1000;
     int i;
     for(i=0; i<steps; i++){
+        // if(curDelay>minDelay){
+        //     curDelay-=decrement;
+        // }
         Serial.println("In set position");
         digitalWrite(this->STEP, HIGH);
-        delayMicroseconds(1000);
+        delayMicroseconds(curDelay);
         digitalWrite(this->STEP, LOW);
-        delayMicroseconds(1000);
+        delayMicroseconds(curDelay);
     }
 }
 

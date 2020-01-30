@@ -1,1 +1,1 @@
-ee475\magencode.o: ..\Src\MagEncode.cpp
+ee475\magencode.o: ..\src\MagEncode.cpp

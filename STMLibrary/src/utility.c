@@ -1,5 +1,20 @@
 #include "utility.h"
 
+/* Function Wrappers----------------------------------------------------------*/
+// void digitialWrite(uint16_t pin, uint16_t state){
+//   uint8_t x = (state) ? SET : RESET;
+//   if( (pin==LED) || (pin==STEP) || (pin==ENABLE)){
+//     HAL_GPIO_WritePin(GPIOA, pin, x);
+//   }
+//   else{
+//     HAL_GPIO_WritePin(GPIOB, pin, x);
+//   }
+// }
+
+void delay(uint16_t val){
+  HAL_Delay(val);
+}
+
 void initialSetup(void){
 
     HAL_Init();
@@ -284,6 +299,7 @@ void MX_USART1_UART_Init(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
 
 /**
   * @brief  This function is executed in case of error occurrence.

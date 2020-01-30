@@ -10,7 +10,7 @@ int DIRy = 6;
 int STEPz = 4;
 int DIRz = 7;
 int EN = 8;
-int DELAY = 100; //microseconds
+int DELAY = 50; //microseconds
 
 void setup() {
   Serial.begin(9600);

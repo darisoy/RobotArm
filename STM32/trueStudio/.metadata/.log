@@ -3047,3 +3047,237 @@ java.lang.NullPointerException
 	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:673)
 	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:610)
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1519)
+!SESSION 2020-01-28 16:02:52.148 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_181
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  C:\Users\EE475\475wi20\STM32\stm32CubeMX\ledBlink\.cproject
+Command-line arguments:  -os win32 -ws win32 -arch x86 C:\Users\EE475\475wi20\STM32\stm32CubeMX\ledBlink\.cproject
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2020-01-28 16:03:06.820
+!MESSAGE Loading product manager
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2020-01-28 16:03:06.826
+!MESSAGE OS info: Windows 10, 10.0, x86
+
+!ENTRY org.eclipse.core.resources 2 10035 2020-01-28 16:03:07.055
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+
+!ENTRY TrueSTUDIO 1 0 2020-01-28 16:03:08.180
+!MESSAGE Target: STM32, Version: 9.3.0, Build date: 20190212-0734, Installation dir: /C:/Program Files (x86)/Atollic/TrueSTUDIO for STM32 9.3.0/ide/
+
+!ENTRY TrueSTUDIO 1 0 2020-01-28 16:03:08.180
+!MESSAGE Workspace: C:\Users\EE475\475wi20\STM32\trueStudio
+
+!ENTRY org.eclipse.jface 2 0 2020-01-28 16:03:09.521
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2020-01-28 16:03:09.521
+!MESSAGE A conflict occurred for ALT+CTRL+T:
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.EditPropertiesCommand,Show Properties,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@1262020,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.connector.local.command.launch,Open Local Terminal on Selection,
+		,
+		Category(org.eclipse.tm.terminal.view.ui.commands.category,Terminal Commands,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@13ddc86,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY com.atollic.truestudio.integration.processorexpert 0 0 2020-01-28 16:03:16.297
+!MESSAGE Atollic TrueSTUDIO Processor Expert integration is up.
+
+!ENTRY edu.hawaii.ics.csdl.jupiter 1 0 2020-01-28 16:03:16.353
+!MESSAGE Code Review is up.
+
+!ENTRY org.eclipse.egit.ui 2 0 2020-01-28 16:03:16.508
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\EE475'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:03:25.604
+!MESSAGE Failed to get device info (Debug) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:03:25.619
+!MESSAGE Failed to get device info (Debug) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:03:25.620
+!MESSAGE Failed to get device info (Debug) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:03:25.633
+!MESSAGE Failed to get device info (Release) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:03:25.633
+!MESSAGE Failed to get device info (Release) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:03:25.634
+!MESSAGE Failed to get device info (Release) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:25.645
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:25.646
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:25.649
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:25.650
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:25.662
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:25.838
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:26.052
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:26.160
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:26.345
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:26.346
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:26.349
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:03:26.350
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2020-01-28 16:05:28.289
+!MESSAGE Unloading product manager
+!SESSION 2020-01-28 16:16:06.251 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.8.0_181
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2020-01-28 16:16:18.851
+!MESSAGE Loading product manager
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2020-01-28 16:16:18.858
+!MESSAGE OS info: Windows 10, 10.0, x86
+
+!ENTRY TrueSTUDIO 1 0 2020-01-28 16:16:19.648
+!MESSAGE Target: STM32, Version: 9.3.0, Build date: 20190212-0734, Installation dir: /C:/Program Files (x86)/Atollic/TrueSTUDIO for STM32 9.3.0/ide/
+
+!ENTRY TrueSTUDIO 1 0 2020-01-28 16:16:19.649
+!MESSAGE Workspace: C:\Users\EE475\475wi20\STM32\trueStudio
+
+!ENTRY org.eclipse.jface 2 0 2020-01-28 16:16:20.761
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2020-01-28 16:16:20.761
+!MESSAGE A conflict occurred for ALT+CTRL+T:
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.team.svn.ui.command.EditPropertiesCommand,Show Properties,
+		,
+		Category(org.eclipse.team.svn.ui.command.category,SVN,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@50ffa3,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+CTRL+T,
+	ParameterizedCommand(Command(org.eclipse.tm.terminal.connector.local.command.launch,Open Local Terminal on Selection,
+		,
+		Category(org.eclipse.tm.terminal.view.ui.commands.category,Terminal Commands,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@756867,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY com.atollic.truestudio.integration.processorexpert 0 0 2020-01-28 16:16:24.966
+!MESSAGE Atollic TrueSTUDIO Processor Expert integration is up.
+
+!ENTRY edu.hawaii.ics.csdl.jupiter 1 0 2020-01-28 16:16:24.985
+!MESSAGE Code Review is up.
+
+!ENTRY org.eclipse.egit.ui 2 0 2020-01-28 16:16:25.287
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\EE475'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:17:45.455
+!MESSAGE Failed to get device info (Debug) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:17:45.456
+!MESSAGE Failed to get device info (Debug) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:17:45.456
+!MESSAGE Failed to get device info (Debug) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:17:45.472
+!MESSAGE Failed to get device info (Release) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:17:45.472
+!MESSAGE Failed to get device info (Release) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 2 0 2020-01-28 16:17:45.473
+!MESSAGE Failed to get device info (Release) for project stm32
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:45.484
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:45.486
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:45.489
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:45.490
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:45.617
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:45.730
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:45.930
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:46.039
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:46.222
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:46.223
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:46.225
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:17:46.226
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:22:18.618
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:22:18.620
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:22:18.624
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.mbs 4 0 2020-01-28 16:22:18.625
+!MESSAGE Failed to find device info
+
+!ENTRY com.atollic.truestudio.productmanager 1 0 2020-01-30 09:25:37.951
+!MESSAGE Unloading product manager
