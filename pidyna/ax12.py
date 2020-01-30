@@ -131,11 +131,7 @@ class Ax12_2:
 
 
     # RPi constants
-<<<<<<< HEAD
-    RPI_DIRECTION_PIN = 4
-=======
     RPI_DIRECTION_PIN = 23
->>>>>>> 3e7a74d0aebb958ce844e678a5cc9cb6028a0640
     RPI_DIRECTION_TX = GPIO.HIGH
     RPI_DIRECTION_RX = GPIO.LOW
     RPI_DIRECTION_SWITCH_DELAY = 0.0007
