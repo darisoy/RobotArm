@@ -48,7 +48,7 @@ void Stepper::setDirection(bool dir){
 
 float Stepper::getPosition(){
 
-
+	return 0.0;
 }
 
 void  Stepper::enable(bool){
