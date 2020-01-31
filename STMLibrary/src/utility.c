@@ -268,15 +268,14 @@ void MX_TIM2_Init(void)
   */
 void MX_USART1_UART_Init(void)
 {
-
 	extern UART_HandleTypeDef huart1;
-  /* USER CODE BEGIN USART1_Init 0 */
 
-  /* USER CODE END USART1_Init 0 */
-
-  /* USER CODE BEGIN USART1_Init 1 */
-
-  /* USER CODE END USART1_Init 1 */
+  /**USART2 GPIO Configuration
+  PB6     ------> USART2_TX
+  PB7     ------> USART2_RX
+  */
+	
+  /*  USART1_Init 1 */
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 57600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
@@ -289,16 +288,13 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN USART1_Init 2 */
-
-  /* USER CODE END USART1_Init 2 */
+	HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(USART1_IRQn);
 
 }
 
 
-/* USER CODE BEGIN 4 */
 
-/* USER CODE END 4 */
 
 
 /**

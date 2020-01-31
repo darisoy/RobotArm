@@ -19,10 +19,9 @@ void Stepper::returnToHome(){
 
 void  Stepper::setMode(uint8_t mode){
     HAL_GPIO_WritePin(GPIOB, M2, GPIO_PIN_SET);
-	
     HAL_GPIO_WritePin(GPIOB, M1, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOB, M0, GPIO_PIN_RESET);
-    this->stepResolution = 16; //(1<<( (int)((m2<<2) | (m1<<1) | (m0<<0) ))) ; // creates bitmask from mode selection, 101 = 2^
+    this->stepResolution = 16; 
     this->divisor = 1.8/stepResolution;
 }
 

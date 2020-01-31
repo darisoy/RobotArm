@@ -14,22 +14,85 @@
 
 
 /* Includes--------------------------------------------------------------------*/
+#include <stdio.h>
+#include <string.h>
 #include "utility.h"
 #include "StepCtrl.h"
 
+/* Circular Queue --------------------------------------------------------------*/
+struct Queue{
+	// initialize front and rear
+	int rear, front;
+	
+	// circular queue
+	int size;
+	uint8_t *arr;
+	
+	Queue(int size){
+		front = rear = -1;
+		arr = new uint8_t [size];
+	}
+	void enQueue(uint8_t &packet_rx);
+	uint8_t* deQueue();
+};
+
+void Queue::enQueue(uint8_t &packet_rx){
+	if( (front == 0 && rear == size-1) || (rear == (front-1)%(size-1)) ){
+		// error, queue is full
+		return;
+	} else if (front == -1) { // insert first element
+		front = rear = 0;
+		arr[rear] = packet_rx;
+	} else if (rear == size-1 && front != 0) {
+		rear = 0;
+		arr[rear] = packet_rx;
+	} else {
+		rear++;
+		arr[rear] = packet_rx;
+	}
+}
+
+uint8_t* Queue::deQueue(){
+	if (front == -1) {
+		// error queue is empty
+		return NULL;
+	} 
+	uint8_t* top_packet = &arr[front];
+	arr[front] = NULL;
+	if (front == rear) {
+		front = -1;
+		rear = -1;
+	} else if (front == size-1) {
+		front = 0;
+	}	else {
+		front++;
+	}
+	return top_packet;
+}
+
 /* Private Variables-----------------------------------------------------------*/
-UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart1;	 			// interrupt handler
+const uint8_t BUFFER_SIZE = 20;		// Size of Buffer
+uint8_t buffer_rx[BUFFER_SIZE];		   			// receives protocol
+uint8_t buffer_tx[BUFFER_SIZE];			 			// transmits reply
+
+Queue command_packets(10);
+	
+// TESTING VARIABLE, DELETE LATER
+bool DIRECTION = false;
 
 /* Objects --------------------------------------------------------------------*/
+Stepper stepper = Stepper();
 
-
-
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
-	
+/* Interrupt Service Routine---------------------------------------------------*/
+void USART1_IRQHandler(void){
+	HAL_UART_IRQHandler(&huart1);
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
-	while(1);
+	// Receive UART1 data in interrupt mode
+	HAL_UART_Receive_IT(&huart1, buffer_rx, sizeof(buffer_rx));
+	command_packets.enQueue(*buffer_rx);
 }
 
 
@@ -40,21 +103,18 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 int main(void)
 {
 	initialSetup();
-	HAL_Delay(1000);
-	uint8_t buffer_tx[10]={'a','a','a','a','a','a','a','a','a'};
-	uint8_t buffer_rx[1];
-	
-	//HAL_UART_Receive_IT(&huart1, buffer_rx, sizeof(buffer_rx));
-	//HAL_UART_Transmit_IT(&huart1, buffer_tx, sizeof(buffer_tx));
+	stepper.setMode(1);
+	HAL_Delay(1000);	
+	HAL_UART_Receive_IT(&huart1, buffer_rx, sizeof(buffer_rx));
 	
 	
   while (1)
   { 
-		HAL_UART_Receive(&huart1, buffer_rx, sizeof(buffer_rx), HAL_MAX_DELAY);
-		HAL_Delay(100);
-		//if(buffer[0]=='a'){
-		//	HAL_GPIO_WritePin(LED_Port, LED, GPIO_PIN_SET);
-		//}
+		DIRECTION = !DIRECTION;  
+		stepper.setPosition(90);
+		HAL_Delay(500);
+		stepper.setDirection(DIRECTION);
+		//HAL_UART_Receive(&huart1, buffer_rx, sizeof(buffer_rx), 2000);
 	}
 
 }
