@@ -24,6 +24,15 @@ UART_HandleTypeDef huart1;
 
 
 
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
+	
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+	while(1);
+}
+
+
 /**
   * @brief  The application entry point.
   * @retval int
@@ -31,12 +40,21 @@ UART_HandleTypeDef huart1;
 int main(void)
 {
 	initialSetup();
-
+	HAL_Delay(1000);
+	uint8_t buffer_tx[10]={'a','a','a','a','a','a','a','a','a'};
+	uint8_t buffer_rx[1];
+	
+	//HAL_UART_Receive_IT(&huart1, buffer_rx, sizeof(buffer_rx));
+	//HAL_UART_Transmit_IT(&huart1, buffer_tx, sizeof(buffer_tx));
+	
+	
   while (1)
   { 
-		uint8_t buffer;
-		HAL_UART_Receive(&huart1, buffer, sizeof(buffer), HAL_MAX_DELAY);
-		
+		HAL_UART_Receive(&huart1, buffer_rx, sizeof(buffer_rx), HAL_MAX_DELAY);
+		HAL_Delay(100);
+		//if(buffer[0]=='a'){
+		//	HAL_GPIO_WritePin(LED_Port, LED, GPIO_PIN_SET);
+		//}
 	}
 
 }
