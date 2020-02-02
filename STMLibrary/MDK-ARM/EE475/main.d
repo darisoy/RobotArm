@@ -33,3 +33,4 @@ ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 ee475\main.o: ../Inc/StepCtrl.h
+ee475\main.o: ../Inc/Comm.h
