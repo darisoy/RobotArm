@@ -1,33 +1,28 @@
 #include "utility.h"
 
-/* Function Wrappers----------------------------------------------------------*/
-// void digitialWrite(uint16_t pin, uint16_t state){
-//   uint8_t x = (state) ? SET : RESET;
-//   if( (pin==LED) || (pin==STEP) || (pin==ENABLE)){
-//     HAL_GPIO_WritePin(GPIOA, pin, x);
-//   }
-//   else{
-//     HAL_GPIO_WritePin(GPIOB, pin, x);
-//   }
-// }
+extern UART_HandleTypeDef huart1;
 
 void delay(uint16_t val){
   HAL_Delay(val);
 }
 
 void initialSetup(void){
-
+	
+		/* Initialize HAL Driver Library */
     HAL_Init();
-
+	
     /* Configure the system clock */
     SystemClock_Config();
-
+		
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     MX_SPI1_Init();
     MX_TIM2_Init();
-    //MX_USART1_UART_Init();
+    MX_USART1_UART_Init();
     MX_ADC1_Init();
+
+    /* Initialize UART Interrupt */
+		__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE); 
 }
 
 
@@ -130,10 +125,6 @@ void SystemClock_Config(void)
 void MX_ADC1_Init(void)
 {
 
-  /* USER CODE BEGIN ADC1_Init 0 */
-
-  /* USER CODE END ADC1_Init 0 */
-
   ADC_ChannelConfTypeDef sConfig = {0};
   ADC_HandleTypeDef hadc1;
   /** Common config 
@@ -158,9 +149,6 @@ void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN ADC1_Init 2 */
-
-  /* USER CODE END ADC1_Init 2 */
 
 }
 
@@ -172,13 +160,7 @@ void MX_ADC1_Init(void)
 void MX_SPI1_Init(void)
 {
   SPI_HandleTypeDef hspi1;
-  /* USER CODE BEGIN SPI1_Init 0 */
 
-  /* USER CODE END SPI1_Init 0 */
-
-  /* USER CODE BEGIN SPI1_Init 1 */
-
-  /* USER CODE END SPI1_Init 1 */
   /* SPI1 parameter configuration*/
   hspi1.Instance = SPI1;
   hspi1.Init.Mode = SPI_MODE_MASTER;
@@ -196,9 +178,7 @@ void MX_SPI1_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN SPI1_Init 2 */
 
-  /* USER CODE END SPI1_Init 2 */
 
 }
 
@@ -210,17 +190,12 @@ void MX_SPI1_Init(void)
 void MX_TIM2_Init(void)
 {
 
-  /* USER CODE BEGIN TIM2_Init 0 */
-
-  /* USER CODE END TIM2_Init 0 */
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
   TIM_OC_InitTypeDef sConfigOC = {0};
   TIM_HandleTypeDef htim2;
-  /* USER CODE BEGIN TIM2_Init 1 */
 
-  /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 72;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -254,15 +229,45 @@ void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN TIM2_Init 2 */
 
-  /* USER CODE END TIM2_Init 2 */
   HAL_TIM_MspPostInit(&htim2);
 
 }
 
 
 
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+void MX_USART1_UART_Init(void)
+{
+	extern UART_HandleTypeDef huart1;
+
+  /**USART2 GPIO Configuration
+  PB6     ------> USART2_TX
+  PB7     ------> USART2_RX
+  */
+	
+  /*  USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 57600;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+	//HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+	//HAL_NVIC_EnableIRQ(USART1_IRQn);
+
+}
 
 
 
@@ -289,10 +294,12 @@ void Error_Handler(void)
   */
 void assert_failed(uint8_t *file, uint32_t line)
 { 
-  /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
+  while(1){
+		HAL_GPIO_WritePin(GPIOA, LED, GPIO_PIN_SET);
+    HAL_Delay(delay);
+    HAL_GPIO_WritePin(GPIOA, LED, GPIO_PIN_RESET);
+    HAL_Delay(delay);
+	}
 }
 #endif /* USE_FULL_ASSERT */
 

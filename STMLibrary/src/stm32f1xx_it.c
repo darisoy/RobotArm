@@ -20,46 +20,13 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "utility.h"
+#include "Comm.h"
 #include "stm32f1xx_it.h"
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN TD */
-
-/* USER CODE END TD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
- 
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
 extern UART_HandleTypeDef huart1;
-/* USER CODE BEGIN EV */
-
-/* USER CODE END EV */
+extern Queue commandPackets;
+extern uint8_t bufferRX[24];
 
 /******************************************************************************/
 /*           Cortex-M3 Processor Interruption and Exception Handlers          */ 
@@ -73,7 +40,10 @@ void NMI_Handler(void)
 
   /* USER CODE END NonMaskableInt_IRQn 0 */
   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+  while (1)
+  {
 
+  }
   /* USER CODE END NonMaskableInt_IRQn 1 */
 }
 
@@ -202,13 +172,15 @@ void SysTick_Handler(void)
   */
 void USART1_IRQHandler(void)
 {
-  /* USER CODE BEGIN USART1_IRQn 0 */
 
-  /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
-  /* USER CODE BEGIN USART1_IRQn 1 */
-
-  /* USER CODE END USART1_IRQn 1 */
+/*
+ *	This waits until the full message is received before it loads it into the 
+ *  Queue.
+ */
+	if(HAL_UART_Receive_IT(&huart1, bufferRX, sizeof(bufferRX)) == HAL_OK && bufferRX[0] != 0x00){
+		commandPackets.enQueue(bufferRX);
+	}
 }
 
 /* USER CODE BEGIN 1 */
