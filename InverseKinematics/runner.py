@@ -24,7 +24,11 @@ def main():
     target_frame[:3, 3] = target_vector
     #print(target_frame)
 
-    angles = my_chain.inverse_kinematics(target_frame)
+    radians = my_chain.inverse_kinematics(target_frame)
+    raw = np.floor(((radians * (180 / (np.pi)) + 180) % 360) * (4096/360))
+
+    print(raw)
+
 
     print("----ping start----")
     print(servo_bus.ping(elbow_forearm_joint).hex())
@@ -39,7 +43,7 @@ def main():
         servo_bus.move(elbow_forearm_joint, 0)
         #servo_bus.move(forearm_wrist_joint,1024)
         time.sleep(2)
-        servo_bus.move(elbow_forearm_joint, angles[elbow_forearm_joint])
+        servo_bus.move(elbow_forearm_joint, int(raw[elbow_forearm_joint]))
         #servo_bus.move(forearm_wrist_joint,2048)
         time.sleep(2)
 

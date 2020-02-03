@@ -131,7 +131,7 @@ class Ax12_2:
 
 
     # RPi constants
-    RPI_DIRECTION_PIN = 23
+    RPI_DIRECTION_PIN = 4
     RPI_DIRECTION_TX = GPIO.HIGH
     RPI_DIRECTION_RX = GPIO.LOW
     RPI_DIRECTION_SWITCH_DELAY = 0.0007
@@ -143,6 +143,7 @@ class Ax12_2:
     def __init__(self):
         if(Ax12_2.port == None):
             Ax12_2.port = Serial("/dev/ttyS0", baudrate=57600)
+            print(Ax12_2.port)
         if(not Ax12_2.gpioSet):
             GPIO.setwarnings(False)
             GPIO.setmode(GPIO.BCM)
@@ -249,7 +250,6 @@ class Ax12_2:
         return retval
 
     def ping(self,id):
-        print(self.port.__dir__())
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
         outData = Ax12_2.PREFIX
@@ -263,6 +263,7 @@ class Ax12_2:
         while self.port.out_waiting: continue
         sleep(0.0008)
         return self.readData(id)
+        #return None
 
     def factoryReset(self,id, confirm = False):
         return None
