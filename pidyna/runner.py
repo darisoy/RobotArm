@@ -15,7 +15,7 @@ def main():
     #print(servo_bus.move(4, 116).hex())
     #print(servo_bus.move(5, 116).hex())
     while True:
-        servo_bus.move(4,1024)
+        servo_bus.move(4,3500)
         #servo_bus.move(5,0)
         time.sleep(2)
         servo_bus.move(4,0)

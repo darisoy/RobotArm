@@ -1,0 +1,105 @@
+
+stm32.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .init         00000018  00008000  00008000  00008000  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .text         0000008c  00008018  00008018  00008018  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .fini         00000018  000080a4  000080a4  000080a4  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  3 .eh_frame     00000004  000080bc  000080bc  000080bc  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  4 .init_array   00000004  000180c0  000180c0  000080c0  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  5 .fini_array   00000004  000180c4  000180c4  000080c4  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .data         00000004  000180c8  000180c8  000080c8  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  7 .bss          0000001c  000180cc  000180cc  000080cc  2**2
+                  ALLOC
+  8 .comment      0000007c  00000000  00000000  000080cc  2**0
+                  CONTENTS, READONLY
+  9 .debug_aranges 00000020  00000000  00000000  00008148  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_info   00000042  00000000  00000000  00008168  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_abbrev 00000039  00000000  00000000  000081aa  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_line   00000039  00000000  00000000  000081e3  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 13 .debug_frame  00000030  00000000  00000000  0000821c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 14 .debug_str    000000ac  00000000  00000000  0000824c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 15 .ARM.attributes 0000002e  00000000  00000000  000082f8  2**0
+                  CONTENTS, READONLY
+
+Disassembly of section .init:
+
+00008000 <_init>:
+    8000:	e1a0c00d 	mov	ip, sp
+    8004:	e92ddff8 	push	{r3, r4, r5, r6, r7, r8, r9, sl, fp, ip, lr, pc}
+    8008:	e24cb004 	sub	fp, ip, #4
+    800c:	e24bd028 	sub	sp, fp, #40	; 0x28
+    8010:	e89d6ff0 	ldm	sp, {r4, r5, r6, r7, r8, r9, sl, fp, sp, lr}
+    8014:	e12fff1e 	bx	lr
+
+Disassembly of section .text:
+
+00008018 <__do_global_dtors_aux>:
+    8018:	e92d4010 	push	{r4, lr}
+    801c:	e59f4028 	ldr	r4, [pc, #40]	; 804c <__do_global_dtors_aux+0x34>
+    8020:	e5d43000 	ldrb	r3, [r4]
+    8024:	e3530000 	cmp	r3, #0
+    8028:	1a000005 	bne	8044 <__do_global_dtors_aux+0x2c>
+    802c:	e59f301c 	ldr	r3, [pc, #28]	; 8050 <__do_global_dtors_aux+0x38>
+    8030:	e3530000 	cmp	r3, #0
+    8034:	159f0018 	ldrne	r0, [pc, #24]	; 8054 <__do_global_dtors_aux+0x3c>
+    8038:	11a00000 	movne	r0, r0
+    803c:	e3a03001 	mov	r3, #1
+    8040:	e5c43000 	strb	r3, [r4]
+    8044:	e8bd4010 	pop	{r4, lr}
+    8048:	e12fff1e 	bx	lr
+    804c:	000180cc 	.word	0x000180cc
+    8050:	00000000 	.word	0x00000000
+    8054:	000080bc 	.word	0x000080bc
+
+00008058 <frame_dummy>:
+    8058:	e59f301c 	ldr	r3, [pc, #28]	; 807c <frame_dummy+0x24>
+    805c:	e3530000 	cmp	r3, #0
+    8060:	012fff1e 	bxeq	lr
+    8064:	e92d4010 	push	{r4, lr}
+    8068:	e59f1010 	ldr	r1, [pc, #16]	; 8080 <frame_dummy+0x28>
+    806c:	e59f0010 	ldr	r0, [pc, #16]	; 8084 <frame_dummy+0x2c>
+    8070:	e1a00000 	nop			; (mov r0, r0)
+    8074:	e8bd4010 	pop	{r4, lr}
+    8078:	e12fff1e 	bx	lr
+    807c:	00000000 	.word	0x00000000
+    8080:	000180d0 	.word	0x000180d0
+    8084:	000080bc 	.word	0x000080bc
+
+00008088 <main>:
+
+int main(void){
+    8088:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+    808c:	e28db000 	add	fp, sp, #0
+
+	return 0;
+    8090:	e3a03000 	mov	r3, #0
+}
+    8094:	e1a00003 	mov	r0, r3
+    8098:	e28bd000 	add	sp, fp, #0
+    809c:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+    80a0:	e12fff1e 	bx	lr
+
+Disassembly of section .fini:
+
+000080a4 <_fini>:
+    80a4:	e1a0c00d 	mov	ip, sp
+    80a8:	e92ddff8 	push	{r3, r4, r5, r6, r7, r8, r9, sl, fp, ip, lr, pc}
+    80ac:	e24cb004 	sub	fp, ip, #4
+    80b0:	e24bd028 	sub	sp, fp, #40	; 0x28
+    80b4:	e89d6ff0 	ldm	sp, {r4, r5, r6, r7, r8, r9, sl, fp, sp, lr}
+    80b8:	e12fff1e 	bx	lr

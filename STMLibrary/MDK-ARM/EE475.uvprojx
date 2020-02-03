@@ -335,7 +335,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--cpp11</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
               <IncludePath>../Inc;  ../Drivers/STM32F1xx_HAL_Driver/Inc;  ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;  ../Drivers/CMSIS/Device/ST/STM32F1xx/Include;  ../Drivers/CMSIS/Include</IncludePath>
@@ -393,11 +393,6 @@
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/main.c</FilePath>
-            </File>
-            <File>
               <FileName>stm32f1xx_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/stm32f1xx_it.c</FilePath>
@@ -411,6 +406,11 @@
               <FileName>utility.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\utility.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\src\main.cpp</FilePath>
             </File>
           </Files>
         </Group>
@@ -511,6 +511,26 @@
               <FileName>system_stm32f1xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/system_stm32f1xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Source</GroupName>
+          <Files>
+            <File>
+              <FileName>Comm.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\src\Comm.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>MagEncode.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\src\MagEncode.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>StepCtrl.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\src\StepCtrl.cpp</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,4 +1,6 @@
-ee475\main.o: ../Src/main.c
+ee475\main.o: ..\src\main.cpp
+ee475\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+ee475\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 ee475\main.o: ../Inc/utility.h
 ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 ee475\main.o: ../Inc/stm32f1xx_hal_conf.h
@@ -30,3 +32,5 @@ ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h
 ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+ee475\main.o: ../Inc/StepCtrl.h
+ee475\main.o: ../Inc/Comm.h

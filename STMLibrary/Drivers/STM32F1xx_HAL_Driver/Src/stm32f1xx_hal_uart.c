@@ -1247,6 +1247,14 @@ HAL_StatusTypeDef HAL_UART_Transmit_IT(UART_HandleTypeDef *huart, uint8_t *pData
   */
 HAL_StatusTypeDef HAL_UART_Receive_IT(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size)
 {
+	// flush pData buffer before filling
+	/*
+	int i;
+	for(i=0; i<Size; i++){
+		pData[i] = 0;
+	}
+	*/
+	
   /* Check that a Rx process is not already ongoing */
   if (huart->RxState == HAL_UART_STATE_READY)
   {

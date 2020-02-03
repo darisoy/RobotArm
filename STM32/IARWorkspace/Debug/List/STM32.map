@@ -1,0 +1,156 @@
+###############################################################################
+#
+# IAR ELF Linker V8.11.3.13950/W32 for ARM                16/Jan/2020  17:00:10
+# Copyright 2007-2017 IAR Systems AB.
+#
+#    Output file  =  
+#        C:\Users\EE475\475wi20\STM32\IARWorkspace\Debug\Exe\STM32.out
+#    Map file     =  
+#        C:\Users\EE475\475wi20\STM32\IARWorkspace\Debug\List\STM32.map
+#    Command line =  
+#        -f C:\Users\EE475\AppData\Local\Temp\EW5420.tmp
+#        (C:\Users\EE475\475wi20\STM32\IARWorkspace\Debug\Obj\main.o -o
+#        C:\Users\EE475\475wi20\STM32\IARWorkspace\Debug\Exe\STM32.out
+#        --redirect _Printf=_PrintfFullNoMb --redirect _Scanf=_ScanfFullNoMb
+#        --map C:\Users\EE475\475wi20\STM32\IARWorkspace\Debug\List\STM32.map
+#        --config "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.0\arm\config\linker\ST\stm32f103x8.icf" --semihosting --entry
+#        __iar_program_start --vfe --text_out locale)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor        = *
+__CPP_Exceptions = Disabled
+__CPP_Language   = C++14
+__SystemLibrary  = DLib
+__dlib_version   = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because some modules are built with
+size limitations (and not runtime checking), and --advanced_heap
+was not specified.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at 0x08000000 { ro section .intvec };
+"P1":  place in [from 0x08000000 to 0x0800ffff] { ro };
+define block CSTACK with size = 2K, alignment = 8 { };
+define block HEAP with size = 2K, alignment = 8 { };
+"P2":  place in [from 0x20000000 to 0x20004fff] {
+          rw, block CSTACK, block HEAP };
+
+  Section   Kind        Address   Size  Object
+  -------   ----        -------   ----  ------
+"A0":                             0x40
+  .intvec   ro code  0x08000000   0x40  vector_table_M.o [4]
+                   - 0x08000040   0x40
+
+"P1":                             0x54
+  .text     ro code  0x08000040   0x1a  cmain.o [4]
+  .text     ro code  0x0800005a    0x4  low_level_init.o [3]
+  .text     ro code  0x0800005e    0x4  main.o [1]
+  .text     ro code  0x08000062    0x4  exit.o [3]
+  .text     ro code  0x08000066    0x2  vector_table_M.o [4]
+  .text     ro code  0x08000068    0xa  cexit.o [4]
+  .rodata   const    0x08000072    0x1  unwind_debug.o [5]
+  .text     ro code  0x08000074   0x14  exit.o [5]
+  .text     ro code  0x08000088    0xc  cstartup_M.o [4]
+                   - 0x08000094   0x54
+
+"P2":                            0x800
+  CSTACK             0x20000000  0x800  <Block>
+    CSTACK  uninit   0x20000000  0x800  <Block tail>
+                   - 0x20000800  0x800
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module            ro code  ro data  rw data
+    ------            -------  -------  -------
+C:\Users\EE475\475wi20\STM32\IARWorkspace\Debug\Obj: [1]
+    main.o                  4
+    -------------------------------------------
+    Total:                  4
+
+command line: [2]
+    -------------------------------------------
+    Total:
+
+dl7M_tln.a: [3]
+    exit.o                  4
+    low_level_init.o        4
+    -------------------------------------------
+    Total:                  8
+
+rt7M_tl.a: [4]
+    cexit.o                10
+    cmain.o                26
+    cstartup_M.o           12
+    vector_table_M.o       66
+    -------------------------------------------
+    Total:                114
+
+shb_l.a: [5]
+    exit.o                 20
+    unwind_debug.o                   1
+    -------------------------------------------
+    Total:                 20        1
+
+    Gaps                    1
+    Linker created                        2 048
+-----------------------------------------------
+    Grand Total:          147        1    2 048
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                      Address  Size  Type      Object
+-----                      -------  ----  ----      ------
+?main                   0x08000041        Code  Gb  cmain.o [4]
+CSTACK$$Base            0x20000000         --   Gb  - Linker created -
+CSTACK$$Limit           0x20000800         --   Gb  - Linker created -
+Region$$Table$$Base     0x00000000         --   Gb  - Linker created -
+Region$$Table$$Limit    0x00000000         --   Gb  - Linker created -
+__cmain                 0x08000041        Code  Gb  cmain.o [4]
+__exit                  0x08000075  0x14  Code  Gb  exit.o [5]
+__iar_debug_exceptions  0x08000072   0x1  Data  Gb  unwind_debug.o [5]
+__iar_program_start     0x08000089        Code  Gb  cstartup_M.o [4]
+__iar_systems$$module {Abs}
+                        0x00000001        Data  Gb  command line/config [2]
+__low_level_init        0x0800005b   0x4  Code  Gb  low_level_init.o [3]
+__vector_table          0x08000000        Data  Gb  vector_table_M.o [4]
+_call_main              0x0800004d        Code  Gb  cmain.o [4]
+_exit                   0x08000069        Code  Gb  cexit.o [4]
+_main                   0x08000057        Code  Gb  cmain.o [4]
+exit                    0x08000063   0x4  Code  Gb  exit.o [3]
+main                    0x0800005f   0x4  Code  Gb  main.o [1]
+
+
+[1] = C:\Users\EE475\475wi20\STM32\IARWorkspace\Debug\Obj
+[2] = command line
+[3] = dl7M_tln.a
+[4] = rt7M_tl.a
+[5] = shb_l.a
+
+    147 bytes of readonly  code memory
+      1 byte  of readonly  data memory
+  2 048 bytes of readwrite data memory
+
+Errors: none
+Warnings: none
