@@ -8,6 +8,8 @@ from ikpy import plot_utils
 def main():
     servo_bus = Ax12_2()
 
+    my_chain = ikpy.chain.Chain.from_urdf_file("./niryo_one.urdf")
+
     world_base_joint = 0
     base_shoulder_joint = 1
     shoulder_arm_joint = 2
@@ -23,12 +25,6 @@ def main():
     #print(target_frame)
 
     angles = my_chain.inverse_kinematics(target_frame)
-    print("The angles of each joints are :")
-    for i in range(len(angles)):
-        print(angles[i])
-
-    real_frame = my_chain.forward_kinematics(angles)
-
 
     print("----ping start----")
     print(servo_bus.ping(elbow_forearm_joint).hex())
