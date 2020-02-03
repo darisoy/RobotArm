@@ -128,6 +128,7 @@ class Ax12_2:
     PREFIX = b'\xff\xff\xfd\x00'
     PING_LEN = b'\x03\x00'
     WRITE_LEN = b'\x09\x00'
+    READ_LEN = b'\x07\x00'
 
 
     # RPi constants
@@ -301,6 +302,7 @@ class Ax12_2:
         Ax12_2.port.write(outData)
         sleep(Ax12_2.TX_DELAY_TIME)
         return self.readData(id)
+
     def setBaudRate(self, id, baudRate):
         return None
         self.direction(Ax12_2.RPI_DIRECTION_TX)
@@ -672,21 +674,26 @@ class Ax12_2:
         return self.readData(id)
 
     def readPosition(self, id):
-        return None
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
-        checksum = (~(id + Ax12_2.AX_POS_LENGTH + Ax12_2.AX_READ_DATA + Ax12_2.AX_PRESENT_POSITION_L + Ax12_2.AX_INT_READ))&0xff
-        outData = chr(Ax12_2.AX_START)
-        outData += chr(Ax12_2.AX_START)
-        outData += chr(id)
-        outData += chr(Ax12_2.AX_POS_LENGTH)
-        outData += chr(Ax12_2.AX_READ_DATA)
-        outData += chr(Ax12_2.AX_PRESENT_POSITION_L)
-        outData += chr(Ax12_2.AX_INT_READ)
-        outData += chr(checksum)
+
+        outData = Ax12_2.PREFIX
+        outData += bytes([id])
+        outData += Ax12_2.READ_LEN
+        outData += bytes([Ax12_2.AX_READ_DATA])
+        #0x0084 is the present position register
+        outData += b'\x84\x00'
+        outData += bytes(p)
+
+        outData += self.checksum(outData)
+        print(outData.hex())
         Ax12_2.port.write(outData)
-        sleep(Ax12_2.TX_DELAY_TIME)
-        return self.readData(id)
+        while self.port.out_waiting: continue
+        sleep(0.0018)
+        print('data sent')
+        
+        postion = self.readData(id)
+        return int(postion[12] + postion[11] + postion[10] + postion[9], 16)
 
     def readVoltage(self, id):
         return None
