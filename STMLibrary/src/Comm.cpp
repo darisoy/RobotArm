@@ -58,10 +58,11 @@ extern Queue commandPackets;
 /* Packet Handler -------------------------------------------------------------- */
 
 // // variable packet length variable
-PacketHandler::PacketHandler() {}
+PacketHandler::PacketHandler(Queue * buffer_queue) {
+	packet_queue = buffer_queue;
+}
 
 PacketHandler::~PacketHandler() {}
-
 
 /*
 bool PacketHandler::readPacket() {
@@ -93,7 +94,7 @@ bool PacketHandler::readPacket(){
 	*/
 	int i;
 	uint8_t display_temp;
-	for( i=0; i<24; i++){
+	for(i = 0; i < 24; i++){
 		display_temp = currentCommand[i];
 	}
 	return true;
@@ -104,12 +105,17 @@ bool PacketHandler::readPacket(){
 
 /* Circular Queue --------------------------------------------------------------*/
 
+Queue::Queue() {
+	rear = front = -1;
+	queueSize = 10;
+	packetSize = 24;
+}
+
 
 void Queue::enQueue(uint8_t *packetRX){
 
 	if( (front == 0 && rear == queueSize-1) || (rear == (front-1)%(queueSize-1)) ){
-		// error, queue is full
-		return;
+		return; // error, queue is full
 	} else if (front == -1) { // insert first element
 		front = rear = 0;
 	} else if (rear == queueSize-1 && front != 0) {
@@ -117,28 +123,24 @@ void Queue::enQueue(uint8_t *packetRX){
 	} else {
 		rear++;
 	}
+
 	loadArray(rear, packetRX);
 }
 
-void Queue::loadArray(int element, uint8_t *packetRX){
-	int i;
-		for( i=0; i<sizeof(arr[element]); i++){
-			arr[element][i]=packetRX[i];
-		}
+void Queue::loadArray(int element, uint8_t *packetRX) {
+	for(int i = 0; i < sizeof(arr[element]); i++) {
+		arr[element][i]=packetRX[i];
+	}
 }
 
 uint8_t* Queue::deQueue(){
-	if (front == -1) {
-		// error queue is empty
-		return NULL;
-	} 
+	if (front == -1) return NULL; // error queue is empty
 	
 	int temp;
 	temp = front;
 	
 	if (front == rear) {
-		front = -1;
-		rear = -1;
+		front = rear = -1;
 	} else if (front == queueSize-1) {
 		front = 0;
 	}	else {

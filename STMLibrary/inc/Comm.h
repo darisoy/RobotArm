@@ -18,6 +18,11 @@ Write 512(0x00000200) to Goal Position(116, 0x0074, 4[byte])
 |  H1	 |  H2  |  H3	| RSRV |  ID  | LEN1 | LEN2 | INST |  P1	|  P2	 |  P3  |  P4  |  P5	 | P6   | CRC1 | CRC2 |
 | 0xFF |	0xFF | 0xFD	| 0x00 | 0x01 | 0x09 | 0x00 | 0x03 | 0x74 | 0x00 |	0x00 | 0x02 | 0x00 | 0x00 | 0xCA | 0x89 |
 
+
+// Set Baud Rate
+
+Set ID
+
 Set Torque
 
 
@@ -33,9 +38,9 @@ In the future: read position
 
 /* Packet structure ----------------------------------------------------------- */
 
-#define PKT_HEADER0 	0
-#define PKT_HEADER1 	1
-#define PKT_HEADER2 	2
+#define PKT_HEADER0 	   0
+#define PKT_HEADER1 	   1
+#define PKT_HEADER2 	   2
 #define PKT_RESERVED 	3
 #define PKT_ID 			4
 #define PKT_LENGTH_L 	5
@@ -70,10 +75,27 @@ In the future: read position
 #define ERRNUM_DATA_LIMIT  6  // Data limit error
 #define ERRNUM_ACCESS      7  // Access error
 
+typedef struct Queue {
+	
+	/* variables */
+	int rear, front, queueSize, packetSize;
+	// circular queue is 2D array where it contains up to 
+	// 10 message of 24 bytes
+	uint8_t arr [10][24];
+	
+	/* functions */
+	Queue();
+	void enQueue(uint8_t *packetRX);
+	void loadArray(int element, uint8_t *packetRX);
+	uint8_t* deQueue();
+	
+} Queue;
+
 
 class PacketHandler {
+	
 	public:
-		PacketHandler();
+		PacketHandler(Queue *);
 		~PacketHandler(void);
 		bool readPacket();
 		char * getRxType(uint8_t *);
@@ -82,29 +104,9 @@ class PacketHandler {
 		char * sendStatus(uint8_t * status_type, uint8_t * status_packet);
 
 	private:
-		//Queue * queue;
-		//uint8_t* packet;
+		Queue * packet_queue;
+		uint8_t* packet;
 };
-
-
-typedef struct Queue_t{
-
-	// initialize front and rear
-	int rear, front;
-	int queueSize, packetSize;
-	Queue_t(){
-		rear = front = -1;
-		queueSize = 10;
-		packetSize = 24;
-	}
-	// circular queue is 2D array where it contains up to 
-	// 10 message of 24 bytes 
-	uint8_t arr [10][24];
-	void enQueue(uint8_t *packetRX);
-	void loadArray(int element, uint8_t *packetRX);
-	uint8_t* deQueue();
-} Queue;
-
 
 #endif
 

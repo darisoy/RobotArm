@@ -30,26 +30,23 @@ uint8_t bufferTX[BUFFER_SIZE]={0xFF, 0xFF, 0xFD, 0x00, 0xFE, 0x03, 0x00, 0x01, 0
 Queue commandPackets;
 
 
-
 /* Objects --------------------------------------------------------------------*/
 Stepper stepper = Stepper();
-PacketHandler packet = PacketHandler();
-
+Queue buffer_queue = Queue();
+PacketHandler packet = PacketHandler(&buffer_queue);
 
 /**
   * @brief  The application entry point.
   * @retval int
   */
-int main(void)
-{
+int main(void) {
 
 	initialSetup();
 	HAL_Delay(100);	
 	HAL_UART_Transmit_IT(&huart1, bufferTX, sizeof(bufferTX));
 	HAL_Delay(100);
 
-  while (1)
-  { 
+  while (1) { 
 		HAL_Delay(500);
 		packet.readPacket();
 	}
