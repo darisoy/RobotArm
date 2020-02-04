@@ -78,13 +78,17 @@ In the future: read position
 typedef struct Queue {
 	
 	/* variables */
-	int rear, front, queueSize, packetSize;
+	int rear, front, queueSize;
 	// circular queue is 2D array where it contains up to 
 	// 10 message of 24 bytes
-	uint8_t arr [10][24];
+	uint8_t *arr;
+	Queue(uint16_t size){
+		queueSize = size;
+		arr = new uint8_t[size];
+		rear = front = -1;
+	}
 	
 	/* functions */
-	Queue();
 	void enQueue(uint8_t *packetRX);
 	void loadArray(int element, uint8_t *packetRX);
 	uint8_t* deQueue();

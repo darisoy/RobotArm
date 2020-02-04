@@ -105,13 +105,6 @@ bool PacketHandler::readPacket(){
 
 /* Circular Queue --------------------------------------------------------------*/
 
-Queue::Queue() {
-	rear = front = -1;
-	queueSize = 10;
-	packetSize = 24;
-}
-
-
 void Queue::enQueue(uint8_t *packetRX){
 
 	if( (front == 0 && rear == queueSize-1) || (rear == (front-1)%(queueSize-1)) ){
