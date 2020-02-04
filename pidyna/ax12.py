@@ -8,6 +8,7 @@ http://savageelectronics.blogspot.it/2011/01/arduino-y-dynamixel-ax-12.html
 from time import sleep
 from serial import Serial
 import RPi.GPIO as GPIO
+import signal 
 
 class Ax12_2:
     # important AX-12 constants
@@ -143,8 +144,8 @@ class Ax12_2:
 
     def __init__(self):
         if(Ax12_2.port == None):
-            Ax12_2.port = Serial("/dev/ttyS0", baudrate=57600)
-            print(Ax12_2.port)
+            Ax12_2.port = Serial("/dev/ttyS0", baudrate=57600, timeout=0.05)
+            #print(Ax12_2.port)
         if(not Ax12_2.gpioSet):
             GPIO.setwarnings(False)
             GPIO.setmode(GPIO.BCM)
@@ -223,7 +224,7 @@ class Ax12_2:
             buf += self.port.read(1)
         reply = Ax12_2.port.read(5) # [0xff, 0xff,0xfd,0x00, origin, length_l,length_h,inst, error]
         reply = buf[-4:]+reply
-        print(reply.hex())
+        #print(reply.hex())
         try:
             assert reply[0] == 0xFF
         except:
@@ -259,7 +260,7 @@ class Ax12_2:
         outData += bytes([Ax12_2.AX_PING])
         #print(outData.hex())
         outData += self.checksum(outData)
-        print(outData.hex())
+        #print(outData.hex())
         Ax12_2.port.write(outData)
         while self.port.out_waiting: continue
         sleep(0.0008)
@@ -373,10 +374,11 @@ class Ax12_2:
         return self.readData(id)
 
     def move(self, id, position):
+        position = int(position)
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
         p = [position&0xff, (position>>8)&0xff,0,0]
-        print(p)
+        #print(p)
         outData = Ax12_2.PREFIX
         outData += bytes([id])
         outData += Ax12_2.WRITE_LEN
@@ -386,12 +388,16 @@ class Ax12_2:
         outData += bytes(p)
 
         outData += self.checksum(outData)
-        print(outData.hex())
+        #print(outData.hex())
         Ax12_2.port.write(outData)
         while self.port.out_waiting: continue
         sleep(0.0018)
-        print('data sent')
+        #print('data sent')
         return self.readData(id)
+    
+    def moveDegrees(self, id, position):
+        raw_pos = (position )*4096/360
+        return self.move(id,raw_pos)
 
     def moveSpeed(self, id, position, speed):
         return None
@@ -482,11 +488,11 @@ class Ax12_2:
         outData += b'\x01' if status else b'\x00'
 
         outData += self.checksum(outData)
-        print(outData.hex())
+        #print(outData.hex())
         Ax12_2.port.write(outData)
         while self.port.out_waiting: continue
         sleep(0.0014)
-        print('data sent')
+        #print('data sent')
         return self.readData(id)
 
     def setLedStatus(self, id, status):
@@ -683,17 +689,22 @@ class Ax12_2:
         outData += bytes([Ax12_2.AX_READ_DATA])
         #0x0084 is the present position register
         outData += b'\x84\x00'
-        outData += bytes(p)
+        outData += b'\x04\x00'
 
         outData += self.checksum(outData)
-        print(outData.hex())
+        #print(outData.hex())
         Ax12_2.port.write(outData)
         while self.port.out_waiting: continue
         sleep(0.0018)
-        print('data sent')
+        #print('data sent')
         
-        postion = self.readData(id)
-        return int(postion[12] + postion[11] + postion[10] + postion[9], 16)
+        position = self.readData(id)
+        return position[0] + (position[1] << 8) + (position[2] <<16) + (position[3] << 24)
+    
+    def readPositionDegrees(self,id):
+        raw = self.readPosition(id)
+        return (raw*360/4096 +180) %360 -180
+
 
     def readVoltage(self, id):
         return None
@@ -782,14 +793,17 @@ class Ax12_2:
 
 
     def learnServos(self,minValue=1, maxValue=6, verbose=False) :
-        return None
         servoList = []
+        def timeout(signum, frame):
+            raise IOError("Timeout")
+
         for i in range(minValue, maxValue + 1):
             try :
+                signal.signal(signal.SIGALRM, timeout)
+                signal.alarm(1)
                 temp = self.ping(i)
                 servoList.append(i)
                 if verbose: print("Found servo #" + str(i))
-                time.sleep(0.1)
 
             except Exception as detail:
                 if verbose : print("Error pinging servo #" + str(i) + ': ' + str(detail))
