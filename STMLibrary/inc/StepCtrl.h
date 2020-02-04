@@ -27,6 +27,7 @@
 *********************************************************************************************************
 */
 #include "utility.h"
+#include "dwt_delay.h"
 
 #ifndef STEPCTRL_H_
 #define STEPCTRL_H_
@@ -38,25 +39,30 @@ extern "C" { // link CPP files
 class Stepper{
     
     public:
-        Stepper();
-        void setHome();
+        Stepper(uint8_t ID);
+        void setHome(uint8_t ID);
         void returnToHome();
-        void setMode(uint8_t);
-        void setPosition(float angle);
+        void setMode();
+        bool setPosition(uint16_t value);
         void setDirection(bool);
         float getPosition();
-        int getDivisor();
+        int  getDivisor();
         void enable(bool);
         void disable(bool);
     private:
+        //used
         float divisor;
+        int currentPositionSteps;
+        float currentPositionAngle;
+        float scaler;
+        uint16_t limit;
         int stepResolution;
-        float angle;
-        int maxSpeed;
-        int accelerationRate;
+        int direction;
         int accelerate();
         int calculateSteps(float angle);
-        
+        float getCurrentAngle();
+        float convertValueToAngle(uint16_t value);
+        uint16_t convertAngleToValue(float angle);
 };
 
 

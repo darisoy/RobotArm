@@ -16,6 +16,7 @@
 /* Includes--------------------------------------------------------------------*/
 #include <stdio.h>
 #include <string.h>
+#include "dwt_delay.h"
 #include "utility.h"
 #include "StepCtrl.h"
 #include "Comm.h"
@@ -31,7 +32,7 @@ Queue commandPackets;
 
 
 /* Objects --------------------------------------------------------------------*/
-Stepper stepper = Stepper();
+Stepper stepper = Stepper(1);
 Queue buffer_queue = Queue();
 PacketHandler packet = PacketHandler(&buffer_queue);
 
@@ -42,13 +43,18 @@ PacketHandler packet = PacketHandler(&buffer_queue);
 int main(void) {
 
 	initialSetup();
-	HAL_Delay(100);	
-	HAL_UART_Transmit_IT(&huart1, bufferTX, sizeof(bufferTX));
-	HAL_Delay(100);
-
+	stepper.setMode();
+	stepper.setPosition(1991);
+	HAL_Delay(2000);
+	
   while (1) { 
-		HAL_Delay(500);
-		packet.readPacket();
+
+		stepper.setPosition(1991);
+		HAL_Delay(2000);
+		stepper.setPosition(1024);
+		HAL_Delay(2000);
+
+		
 	}
 	return 0;
 }
