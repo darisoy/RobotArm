@@ -50,4 +50,6 @@ class Robot:
             print(e)
             return arr
 
+    def goHome(self):
+        self.moveJoint(Robot.elbow_forearm_joint, 0)
 

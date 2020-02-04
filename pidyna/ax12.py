@@ -396,7 +396,7 @@ class Ax12_2:
         return self.readData(id)
     
     def moveDegrees(self, id, position):
-        raw_pos = (position )*4096/360
+        raw_pos = (position + 180 )*4096/360
         return self.move(id,raw_pos)
 
     def moveSpeed(self, id, position, speed):
