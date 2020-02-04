@@ -9,51 +9,6 @@
 /* External Variables --------------------------------------------------------- */
 extern Queue commandPackets;
 
-/* Constant Variables --------------------------------------------------------- */
-
-#define TXPACKET_MAX_LEN (1 * 1024)
-#define RXPACKET_MAX_LEN (1 * 1024)
-#define PACKET_MIN_LEN   11
-
-/* Packet structure ----------------------------------------------------------- */
-
-#define PKT_HEADER0 	0
-#define PKT_HEADER1 	1
-#define PKT_HEADER2 	2
-#define PKT_RESERVED 	3
-#define PKT_ID 			4
-#define PKT_LENGTH_L 	5
-#define PKT_LENGTH_H 	6
-#define PKT_INSTRUCTION 7	
-#define PKT_ERROR 		8
-#define PKT_PARAMETER0 	8
-
-/* Instruction Types ----------------------------------------------------------- */
-
-#define INSTR_PING   0x01
-#define INSTR_READ   0x02
-#define INSTR_WRITE  0x03
-#define INSTR_REGWR  0x04
-#define INSTR_ACTION 0x05
-#define INSTR_FCTRY  0x06
-#define INSTR_REBOOT 0x08
-#define INSTR_CLEAR  0x10
-#define INSTR_STATUS 0x55
-#define INSTR_SYNCRD 0x82
-#define INSTR_SYNCWR 0x83
-#define INSTR_BULKRD 0x92
-#define INSTR_BULKWR 0x93
-
-// Error Bits ---------------------
-
-#define ERRNUM_RESULT_FAIL 1  // Failed to process the instruction packet.
-#define ERRNUM_INSTRUCTION 2  // Instruction error
-#define ERRNUM_CRC         3  // CRC check error
-#define ERRNUM_DATA_RANGE  4  // Data range error
-#define ERRNUM_DATA_LENGTH 5  // Data length error
-#define ERRNUM_DATA_LIMIT  6  // Data limit error
-#define ERRNUM_ACCESS      7  // Access error
-
 
 /* Packet Handler -------------------------------------------------------------- */
 
@@ -84,9 +39,25 @@ bool PacketHandler::readPacket() {
 
 */
 
+// bool PacketHandler::readPacket(){
+// 	uint8_t *currentCommand;
+// 	currentCommand = commandPackets.deQueue(); // pull a command from queue
+
+// 	/*
+// 		currentCommand points to the next command packet ready
+// 		to be deciphered.
+// 	*/
+// 	int i;
+// 	uint8_t display_temp;
+// 	for(i = 0; i < 24; i++){
+// 		display_temp = currentCommand[i];
+// 	}
+// 	return true;
+// }
+
 bool PacketHandler::readPacket(){
-	uint8_t *currentCommand;
-	currentCommand = commandPackets.deQueue(); // pull a command from queue
+	uint8_t *current_packet;
+	current_packet = commandPackets.deQueue(); // pull a command from queue
 
 	/*
 		currentCommand points to the next command packet ready
@@ -94,12 +65,61 @@ bool PacketHandler::readPacket(){
 	*/
 	int i;
 	uint8_t display_temp;
-	for(i = 0; i < 24; i++){
-		display_temp = currentCommand[i];
+	for(i = 0; i < 24; i++) {
+		display_temp = current_packet[i];
 	}
-	return true;
-}
-
+	
+	uint8_t * packet_data = commandPackets.deQueue();
+	while ((*packet_data != 0xFF) && (*packet_data != NULL)) packet_data = commandPackets.deQueue();
+	
+	for (i = 0; i < 24 - 3; i++) {
+		if ((current_packet[i] == 0xFF) && 
+			  (current_packet[i+1] == 0xFF) && 
+				(current_packet[i+2] == 0xFD) && 
+		    (current_packet[i+3] != 0xFD))
+			break;
+		if (i == 20) i = -1;
+ 	}
+	
+	int data_len;
+	if ((current_packet[i+4] == STEP_ID) && (i != -1)) { // data exists
+		data_len = (current_packet[i+PKT_LENL]-'0') + 10*(current_packet[i+PKT_LENH]-'0');
+	}
+	
+	int instr_type;
+	instr_type = current_packet[i+PKT_INSTR];
+	switch(instr_type) {
+		case INSTR_PING:
+			// if stm status is good, send ping back.
+			// uint8_t return_packet[11] = {0xFF, 0xFF, 0xFD, 0x00, STEP_ID, }; 
+			// 'ff:ff:fd:0:4:4:0:55:80:3a:8e'
+			break;
+		case INSTR_READ:
+			break;
+		case INSTR_WRITE:
+			break;
+		case INSTR_REGWR:
+			break;
+		case INSTR_ACTION:
+			break;
+		case INSTR_FCTRY:
+			break;
+		case INSTR_REBOOT:
+			break;
+		case INSTR_CLEAR:
+			break;
+		case INSTR_STATUS:
+			break;
+		case INSTR_SYNCRD:
+			break;
+		case INSTR_SYNCWR:
+			break;
+		case INSTR_BULKRD:
+			break;
+		case INSTR_BULKWR:
+			break;
+	}
+} 
 
 
 

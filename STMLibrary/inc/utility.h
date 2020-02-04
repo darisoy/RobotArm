@@ -23,6 +23,7 @@ extern "C" { // link CPP files
 #include <stdint.h>
 
 /* Private defines -----------------------------------------------------------*/
+#define STEP_ID         1
 #define LED             GPIO_PIN_3
 #define DIR             GPIO_PIN_12
 #define M2              GPIO_PIN_13

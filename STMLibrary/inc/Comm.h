@@ -38,16 +38,16 @@ In the future: read position
 
 /* Packet structure ----------------------------------------------------------- */
 
-#define PKT_HEADER0 	   0
-#define PKT_HEADER1 	   1
-#define PKT_HEADER2 	   2
-#define PKT_RESERVED 	3
-#define PKT_ID 			4
-#define PKT_LENGTH_L 	5
-#define PKT_LENGTH_H 	6
-#define PKT_INSTRUCTION 7	
-#define PKT_ERROR 		8
-#define PKT_PARAMETER0 	8
+#define PKT_HEAD0 	0
+#define PKT_HEAD1 	1
+#define PKT_HEAD2 	2
+#define PKT_RSVED 	3
+#define PKT_ID 		4
+#define PKT_LENL 	   5
+#define PKT_LENH 	   6
+#define PKT_INSTR    7	
+#define PKT_ERROR 	8
+#define PKT_PRAM0 	8
 
 /* Instruction Types ----------------------------------------------------------- */
 
@@ -74,6 +74,8 @@ In the future: read position
 #define ERRNUM_DATA_LENGTH 5  // Data length error
 #define ERRNUM_DATA_LIMIT  6  // Data limit error
 #define ERRNUM_ACCESS      7  // Access error
+
+
 
 typedef struct Queue {
 	
