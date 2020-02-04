@@ -25,7 +25,7 @@
 
 /* Private Variables-----------------------------------------------------------*/
 UART_HandleTypeDef huart1;	 			// interrupt handler
-const uint8_t BUFFER_SIZE = 24;		// Size of Buffer
+const uint8_t BUFFER_SIZE = 1;		// Size of Buffer
 uint8_t bufferRX[BUFFER_SIZE];		   			// receives protocol
 uint8_t bufferTX[BUFFER_SIZE]={0xFF, 0xFF, 0xFD, 0x00, 0xFE, 0x03, 0x00, 0x01, 0x31, 0x42}; // ping packet
 Queue commandPackets;
@@ -33,7 +33,7 @@ Queue commandPackets;
 
 /* Objects --------------------------------------------------------------------*/
 Stepper stepper = Stepper(1);
-Queue buffer_queue = Queue();
+Queue buffer_queue = Queue(200); // queue that holds 200 characters
 PacketHandler packet = PacketHandler(&buffer_queue);
 
 /**

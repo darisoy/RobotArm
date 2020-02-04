@@ -178,9 +178,8 @@ void USART1_IRQHandler(void)
  *	This waits until the full message is received before it loads it into the 
  *  Queue.
  */
-	if(HAL_UART_Receive_IT(&huart1, bufferRX, sizeof(bufferRX)) == HAL_OK && bufferRX[0] != 0x00){
-		commandPackets.enQueue(bufferRX);
-	}
+  HAL_UART_Receive_IT(&huart1, bufferRX, sizeof(bufferRX));
+	commandPackets.enQueue(bufferRX);
 }
 
 /* USER CODE BEGIN 1 */
