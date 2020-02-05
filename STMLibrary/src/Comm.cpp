@@ -166,6 +166,7 @@ bool PacketHandler::readPacket(){
 
 
 
+<<<<<<< HEAD
 
 	return true;
 }
@@ -215,6 +216,89 @@ unsigned short PacketHandler::updateCRC(uint16_t crc_accum, uint8_t *data_blk_pt
 		i = ((uint16_t)(crc_accum >> 8) ^ *data_blk_ptr++) & 0xFF;
 		crc_accum = (crc_accum << 8) ^ crc_table[i];
 	}
+=======
+// bool PacketHandler::readPacket(){
+// 	uint8_t *currentCommand;
+// 	currentCommand = commandPackets.deQueue(); // pull a command from queue
+
+// 	/*
+// 		currentCommand points to the next command packet ready
+// 		to be deciphered.
+// 	*/
+// 	int i;
+// 	uint8_t display_temp;
+// 	for(i = 0; i < 24; i++){
+// 		display_temp = currentCommand[i];
+// 	}
+// 	return true;
+// }
+
+bool PacketHandler::readPacket(){
+	uint8_t *current_packet;
+	current_packet = commandPackets.deQueue(); // pull a command from queue
+
+	/*
+		currentCommand points to the next command packet ready
+		to be deciphered.
+	*/
+	int i;
+	uint8_t display_temp;
+	for(i = 0; i < 24; i++) {
+		display_temp = current_packet[i];
+	}
+	
+	uint8_t * packet_data = commandPackets.deQueue();
+	while ((*packet_data != 0xFF) && (*packet_data != NULL)) packet_data = commandPackets.deQueue();
+	
+	for (i = 0; i < 24 - 3; i++) {
+		if ((current_packet[i] == 0xFF) && 
+			  (current_packet[i+1] == 0xFF) && 
+				(current_packet[i+2] == 0xFD) && 
+		    (current_packet[i+3] != 0xFD))
+			break;
+		if (i == 20) i = -1;
+ 	}
+	
+	int data_len;
+	if ((current_packet[i+4] == STEP_ID) && (i != -1)) { // data exists
+		data_len = (current_packet[i+PKT_LENL]-'0') + 10*(current_packet[i+PKT_LENH]-'0');
+	}
+	
+	int instr_type;
+	instr_type = current_packet[i+PKT_INSTR];
+	switch(instr_type) {
+		case INSTR_PING:
+			// if stm status is good, send ping back.
+			// uint8_t return_packet[11] = {0xFF, 0xFF, 0xFD, 0x00, STEP_ID, }; 
+			// 'ff:ff:fd:0:4:4:0:55:80:3a:8e'
+			break;
+		case INSTR_READ:
+			break;
+		case INSTR_WRITE:
+			break;
+		case INSTR_REGWR:
+			break;
+		case INSTR_ACTION:
+			break;
+		case INSTR_FCTRY:
+			break;
+		case INSTR_REBOOT:
+			break;
+		case INSTR_CLEAR:
+			break;
+		case INSTR_STATUS:
+			break;
+		case INSTR_SYNCRD:
+			break;
+		case INSTR_SYNCWR:
+			break;
+		case INSTR_BULKRD:
+			break;
+		case INSTR_BULKWR:
+			break;
+	}
+} 
+>>>>>>> aec19e87433abece2bd50172a80776ea9403a2e4
 
 	return crc_accum;
 }

@@ -41,6 +41,7 @@ In the future: read position
 #define PKT_HEAD0 	0
 #define PKT_HEAD1 	1
 #define PKT_HEAD2 	2
+<<<<<<< HEAD
 #define PKT_RSVD 	3
 #define PKT_ID 		4
 #define PKT_LENL 	5
@@ -51,6 +52,15 @@ In the future: read position
 #define PKT_PARAM1 	9
 #define PKT_PARAM2 	10
 #define PKT_PARAM3 	11
+=======
+#define PKT_RSVED 	3
+#define PKT_ID 		4
+#define PKT_LENL 	   5
+#define PKT_LENH 	   6
+#define PKT_INSTR    7	
+#define PKT_ERROR 	8
+#define PKT_PRAM0 	8
+>>>>>>> aec19e87433abece2bd50172a80776ea9403a2e4
 
 /* Instruction Types ----------------------------------------------------------- */
 
@@ -77,6 +87,8 @@ In the future: read position
 #define ERRNUM_DATA_LENGTH 5  // Data length error
 #define ERRNUM_DATA_LIMIT  6  // Data limit error
 #define ERRNUM_ACCESS      7  // Access error
+
+
 
 typedef struct Queue {
 	
