@@ -8,7 +8,7 @@ http://savageelectronics.blogspot.it/2011/01/arduino-y-dynamixel-ax-12.html
 from time import sleep
 from serial import Serial
 import RPi.GPIO as GPIO
-import signal
+import signal 
 
 class Ax12_2:
     # important AX-12 constants
@@ -217,7 +217,7 @@ class Ax12_2:
         return accum.to_bytes(2,byteorder='little')
 
     def readData(self,id):
-
+        
         retval = None
         self.direction(Ax12_2.RPI_DIRECTION_RX)
         buf = b''
@@ -239,7 +239,8 @@ class Ax12_2:
             error = reply[8]
 
             if(error != 0):
-                print ("Error from servo: " + Ax12_2.dictErrors[error] + ' (code  ' + hex(error) + ')')
+                print ("Error from servo: " + Ax12_2.dictErrors[error] + ' (code  ' + hex(error) + ')') #TODO might be wrong
+                retval = -error
             # just reading error byte
 
             if(length == 0):
@@ -307,7 +308,7 @@ class Ax12_2:
             sleep(0.0014)
         #print('data sent')
         return self.readData(id)
-
+    
     def moveDegrees(self, id, position):
         raw_pos = (position + 180 )*4096/360
         return self.move(id,raw_pos)
@@ -320,7 +321,7 @@ class Ax12_2:
         outData += length #length write one param
         outData += bytes([Ax12_2.AX_WRITE_DATA])
         outData += addr
-        outData += val
+        outData += val 
 
         outData += self.checksum(outData)
         Ax12_2.port.write(outData)
@@ -330,8 +331,6 @@ class Ax12_2:
         return self.readData(id)
 
     def setTorqueStatus(self, id, status,verbose=False):
-
-        #TODO if timeout, try again
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
         outData = Ax12_2.PREFIX
@@ -347,9 +346,7 @@ class Ax12_2:
 
         outData += self.checksum(outData)
         #print(outData.hex())
-        #if verbose: print('set torque: ', status, ' on servo #',id)
-
-
+        if verbose: print('set torque: ', status, ' on servo #',id)
         Ax12_2.port.write(outData)
         while self.port.out_waiting: continue
         if (id != 6):
@@ -377,10 +374,29 @@ class Ax12_2:
         while self.port.out_waiting: continue
         sleep(0.0018)
         #print('data sent')
-
+        
         position = self.readData(id)
-        return position[0] + (position[1] << 8) + (position[2] << 16) + (position[3] << 24)
-
+        return position[0] + (position[1] << 8) + (position[2] <<16) + (position[3] << 24)
+    
     def readPositionDegrees(self,id):
         raw = self.readPosition(id)
-        return (raw * 360 / 4096 + 180) % 360 -180
+        return (raw*360/4096 +180) %360 -180
+
+    def learnServos(self,minValue=1, maxValue=6, verbose=False) :
+        servoList = []
+        def timeout(signum, frame):
+            raise IOError("Timeout")
+
+        for i in range(minValue, maxValue + 1):
+            try :
+                signal.signal(signal.SIGALRM, timeout)
+                signal.alarm(1)
+                temp = self.ping(i)
+                servoList.append(i)
+                if verbose: print("Found servo #" + str(i))
+
+            except Exception as detail:
+                if verbose : print("Error pinging servo #" + str(i) + ': ' + str(detail))
+                pass
+        signal.alarm(0)
+        return servoList
