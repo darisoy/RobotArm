@@ -27,14 +27,14 @@
 UART_HandleTypeDef huart1;	 			// interrupt handler
 const uint8_t BUFFER_SIZE = 1;		// Size of Buffer
 uint8_t bufferRX[BUFFER_SIZE];		   			// receives protocol
-uint8_t bufferTX[BUFFER_SIZE]={0xFF, 0xFF, 0xFD, 0x00, 0xFE, 0x03, 0x00, 0x01, 0x31, 0x42}; // ping packet
-Queue commandPackets;
+uint8_t bufferTX[BUFFER_SIZE]; 	// ping packet
+Queue commandPackets(200);
 
 
 /* Objects --------------------------------------------------------------------*/
 Stepper stepper = Stepper(1);
 Queue buffer_queue = Queue(200); // queue that holds 200 characters
-PacketHandler packet = PacketHandler(&buffer_queue);
+PacketHandler packet = PacketHandler(1, 57600);
 
 /**
   * @brief  The application entry point.
@@ -43,17 +43,15 @@ PacketHandler packet = PacketHandler(&buffer_queue);
 int main(void) {
 
 	initialSetup();
+	
 	stepper.setMode();
 	stepper.setPosition(1991);
 	HAL_Delay(2000);
 	
   while (1) { 
-
-		stepper.setPosition(1991);
-		HAL_Delay(2000);
-		stepper.setPosition(1024);
-		HAL_Delay(2000);
-
+	
+		packet.readPacket();
+		HAL_Delay(2000); 
 		
 	}
 	return 0;

@@ -56,7 +56,7 @@ bool  Stepper::setPosition(uint16_t value){
         setDirection(true);
     }
     uint32_t delay = 400;
-    int i;
+    int i; 
     for(i=0; i<steps; i++){
         HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
         DWT_Delay(delay);

@@ -26,7 +26,7 @@
 /* External variables --------------------------------------------------------*/
 extern UART_HandleTypeDef huart1;
 extern Queue commandPackets;
-extern uint8_t bufferRX[24];
+extern uint8_t bufferRX[1];
 
 /******************************************************************************/
 /*           Cortex-M3 Processor Interruption and Exception Handlers          */ 
@@ -179,7 +179,7 @@ void USART1_IRQHandler(void)
  *  Queue.
  */
   HAL_UART_Receive_IT(&huart1, bufferRX, sizeof(bufferRX));
-	commandPackets.enQueue(bufferRX);
+	commandPackets.enQueue(bufferRX[0]);
 }
 
 /* USER CODE BEGIN 1 */

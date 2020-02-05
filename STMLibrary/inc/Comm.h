@@ -38,16 +38,19 @@ In the future: read position
 
 /* Packet structure ----------------------------------------------------------- */
 
-#define PKT_HEADER0 	   0
-#define PKT_HEADER1 	   1
-#define PKT_HEADER2 	   2
-#define PKT_RESERVED 	3
-#define PKT_ID 			4
-#define PKT_LENGTH_L 	5
-#define PKT_LENGTH_H 	6
-#define PKT_INSTRUCTION 7	
-#define PKT_ERROR 		8
-#define PKT_PARAMETER0 	8
+#define PKT_HEAD0 	0
+#define PKT_HEAD1 	1
+#define PKT_HEAD2 	2
+#define PKT_RSVD 	3
+#define PKT_ID 		4
+#define PKT_LENL 	5
+#define PKT_LENH 	6
+#define PKT_INSTR   7	
+#define PKT_ERROR   8
+#define PKT_PARAM0 	8
+#define PKT_PARAM1 	9
+#define PKT_PARAM2 	10
+#define PKT_PARAM3 	11
 
 /* Instruction Types ----------------------------------------------------------- */
 
@@ -81,35 +84,49 @@ typedef struct Queue {
 	int rear, front, queueSize;
 	// circular queue is 2D array where it contains up to 
 	// 10 message of 24 bytes
-	uint8_t *arr;
+	uint8_t arr[200];
 	Queue(uint16_t size){
 		queueSize = size;
-		arr = new uint8_t[size];
 		rear = front = -1;
 	}
 	
 	/* functions */
-	void enQueue(uint8_t *packetRX);
-	void loadArray(int element, uint8_t *packetRX);
-	uint8_t* deQueue();
-	
+	void enQueue(uint8_t packetRX);
+	uint8_t deQueue();
+	uint8_t peek();
+	uint64_t peekBy(uint8_t);
+	bool isEmpty();
+
+
 } Queue;
+
+typedef struct Settings{
+	uint8_t ID;
+	int BAUD_RATE;
+} Settings;
 
 
 class PacketHandler {
 	
 	public:
-		PacketHandler(Queue *);
+		PacketHandler(uint8_t ID, uint32_t BAUD);
 		~PacketHandler(void);
 		bool readPacket();
 		char * getRxType(uint8_t *);
 		char * getRxContent(uint8_t *);
-		// send status type back to Pi
-		char * sendStatus(uint8_t * status_type, uint8_t * status_packet);
+		// send packet type back to Pi
+		void sendPacket(uint8_t);
+		uint64_t executePacket(uint8_t instr, uint8_t len);
+		
 
 	private:
+		unsigned short updateCRC(uint16_t, uint8_t*, uint16_t);
 		Queue * packet_queue;
 		uint8_t* packet;
+		Settings node;
+		uint8_t instruction;
+		uint8_t params[20];
+		uint8_t tx_packet[24];
 };
 
 #endif
