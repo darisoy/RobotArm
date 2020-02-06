@@ -1,5 +1,6 @@
 
 from ax12 import Ax12_2
+from time import sleep
 import ikpy
 import numpy as np
 
@@ -17,16 +18,17 @@ class Robot:
         self.servo_bus = Ax12_2()
         self.urdf = "./niryo_one.urdf"
         self.chain = ikpy.chain.Chain.from_urdf_file(self.urdf)
-        self.servoIDs = self.servo_bus.learnServos(verbose=True)
+        self.servoIDs = self.servo_bus.learnServos(minValue = 4, maxValue=5,verbose=True)
         print('servoIDs = ',self.servoIDs)
+        print('enabling Torque on all servos')
         for i in self.servoIDs:
-            self.servo_bus.setTorqueStatus(i, True)
-
+            self.servo_bus.setTorqueStatus(i, True,verbose=True)
+        print('done initializing') 
 
     def moveJoint(self, joint, position, verbose=False):
         if joint in self.servoIDs:
             if verbose: print("moving joint ",joint," to position ", position)
-            if verbose: print("current position ", self.servo_bus.readPositionDegrees(joint))
+            #if verbose: print("current position ", self.servo_bus.readPositionDegrees(joint))
             self.servo_bus.moveDegrees( joint, position)
 
     def move3d(self,position):
@@ -51,5 +53,12 @@ class Robot:
             return arr
 
     def goHome(self):
-        self.moveJoint(Robot.elbow_forearm_joint, 0)
-
+        val = -30
+        while 1:
+            sleep(1)
+            self.moveJoint(Robot.elbow_forearm_joint, val,verbose=True)
+            #sleep(1)
+            self.moveJoint(Robot.forearm_wrist_joint, val,verbose=True)
+            #sleep(1)
+            self.moveJoint(Robot.wrist_hand_joint, val,verbose=True)
+            val += 5

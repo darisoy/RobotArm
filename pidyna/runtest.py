@@ -14,8 +14,8 @@ def main():
     #print("----move start----")
     #print(servo_bus.move(4, 116).hex())
     #print(servo_bus.move(5, 116).hex())
-    while True:
-        servo_bus.move(1,1024)
+    #while True:
+        #servo_bus.learnServos(minValue=6,maxValue=6,verbose=True)
         #servo_bus.move(5,1024)
         #time.sleep(1)
         #servo_bus.move(4,2048)
@@ -28,5 +28,6 @@ def main():
 #        time.sleep(1)
 #        servo_bus.setLedStatus(1,False)
 #        time.sleep(0.5)
+    servo_bus.write(6,b'\x05\x00',b'\xfe',b'\x06\x00')
 if __name__ == '__main__':
     main()
