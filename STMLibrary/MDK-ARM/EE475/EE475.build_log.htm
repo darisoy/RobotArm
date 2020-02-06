@@ -22,51 +22,21 @@ Dialog DLL:      TCM.DLL V1.36.5.0
  
 <h2>Project:</h2>
 C:\Users\EE475\475wi20\STMLibrary\MDK-ARM\EE475.uvprojx
-Project File Date:  02/03/2020
+Project File Date:  02/06/2020
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 *** Warning: You are compiling one or more files of source type C++ and have selected 'use MicroLIB'. MicroLIB does not support C++!
   
 Build target 'EE475'
-compiling Comm.cpp...
-..\src\Comm.cpp(68): warning:  #127-D: expected a statement
-  	}
-..\src\Comm.cpp(69): warning:  #940-D: missing return statement at end of non-void function "PacketHandler::executePacket" 
-  }
-..\src\Comm.cpp(77): error:  #135: class "Queue"  has no member "bytesUsed"
-  		if(commandPackets.bytesUsed() < 10){
-..\src\Comm.cpp(252): error:  #20: identifier "peekAhead" is undefined
-  	return peekAhead(0);
-..\src\Comm.cpp(255): error:  #135: class "Queue"  has no member "peekAhead"
-  uint8_t Queue::peekAhead(int i ) {
-..\src\Comm.cpp(256): error:  #20: identifier "arr" is undefined
-  	return *(arr + ((i + front) % queueSize));
-..\src\Comm.cpp(256): error:  #20: identifier "front" is undefined
-  	return *(arr + ((i + front) % queueSize));
-..\src\Comm.cpp(256): error:  #20: identifier "queueSize" is undefined
-  	return *(arr + ((i + front) % queueSize));
-..\src\Comm.cpp(270): warning:  #68-D: integer conversion resulted in a change of sign
-  		return -1;
-..\src\Comm.cpp(275): error:  #20: identifier "peekAhead" is undefined
-  		message |= peekAhead(i) << i*8;
-..\src\Comm.cpp(280): error:  #135: class "Queue"  has no member "bytesUsed"
-  uint8_t Queue::bytesUsed(){
-..\src\Comm.cpp(281): error:  #20: identifier "rear" is undefined
-  	return rear>front? rear-front : front + queueSize - rear
-..\src\Comm.cpp(281): error:  #20: identifier "front" is undefined
-  	return rear>front? rear-front : front + queueSize - rear
-..\src\Comm.cpp(281): error:  #20: identifier "queueSize" is undefined
-  	return rear>front? rear-front : front + queueSize - rear
-..\src\Comm.cpp(282): error:  #65: expected a ";"
-  }
-..\src\Comm.cpp: 3 warnings, 12 errors
-compiling stm32f1xx_it.c...
 compiling main.cpp...
-..\src\main.cpp(57): warning:  #111-D: statement is unreachable
+..\src\main.cpp(70): warning:  #111-D: statement is unreachable
   	return 0;
 ..\src\main.cpp: 1 warning, 0 errors
-"EE475\EE475.axf" - 12 Error(s), 4 Warning(s).
+linking...
+Program Size: Code=9700 RO-data=808 RW-data=32 ZI-data=2128  
+FromELF: creating hex file...
+"EE475\EE475.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -89,7 +59,6 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.3.0
-Target not created.
 Build Time Elapsed:  00:00:01
 </pre>
 </body>

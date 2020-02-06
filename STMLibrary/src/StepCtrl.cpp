@@ -10,20 +10,26 @@ Stepper::Stepper(uint8_t ID){
 	    this->currentPositionAngle = 175.0;
         this->currentPositionSteps = 7604;
     } else if (ID==2){
-        this->scaler = 1;
-        this->limit = 126;
+        this->scaler = 6.85;
+        this->limit = convertAngleToValue(126);
+        this->currentPositionAngle = 36.0; 
+        this->currentPositionSteps = 2192; 
+    } else if (ID==3){
+        this->scaler = 6.85;
+        this->limit = convertAngleToValue(170);
+        this->currentPositionAngle = 0; 
+        this->currentPositionSteps = 0; 
     }
-    
 }
-
 
 void  Stepper::setHome(uint8_t ID){
     if(ID==1){
 	    this->currentPositionAngle = 175.0;
-      this->currentPositionSteps = 7604;
+        this->currentPositionSteps = 7604;
     } else if (ID==2){
         this->currentPositionAngle = 36.0;
-    }
+        this->currentPositionSteps = 7604;
+    } 
 }
 
 void Stepper::returnToHome(){
@@ -42,14 +48,15 @@ void  Stepper::setMode(){
 }
 
  
-bool  Stepper::setPosition(uint16_t value){
+bool  Stepper::setPosition(uint32_t value){
+
     if(value > this->limit){
         return false;
     }
     int stepsFromZero = calculateSteps(convertValueToAngle(value));
     int tempSteps;
 		tempSteps = stepsFromZero - this->currentPositionSteps;
-    int steps =  abs(tempSteps);
+    int steps  =  getAbs(tempSteps);
     if(tempSteps < 0){
         setDirection(false);
     } else {
@@ -57,6 +64,7 @@ bool  Stepper::setPosition(uint16_t value){
     }
     uint32_t delay = 400;
     int i; 
+		HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
     for(i=0; i<steps; i++){
         HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
         DWT_Delay(delay);
@@ -98,7 +106,7 @@ int Stepper::calculateSteps(float angle){
     return (int) ( (angle/this->divisor)*(this->scaler) );
 }
 
-float Stepper::convertValueToAngle(uint16_t value){
+float Stepper::convertValueToAngle(uint32_t value){
     return (float) (0.087890625 * value); // 90 degrees corresponds to 1024;
 }
 
@@ -108,4 +116,8 @@ float Stepper::getCurrentAngle(){
 
 uint16_t Stepper::convertAngleToValue(float angle){
     return (uint16_t) (angle/0.087890625);
+}
+
+int Stepper::getAbs(int val){
+    return (val < 0 ) ? (val * -1) : (val); 
 }

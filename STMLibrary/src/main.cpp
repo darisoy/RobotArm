@@ -29,30 +29,43 @@ const uint8_t BUFFER_SIZE = 1;		// Size of Buffer
 uint8_t bufferRX[BUFFER_SIZE];		   			// receives protocol
 uint8_t bufferTX[BUFFER_SIZE]; 	// ping packet
 Queue commandPackets(200);
-
+const int ID = 3;
 
 /* Objects --------------------------------------------------------------------*/
-Stepper stepper = Stepper(1);
+Stepper stepper = Stepper(ID);
 Queue buffer_queue = Queue(200); // queue that holds 200 characters
-PacketHandler packet = PacketHandler(1, 57600);
+PacketHandler packet = PacketHandler(ID, 57600, &stepper);
+
 
 /**
   * @brief  The application entry point.
   * @retval int
   */
 int main(void) {
-
+	
 	initialSetup();
-	
+	DWT_Init();
+	HAL_Delay(100);
 	stepper.setMode();
-	stepper.setPosition(1991);
-	HAL_Delay(2000);
 	
-  while (1) { 
-	
+	while(1){
+		
+		//stepper.setPosition(100);
+		
+		//LED PIN TOGGLE
+		//HAL_GPIO_TogglePin(LED_Port, LED);
+		//HAL_Delay(100);
+		
+		//STEPPER TESET
+		
+		//HAL_Delay(1000);
+		//stepper.setPosition(200);
+		//HAL_Delay(1000);
+		
 		packet.readPacket();
-		HAL_Delay(2000); 
 		
 	}
+ 
+
 	return 0;
 }
