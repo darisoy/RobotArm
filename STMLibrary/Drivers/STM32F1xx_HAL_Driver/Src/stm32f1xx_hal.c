@@ -152,7 +152,7 @@ HAL_StatusTypeDef HAL_Init(void)
   __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
 #endif
 #endif /* PREFETCH_ENABLE */
- 
+
   /* Set Interrupt Group Priority */
   HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 
@@ -303,7 +303,7 @@ __weak void HAL_IncTick(void)
   */
 __weak uint32_t HAL_GetTick(void)
 {
-   return uwTick;
+  return uwTick;
 }
 
 /**

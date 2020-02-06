@@ -1,5 +1,5 @@
 ee475\stm32f1xx_hal_msp.o: ../Src/stm32f1xx_hal_msp.c
-ee475\stm32f1xx_hal_msp.o: ../Inc/utility.h
+ee475\stm32f1xx_hal_msp.o: ../Inc/main.h
 ee475\stm32f1xx_hal_msp.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 ee475\stm32f1xx_hal_msp.o: ../Inc/stm32f1xx_hal_conf.h
 ee475\stm32f1xx_hal_msp.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h

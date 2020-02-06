@@ -23,6 +23,9 @@ void initialSetup(void){
 
     /* Initialize UART Interrupt */
 		__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE); 
+	
+	// RXNEIE
+	
 }
 
 

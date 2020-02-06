@@ -23,10 +23,16 @@
 #include "Comm.h"
 #include "stm32f1xx_it.h"
 
+
 /* External variables --------------------------------------------------------*/
 extern UART_HandleTypeDef huart1;
 extern Queue commandPackets;
 extern uint8_t bufferRX[1];
+
+
+/* USER CODE BEGIN EV */
+
+/* USER CODE END EV */
 
 /******************************************************************************/
 /*           Cortex-M3 Processor Interruption and Exception Handlers          */ 
@@ -172,14 +178,17 @@ void SysTick_Handler(void)
   */
 void USART1_IRQHandler(void)
 {
-
+  /* USER CODE BEGIN USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
 /*
  *	This waits until the full message is received before it loads it into the 
  *  Queue.
  */
+  HAL_GPIO_TogglePin(LED_Port, LED);
   HAL_UART_Receive_IT(&huart1, bufferRX, sizeof(bufferRX));
 	commandPackets.enQueue(bufferRX[0]);
+  HAL_GPIO_TogglePin(LED_Port, LED);
+	//HAL_GPIO_TogglePin(LED_Port, LED);
 }
 
 /* USER CODE BEGIN 1 */
