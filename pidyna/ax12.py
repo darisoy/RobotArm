@@ -221,9 +221,16 @@ class Ax12_2:
         retval = None
         self.direction(Ax12_2.RPI_DIRECTION_RX)
         buf = b''
+        num_errors = 0
         while buf[-4:] != Ax12_2.PREFIX:
             buf += self.port.read(1)
             #print(buf)
+            if buf == b'':
+                num_errors = num_errors+1
+            if num_errors > 10:
+                e = "Timeout on servo " + str(id)
+                raise Ax12_2.timeoutError(e)
+
         reply = Ax12_2.port.read(5) # [0xff, 0xff,0xfd,0x00, origin, length_l,length_h,inst, error]
         reply = buf[-4:]+reply
         #print(reply.hex())
@@ -250,7 +257,7 @@ class Ax12_2:
             #chksum = Ax12_2.port.read(2)
             #print(chksum)
             #print(retval)
-        except Exception as detail:
+        except axError as detail:
             raise Ax12_2.axError(detail)
         sleep(0.015)
         return retval
@@ -274,12 +281,13 @@ class Ax12_2:
         return self.readData(id)
 
     def move(self, id, position):
-        position = int(position)
+        #print(position)
+        new_position = int(position)
         if id == 6:
-            position = int(position/4)
+            new_position = int(new_position/4)
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
-        p = [position&0xff, (position>>8)&0xff,0,0]
+        p = [new_position&0xff, (new_position>>8)&0xff,0,0]
         #print(p)
         outData = Ax12_2.PREFIX
         outData += bytes([id])
@@ -299,6 +307,7 @@ class Ax12_2:
         #print(outData.hex())
 
         outData += self.checksum(outData)
+        
         #print(outData.hex())
         Ax12_2.port.write(outData)
         while self.port.out_waiting: continue
@@ -307,12 +316,21 @@ class Ax12_2:
         else:
             sleep(0.0014)
         #print('data sent')
-        return self.readData(id)
+        #try:
+        #    return self.readData(id)
+        #except axError as e:
+            #return self.move(id,position)
+        sleep(0.05)
+        return None
     
     def moveDegrees(self, id, position):
-        raw_pos = (position + 180 )*4096/360
-        return self.move(id,raw_pos)
-
+        print(position)
+        raw_pos = (position)*4096/360
+        try:
+            return self.move(id,raw_pos)
+        except:
+            return None
+    
     def write(self, id, addr, val, length):
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
@@ -354,6 +372,8 @@ class Ax12_2:
         else:
             sleep(0.0011)
         #print('data sent')
+        sleep(0.05)
+        return None
         return self.readData(id)
 
     def readPosition(self, id):
@@ -400,3 +420,18 @@ class Ax12_2:
                 pass
         signal.alarm(0)
         return servoList
+
+    def resetHome(self, id, ):
+        self.direction(Ax12_2.RPI_DIRECTION_TX)
+        Ax12_2.port.flushInput()
+        outData = Ax12_2.PREFIX
+        outData += bytes([id])
+        outData += b'\x06\x00' #length write one param
+        outData += bytes([Ax12_2.AX_WRITE_DATA])
+        outData+=b'\x11\x11'#address
+        outData += b'\x01' #value 
+        outData += self.checksum(outData)
+        Ax12_2.port.write(outData)
+        while self.port.out_waiting: continue
+        sleep(0.05)
+        return None
