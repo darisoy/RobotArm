@@ -22,12 +22,11 @@ def main():
         #servo_bus.move(5,2048)
         #servo_bus.ping(1)
         #time.sleep(2)
-#    servo_bus.ping(1)
+    servo_bus.ping(1)
 #    while True:
 #        servo_bus.setLedStatus(1,True)
 #        time.sleep(1)
 #        servo_bus.setLedStatus(1,False)
 #        time.sleep(0.5)
-    servo_bus.write(6,b'\x05\x00',b'\xfe',b'\x06\x00')
 if __name__ == '__main__':
     main()
