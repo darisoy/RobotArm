@@ -59,18 +59,26 @@ uint64_t PacketHandler::executePacket(uint8_t inst, uint8_t len) {
 		break;
 		case INSTR_WRITE :
 			HAL_GPIO_TogglePin(LED_Port, LED);
-			// send packet back
 			writeaddr = (uint16_t) params[0] + ((uint16_t) params[1] << 8);
-			if (writeaddr == 0x0074) {
-				HAL_GPIO_TogglePin(LED_Port, LED);
-				move = 0;
-				for (int i = 0; i < 4; i++) {
-					this->move += params[2+i] << (8*(i));
-				}
-				stepper->setPosition(move);
-			}
+			
+			switch(writeaddr) {
+				case 0x0074:
+					HAL_GPIO_TogglePin(LED_Port, LED);
+					move = 0;
+					for (int i = 0; i < 4; i++) {
+						this->move += params[2+i] << (8*(i));
+					}
+					stepper->setPosition(move);
+				break;
 
+				case 0x1111:
+					stepper->setHome(node.ID);
+				break;
+
+				default:
+			}
 		break;
+
 		case INSTR_REGWR :
 		break;
 		case INSTR_ACTION:
@@ -102,12 +110,9 @@ bool PacketHandler::readPacket(){
 	
 	while(!commandPackets.isEmpty()){
 		HAL_Delay(100);
-		/*
-		
-		if(commandPackets.bytesUsed() >= 10){
+		if(commandPackets.bytesUsed() < 10) {
 			continue;
 		}
-		*/
 		if(commandPackets.peekBy(4) != 0xFFFFFD00){
 			commandPackets.deQueue();
 		}else{

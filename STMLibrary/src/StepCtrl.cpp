@@ -4,17 +4,17 @@
 #include <stdlib.h>
 
 Stepper::Stepper(uint8_t ID){
-    if(ID==1){
+    if(ID==1) {
         this->scaler = 4.8888;
         this->limit = convertAngleToValue(350.0);
 	    this->currentPositionAngle = 175.0;
         this->currentPositionSteps = 7604;
-    } else if (ID==2){
+    } else if (ID==2) {
         this->scaler = 6.85;
         this->limit = convertAngleToValue(126);
         this->currentPositionAngle = 36.0; 
         this->currentPositionSteps = 2192; 
-    } else if (ID==3){
+    } else if (ID==3) {
         this->scaler = 6.85;
         this->limit = convertAngleToValue(170);
         this->currentPositionAngle = 0; 
@@ -22,11 +22,11 @@ Stepper::Stepper(uint8_t ID){
     }
 }
 
-void  Stepper::setHome(uint8_t ID){
-    if(ID==1){
+void Stepper::setHome(uint8_t ID) {
+    if(ID==1) {
 	    this->currentPositionAngle = 175.0;
         this->currentPositionSteps = 7604;
-    } else if (ID==2){
+    } else if (ID==2) {
         this->currentPositionAngle = 36.0;
         this->currentPositionSteps = 7604;
     } 

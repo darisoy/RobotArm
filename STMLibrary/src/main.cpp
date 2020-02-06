@@ -29,7 +29,7 @@ const uint8_t BUFFER_SIZE = 1;		// Size of Buffer
 uint8_t bufferRX[BUFFER_SIZE];		   			// receives protocol
 uint8_t bufferTX[BUFFER_SIZE]; 	// ping packet
 Queue commandPackets(200);
-const int ID = 3;
+const int ID = 1;
 
 /* Objects --------------------------------------------------------------------*/
 Stepper stepper = Stepper(ID);
