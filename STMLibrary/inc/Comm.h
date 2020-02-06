@@ -127,24 +127,21 @@ typedef struct Settings{
 class PacketHandler {
 	
 	public:
-		PacketHandler(uint8_t ID, uint32_t BAUD, Stepper *s);
+		PacketHandler(uint8_t ID, uint32_t BAUD, Stepper * stepper);
 		~PacketHandler(void);
-		bool readPacket();
-		char * getRxType(uint8_t *);
-		char * getRxContent(uint8_t *);
-		// send packet type back to Pi
-		bool sendPacket(uint8_t);
+		bool readPacket(void);
+		bool sendPacket(uint8_t size);
 		uint64_t executePacket(uint8_t instr, uint8_t len);
-		
-
+	
 	private:
 		unsigned short updateCRC(uint16_t, uint8_t*, uint16_t);
-		Queue * packet_queue;
-		uint8_t* packet;
+		// Queue * packet_queue;
+		// uint8_t* packet;
 		Settings node;
 		uint8_t instruction;
-		uint8_t params[20];
 		uint8_t tx_packet[24];
+		uint8_t params[20];
+		
 		Stepper * stepper;
 		uint32_t move;
 };

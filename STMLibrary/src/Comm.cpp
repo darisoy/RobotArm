@@ -1,81 +1,91 @@
-// // Converts serial com packets to understandable format.
-
 #include "Comm.h"
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 /* External Variables --------------------------------------------------------- */
+
 extern Queue commandPackets;
 extern int8_t bufferTX[25]; 	
 extern UART_HandleTypeDef huart1;
 
+
+
 /* Packet Handler -------------------------------------------------------------- */
 
-// // variable packet length variable
 PacketHandler::PacketHandler(uint8_t ID, uint32_t BAUD, Stepper *s) {
 	this->stepper = s;
 	node.ID = ID;
 	node.BAUD_RATE = BAUD;
 }
 
+
+
 PacketHandler::~PacketHandler() {}
 
-bool PacketHandler::sendPacket(uint8_t size) {
-	HAL_GPIO_WritePin(DIR_Port, DIR, GPIO_PIN_SET);
-	HAL_UART_Transmit_IT(&huart1, tx_packet, sizeof(tx_packet));
-	HAL_GPIO_WritePin(DIR_Port, DIR, GPIO_PIN_RESET);
+
+
+bool PacketHandler::readPacket() {
+	uint8_t instr_type, len, id;
+	while(!commandPackets.isEmpty()){
+		HAL_Delay(100);
+		// if enough data is in, then continue
+		if(commandPackets.bytesUsed() < 10) continue;
+		// packet is invalid
+		if(commandPackets.peekBy(4) != 0xFFFFFD00) {
+			commandPackets.deQueue();
+		} else { // packet is valid
+			// dequeue instruction prefix
+			for (int i = 0; i < 4; i++) commandPackets.deQueue();
+			// extract packet data
+			id = commandPackets.deQueue();
+			len = commandPackets.deQueue() + (commandPackets.deQueue() << 8) - 3;
+			instr_type = commandPackets.deQueue();
+			// get parameters
+			for (int i = 0; i < len; i++) params[i] = commandPackets.deQueue();
+			// remove check sums
+			commandPackets.deQueue(); commandPackets.deQueue();
+			// execute data if packet ID == system ID
+			if(id == node.ID) executePacket(instr_type, len);
+		}
+	}
 	return true;
 }
-/*	Max length of response packet is 25 bytes
- *
- */
-uint64_t PacketHandler::executePacket(uint8_t inst, uint8_t len) {
+
+
+
+/*	Max length of response packet is 25 bytes */
+uint64_t PacketHandler::executePacket(uint8_t instr, uint8_t len) {
 	
 	uint16_t writeaddr =0;
 	uint8_t prefix[5]  = {0xFF, 0xFF, 0xFD, 0x00, node.ID};
 	
 	memcpy(tx_packet, prefix, 5);
 	
-	switch(inst) {
-		case INSTR_PING  :
-			//ping back
-			this->tx_packet[PKT_LENL] = 0x07;
-			this->tx_packet[PKT_LENH] = 0x00;
-			this->tx_packet[PKT_INSTR] = INSTR_STATUS;
-			this->tx_packet[PKT_ERROR] = 0x00;
-			this->tx_packet[PKT_PARAM1] = 0x06; 
-			this->tx_packet[PKT_PARAM2] = 0x04;
-			this->tx_packet[PKT_PARAM3] = 0x26;
-			updateCRC(0, tx_packet+12, 12);
-			// tx_packet[12] = 0x00;
-			// tx_packet[13] = 0x00;
-			sendPacket(14);
+	switch(instr) {
+		HAL_GPIO_TogglePin(LED_Port, LED);
+		case INSTR_PING:
+			sendPacket(instr);
 		break;
 		case INSTR_READ  :
 			//send back data
 			//read()
 		break;
-		case INSTR_WRITE :
-			HAL_GPIO_TogglePin(LED_Port, LED);
+		case INSTR_WRITE:
 			writeaddr = (uint16_t) params[0] + ((uint16_t) params[1] << 8);
-			
 			switch(writeaddr) {
 				case 0x0074:
-					HAL_GPIO_TogglePin(LED_Port, LED);
 					move = 0;
 					for (int i = 0; i < 4; i++) {
 						this->move += params[2+i] << (8*(i));
 					}
 					stepper->setPosition(move);
 				break;
-
 				case 0x1111:
 					stepper->setHome(node.ID);
 				break;
-
 				default:
+				break;
 			}
 		break;
 
@@ -100,47 +110,62 @@ uint64_t PacketHandler::executePacket(uint8_t inst, uint8_t len) {
 		case INSTR_BULKWR:
 		break;
 	}
-	
+	HAL_GPIO_TogglePin(LED_Port, LED);
 }
 
-bool PacketHandler::readPacket(){
-	// int check_index = -1, data_length;
-	// bool addr_check =  false;
-	uint8_t instr_type, len, id;
-	
-	while(!commandPackets.isEmpty()){
-		HAL_Delay(100);
-		if(commandPackets.bytesUsed() < 10) {
-			continue;
-		}
-		if(commandPackets.peekBy(4) != 0xFFFFFD00){
-			commandPackets.deQueue();
-		}else{
-			commandPackets.deQueue();
-			commandPackets.deQueue();
-			commandPackets.deQueue();
-			commandPackets.deQueue();
-			id = commandPackets.deQueue();
-			len = commandPackets.deQueue() + (commandPackets.deQueue() << 8) - 3;
-			instr_type = commandPackets.deQueue();
-			for (int i = 0; i < len; i++){
-				params[i] = commandPackets.deQueue();
-			}
-			commandPackets.deQueue();
-			commandPackets.deQueue();
-			if(id == node.ID){
-				executePacket(instr_type, len);
-			}
-			
-			
-		}
 
-		
-	
+
+bool PacketHandler::sendPacket(uint8_t instr) {
+	uint16_t packet_size = 0;
+	switch(instr) {
+		case INSTR_PING:
+			// this->tx_packet[PKT_LENL] = 0x07;
+			// this->tx_packet[PKT_LENH] = 0x00;
+			// this->tx_packet[PKT_INSTR] = INSTR_STATUS;
+			// this->tx_packet[PKT_ERROR] = 0x00;
+			// this->tx_packet[PKT_PARAM1] = 0x06; 
+			// this->tx_packet[PKT_PARAM2] = 0x04;
+			// this->tx_packet[PKT_PARAM3] = 0x26;
+			// updateCRC(0, tx_packet+12, 12); // function currently inaccurate
+			// tx_packet[12] = 0x00;
+			// tx_packet[13] = 0x00;
+			packet_size = 14;
+		break;
+		case INSTR_READ  :
+			//send back data
+			//read()
+		break;
+		case INSTR_WRITE:
+		break;
+		case INSTR_REGWR :
+		break;
+		case INSTR_ACTION:
+		break;
+		case INSTR_FCTRY :
+		break;
+		case INSTR_REBOOT:
+		break;
+		case INSTR_CLEAR :
+		break;
+		case INSTR_STATUS:
+		break;
+		case INSTR_SYNCRD:
+		break;
+		case INSTR_SYNCWR:
+		break;
+		case INSTR_BULKRD:
+		break;
+		case INSTR_BULKWR:
+		break;
 	}
 
+	HAL_GPIO_WritePin(DIR_Port, DIR, GPIO_PIN_SET);
+	HAL_UART_Transmit_IT(&huart1, tx_packet, sizeof(tx_packet));
+	HAL_GPIO_WritePin(DIR_Port, DIR, GPIO_PIN_RESET);
 	return true;
 }
+
+
 
 unsigned short PacketHandler::updateCRC(uint16_t crc_accum, uint8_t *data_blk_ptr, uint16_t data_blk_size) {
 	uint16_t i;
@@ -187,15 +212,16 @@ unsigned short PacketHandler::updateCRC(uint16_t crc_accum, uint8_t *data_blk_pt
 		i = ((uint16_t)(crc_accum >> 8) ^ *data_blk_ptr++) & 0xFF;
 		crc_accum = (crc_accum << 8) ^ crc_table[i];
 	}
-
 	return crc_accum;
 }
 
+
+
 /* Circular Queue --------------------------------------------------------------*/
 
-void Queue::enQueue(uint8_t packetRX){
-
-	if( (front == 0 && rear == queueSize-1) || (rear == (front-1)%(queueSize-1)) ){
+void Queue::enQueue(uint8_t rx_packet) {
+	if( (front == 0 && rear == queueSize - 1) || 
+	    (rear == (front - 1)%(queueSize - 1))) {
 		return; // error, queue is full
 	} else if (front == -1) { // insert first element
 		front = rear = 0;
@@ -204,16 +230,15 @@ void Queue::enQueue(uint8_t packetRX){
 	} else {
 		rear++;
 	}
-	arr[rear] = packetRX;
+	arr[rear] = rx_packet;
 }
 
 
-uint8_t Queue::deQueue(){
+
+uint8_t Queue::deQueue() {
 	if (front == -1) return NULL; // error queue is empty
 	
 	uint8_t data = arr[front];
-	//arr[front]=0x00;
-	
 	if (front == rear) {
 		front = rear = -1;
 	} else if (front == queueSize-1) {
@@ -221,19 +246,23 @@ uint8_t Queue::deQueue(){
 	}	else {
 		front++;
 	}
-
 	return data;
 }
 
-uint8_t Queue::peek(){
+
+
+uint8_t Queue::peek() {
 	return peekAhead(0);
 }
+
+
 
 uint8_t Queue::peekAhead(int i ) {
 	return *(arr + ((i + front) % queueSize));
 }
 
-bool Queue::isEmpty(){
+
+bool Queue::isEmpty() {
 	if(rear==front && rear == -1){
 		return true;
 	} else{
@@ -242,18 +271,21 @@ bool Queue::isEmpty(){
 
 }
 
-uint64_t Queue::peekBy(uint8_t val){
-	if (val > 4){
-		return 0;
-	}
+
+
+uint64_t Queue::peekBy(uint8_t val) {
+	if (val > 4) return 0;
+
 	int i;
-	uint32_t message = 0 ;
-	for(i=0; i<val; i++){
+	uint32_t message = 0;
+	for(i = 0; i < val; i++) {
 		message |= peekAhead(i) << (val-i-1)*8;
 	}
 	return message;
 }
 
-uint8_t Queue::bytesUsed(){
-	return rear>front? rear-front : front + queueSize - rear;
+
+
+uint8_t Queue::bytesUsed() {
+	return (rear > front) ? rear - front : front + queueSize - rear;
 }

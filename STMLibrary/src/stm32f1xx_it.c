@@ -184,8 +184,10 @@ void USART1_IRQHandler(void)
  *	This waits until the full message is received before it loads it into the 
  *  Queue.
  */
+  HAL_GPIO_TogglePin(LED_Port, LED);
   HAL_UART_Receive_IT(&huart1, bufferRX, sizeof(bufferRX));
 	commandPackets.enQueue(bufferRX[0]);
+  HAL_GPIO_TogglePin(LED_Port, LED);
 	//HAL_GPIO_TogglePin(LED_Port, LED);
 }
 

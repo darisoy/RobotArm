@@ -48,7 +48,7 @@ int main(void) {
 	HAL_Delay(100);
 	stepper.setMode();
 	
-	while(1){
+	while(1) {
 		
 		//stepper.setPosition(100);
 		
