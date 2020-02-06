@@ -55,20 +55,14 @@ bool PacketHandler::readPacket() {
 
 
 /*	Max length of response packet is 25 bytes */
-uint64_t PacketHandler::executePacket(uint8_t instr, uint8_t len) {
-	
-	uint16_t writeaddr =0;
-	uint8_t prefix[5]  = {0xFF, 0xFF, 0xFD, 0x00, node.ID};
-	
-	memcpy(tx_packet, prefix, 5);
-	
+void PacketHandler::executePacket(uint8_t instr, uint8_t len) {
+	uint16_t writeaddr = 0;
+	HAL_GPIO_TogglePin(LED_Port, LED);
 	switch(instr) {
-		HAL_GPIO_TogglePin(LED_Port, LED);
 		case INSTR_PING:
-			sendPacket(instr);
+			// sendPacket(instr);
 		break;
-		case INSTR_READ  :
-			//send back data
+		case INSTR_READ:
 			//read()
 		break;
 		case INSTR_WRITE:
@@ -110,6 +104,7 @@ uint64_t PacketHandler::executePacket(uint8_t instr, uint8_t len) {
 		case INSTR_BULKWR:
 		break;
 	}
+	// sendPacket(instr);
 	HAL_GPIO_TogglePin(LED_Port, LED);
 }
 
@@ -117,6 +112,9 @@ uint64_t PacketHandler::executePacket(uint8_t instr, uint8_t len) {
 
 bool PacketHandler::sendPacket(uint8_t instr) {
 	uint16_t packet_size = 0;
+	uint8_t prefix[5]  = {0xFF, 0xFF, 0xFD, 0x00, node.ID};
+	memcpy(tx_packet, prefix, 5);
+
 	switch(instr) {
 		case INSTR_PING:
 			// this->tx_packet[PKT_LENL] = 0x07;

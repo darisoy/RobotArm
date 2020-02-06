@@ -131,7 +131,7 @@ class PacketHandler {
 		~PacketHandler(void);
 		bool readPacket(void);
 		bool sendPacket(uint8_t size);
-		uint64_t executePacket(uint8_t instr, uint8_t len);
+		void executePacket(uint8_t instr, uint8_t len);
 	
 	private:
 		unsigned short updateCRC(uint16_t, uint8_t*, uint16_t);
