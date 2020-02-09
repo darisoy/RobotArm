@@ -27,9 +27,11 @@ PacketHandler::~PacketHandler() {}
 
 bool PacketHandler::readPacket() {
 	uint8_t instr_type, len, id;
-	while(!commandPackets.isEmpty()){
-		HAL_Delay(100);
+	while(1){
+		HAL_Delay(50);
 		// if enough data is in, then continue
+		if(commandPackets.isEmpty()) continue;
+		if(commandPackets.peek() != 0xFF) commandPackets.deQueue();
 		if(commandPackets.bytesUsed() < 10) continue;
 		// packet is invalid
 		if(commandPackets.peekBy(4) != 0xFFFFFD00) {
@@ -234,7 +236,9 @@ void Queue::enQueue(uint8_t rx_packet) {
 
 
 uint8_t Queue::deQueue() {
-	if (front == -1) return NULL; // error queue is empty
+	 // error queue is empty
+	 // wait until there is more data
+	while (front == -1){}
 	
 	uint8_t data = arr[front];
 	if (front == rear) {
