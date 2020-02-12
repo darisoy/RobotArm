@@ -283,8 +283,8 @@ class Ax12_2:
     def move(self, id, position):
         #print(position)
         new_position = int(position)
-        if id == 6:
-            new_position = int(new_position/4)
+        #if id == 6:
+        #    new_position = int(new_position/4)
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
         p = [new_position&0xff, (new_position>>8)&0xff,0,0]
@@ -307,20 +307,21 @@ class Ax12_2:
         #print(outData.hex())
 
         outData += self.checksum(outData)
-        
-        #print(outData.hex())
-        Ax12_2.port.write(outData)
-        while self.port.out_waiting: continue
-        if id != 6:
-            sleep(0.0018)
-        else:
-            sleep(0.0014)
-        #print('data sent')
-        #try:
-        #    return self.readData(id)
-        #except axError as e:
-            #return self.move(id,position)
-        sleep(0.05)
+        for i in range(10): 
+            #print(outData.hex())
+            Ax12_2.port.write(outData)
+            while self.port.out_waiting: continue
+            if id != 6:
+                sleep(0.0018)
+            else:
+                sleep(0.0014)
+            #print('data sent')
+            #try:
+            #    return self.readData(id)
+            #except axError as e:
+                #return self.move(id,position)
+            sleep(0.05)
+            sleep(0.02)
         return None
     
     def moveDegrees(self, id, position):
