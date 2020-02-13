@@ -20,16 +20,16 @@ class Robot:
         self.urdf = "./niryo_one.urdf"
         self.chain = ikpy.chain.Chain.from_urdf_file(self.urdf)
         #self.servoIDs = self.servo_bus.learnServos(minValue = 4, maxValue=6,verbose=True)
-        #print(self.servo_bus.learnServos(minValue = 4, maxValue=6,verbose=True)) 
+        print(self.servo_bus.learnServos(minValue = 4, maxValue=6,verbose=True)) 
         self.servoIDs = [1,2,3,4,5,6]
         print('servoIDs = ',self.servoIDs)
         print('enabling Torque on all servos')
-        '''
+        
         for i in self.servoIDs:
-            if i > 5:
+            if i > 3:
                 self.servo_bus.setTorqueStatus(i, True,verbose=True)
         print('done initializing') 
-        
+        '''
         for i in range(3):
             self.moveJoint(1,0)
             self.moveJoint(2,-10)
@@ -81,26 +81,29 @@ class Robot:
         
 
     def goHome(self):
-        for i in range(10):
-            self.setPose([0,0,0,0,0,0])
+        #for i in range(10):
+        #    self.setPose([0,0,0,0,0,0])
 
-        poses = [0,30,50,45,30,-30]
+        poses = [0,30,50,30,30,30]
         self.setPose(poses)
 
-        for i in range(3):
+        for i in range(1):
             self.setPose([-30,30,50,0,0,0])
             sleep(2)
-            self.setPose([30,30,50,0,0,0])
+            self.setPose([30,30,50,30,30,30])
             sleep(2)
         self.setPose(poses)
 
-        target_vector = [ 0.1, -0.2, 0.1]
+        target_vector = [ 1, 1, 1]
         target_frame = np.eye(4)
         target_frame[:3, 3] = target_vector
         angles = self.chain.inverse_kinematics(target_frame)
-        result = np.zeros(6)
-        for i in range(6)
-            result[i] = angles[i+1]
-
+        result = np.zeros((6), dtype=int)
+        for i in range(6):
+            temp = int(angles[i+1] * 180 / np.pi)
+            if (i == 1):
+                temp = -1 * (temp + 90)
+            result[i] = temp
+        print(result)
         self.setPose(result)
         
