@@ -13,20 +13,22 @@ class Robot:
     forearm_wrist_joint = 5
     wrist_hand_joint = 6
     hand_tool_joint = 7
-    low_limits = [0,175,36,0,175,00,147]
+    low_limits = [0,175,36,0,175,90,147]
 
     def __init__(self):
         self.servo_bus = Ax12_2()
         self.urdf = "./niryo_one.urdf"
         self.chain = ikpy.chain.Chain.from_urdf_file(self.urdf)
         #self.servoIDs = self.servo_bus.learnServos(minValue = 4, maxValue=6,verbose=True)
-        print(self.servo_bus.learnServos(minValue = 4, maxValue=6,verbose=True)) 
-        self.servoIDs = [1,2,3,4,5,6]
+        #print(self.servo_bus.learnServos(minValue = 4, maxValue=6,verbose=True)) 
+        self.servoIDs = [1,2,3,4,5]
+        #self.servoIDs = [4,5,6]
         print('servoIDs = ',self.servoIDs)
-        print('enabling Torque on all servos')
+        #print('enabling Torque on all servos')
         
         for i in self.servoIDs:
             if i > 3:
+                self.moveJoint(i,0)
                 self.servo_bus.setTorqueStatus(i, True,verbose=True)
         print('done initializing') 
         '''
@@ -37,7 +39,7 @@ class Robot:
         '''
 
     def moveJoint(self, joint, position, verbose=False):
-        if joint in self.servoIDs and joint != 5:
+        if joint in self.servoIDs:# and joint != 5:
             if verbose: print("moving joint ",joint," to position ", position)
             #if verbose: print("current position ", self.servo_bus.readPositionDegrees(joint))
             #print(position, Robot.low_limits[joint])
@@ -67,33 +69,42 @@ class Robot:
 
     def setPose(self,pose):
         delay = 0.1
-        self.moveJoint(Robot.base_shoulder_joint,pose[0]) 
-        sleep(delay)
+        #self.moveJoint(Robot.base_shoulder_joint,pose[0]) 
+        #sleep(delay)
         self.moveJoint(Robot.shoulder_arm_joint,pose[1])
-        sleep(delay)
-        self.moveJoint(Robot.arm_elbow_joint,pose[2])
-        sleep(delay)
+        #sleep(delay)
+        #self.moveJoint(Robot.arm_elbow_joint,pose[2])
+        #sleep(delay)
         self.moveJoint(Robot.elbow_forearm_joint,pose[3])
-        sleep(delay)
+        #sleep(delay)
         self.moveJoint(Robot.forearm_wrist_joint,pose[4])
-        sleep(delay)
-        self.moveJoint(Robot.wrist_hand_joint,pose[5])
+        
+        #sleep(delay)
+        #self.moveJoint(Robot.wrist_hand_joint,pose[5])
         
 
     def goHome(self):
         #for i in range(10):
         #    self.setPose([0,0,0,0,0,0])
 
-        poses = [0,30,50,30,30,30]
-        self.setPose(poses)
-
-        for i in range(1):
-            self.setPose([-30,30,50,0,0,0])
+        #poses = [0,30,50,30,30,30]
+        #self.setPose(poses)
+        
+        while True:
+            self.setPose([-30,30,50,-30,-30,-30])
             sleep(2)
             self.setPose([30,30,50,30,30,30])
             sleep(2)
-        self.setPose(poses)
-
+        #self.setPose(poses)
+        #self.servo_bus.setTorqueStatus(5,0)
+        #self.moveJoint(5,0)
+        while True:
+            self.moveJoint(5, 30,verbose=True)
+            sleep(2)
+            self.moveJoint(5,-30,verbose=True)
+            sleep(2)
+        import sys
+        sys.exit(0)
         target_vector = [ 1, 1, 1]
         target_frame = np.eye(4)
         target_frame[:3, 3] = target_vector
