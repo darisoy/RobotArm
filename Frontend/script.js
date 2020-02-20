@@ -1,4 +1,4 @@
-// Event Listeners for Buttons
+/* Event Listeners for Buttons */
 document.getElementById("home-button").addEventListener("click", () => {
    // Do something
 });
@@ -7,8 +7,9 @@ document.getElementById("harvest-button").addEventListener("click", () => {
    // Do something
 });
 
-let video = document.getElementById('video');
 
+/* Event Listeners for Buttons */
+let video = document.getElementById('video');
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     // Not adding `{ audio: true }` since we only want video now
     navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {

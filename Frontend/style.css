@@ -51,10 +51,16 @@ p {
 }
 
 .vid-container {
-  /* height: 500px; */
+  height: 500px;
   position: relative;
   /* width: 740px; */
   /* overflow: hidden; */
+}
+
+img {
+  height: 520px;
+  background-color: #e6e6e6;
+  border-radius: 6px;
 }
 
 video {
