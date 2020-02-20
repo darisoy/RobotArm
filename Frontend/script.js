@@ -1,3 +1,12 @@
+// Event Listeners for Buttons
+document.getElementById("home-button").addEventListener("click", () => {
+   // Do something
+});
+
+document.getElementById("harvest-button").addEventListener("click", () => {
+   // Do something
+});
+
 let video = document.getElementById('video');
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {

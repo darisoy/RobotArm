@@ -18,5 +18,8 @@
   "homepage": "https://github.com/d1r1karsy/475wi20#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.1"
   }
 }

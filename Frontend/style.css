@@ -15,6 +15,12 @@ menu, nav, output, ruby, section, summary, time, mark, audio, video {
 body {
   padding: 40px;
   background-color: #222222;
+  display: flex;
+  justify-content: center;
+}
+
+.main-container {
+  flex: 0 0 90%;
 }
 
 h1, h2, h3, h4, h5, p, ol, li, button, input {
@@ -47,25 +53,32 @@ p {
 .vid-container {
   /* height: 500px; */
   position: relative;
-  overflow: hidden;
-  width: 740px;
+  /* width: 740px; */
+  /* overflow: hidden; */
 }
 
 video {
   background-color: #e6e6e6;
   /* width: 100%; */
-  height: 560px;
+  height: 520px;
   transform: rotateY(180deg);
-  border-radius: 4px;
+  border-radius: 6px;
+}
+
+.plot {
+  background-color: #e6e6e6;
+  height: 520px;
+  /* width: 100%; */
+  border-radius: 6px;
 }
 
 .section {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: [col0] 600px [col1] auto [colend];
+  grid-template-columns: [col0] 40% [col1] auto [colend];
   /* grid-template-rows: [row0] 400px [row1] 100px [rowlend]; */
 }
 
@@ -93,7 +106,44 @@ video {
   padding: 24px;
 }
 
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
 
+button {
+  /* Font */
+  font-size: 1.2rem;
+  font-weight: 100;
+  line-height: 1rem;
+  color: #222;
+  /* Visual */
+  height: 50px;
+  padding: 8px 16px;
+  background:#fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  /* Position */
+  flex: 0 0 auto;
+}
+
+button:focus {
+  outline: none;
+}
+
+button#harvest-button {
+  color: #fff;
+  background-color: #2D3BFF;
+}
+
+.line {
+  height: 2px;
+  width: 100%;
+  background-color: #666666;
+  border-radius: 2px;
+}
 
 /* 
 .divlist {
@@ -206,43 +256,10 @@ input[type=time]::-webkit-inner-spin-button {
 }
 
 input:focus {
-  /* outline: solid 5px rgba(188, 255, 239, 0.75); */
+  // outline: solid 5px rgba(188, 255, 239, 0.75);
   outline: none;
   border: 2px solid #0085FF;
   transition: all .275s cubic-bezier(.23,1,.32,1);
-}
-
-button {
-  width: 50px;
-  height: 50px;
-  padding: 5px 15px;
-  background:#ccc; 
-  border: none;
-  cursor: pointer;
-  -webkit-border-radius: 5px;
-  border-radius: 5px; 
-  font-size: 1.75rem;
-  line-height: 1rem;
-  font-weight: 100;
-  position: absolute;
-}
-
-button:focus {
-  outline: none;
-}
-
-button.del_button {
-  height: 40px;
-  width: 40px;
-  border-radius: 20px;
-  background-color: #000;
-  opacity: 0.2;
-  padding: 0px;
-  /* position: absolute; */
-}
-
-button.del_button:hover {
-  opacity: 0.5;
 }
 
 span.del_content {
@@ -257,4 +274,5 @@ span.del_content {
 #char-count {
   color: #555;
   padding-left: 2px;
-} */
+}
+*/
