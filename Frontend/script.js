@@ -21,8 +21,9 @@ document.getElementById("harvest-button").addEventListener("click", () => {
 // }
 
 setInterval(() => {
-   var myImageElement = document.getElementById('livefeed');
-   myImageElement.src = 'http://127.0.0.1:8080/frame.jpg?rand=' + new Date().getTime();
+   var img = document.getElementById('livefeed');
+   img.src = 'http://127.0.0.1:8080/frame.jpg?rand=' + new Date().getTime();
+   console.log(img.src);
 }, 1000);
 
 /* Event Listeners for Buttons */
