@@ -7,6 +7,23 @@ document.getElementById("harvest-button").addEventListener("click", () => {
    // Do something
 });
 
+// let feed = document.getElementById("livefeed")
+// if (feed.src != "http://http://127.0.0.1:8080/frame.jpg?" + new Date().getTime()) {}
+// function updateImage() {
+//    feed = document.getElementById("livefeed");
+//    if (feed.complete) {
+//       document.getElementById("livefeed").src = newImage.src;
+//       newImage = new Image();
+//       // number++;
+//       newImage.src = "http://http://127.0.0.1:8080/frame.jpg?" + new Date().getTime();
+//    }
+//    setTimeout(updateImage, 1000);
+// }
+
+setInterval(() => {
+   var myImageElement = document.getElementById('livefeed');
+   myImageElement.src = 'http://127.0.0.1:8080/frame.jpg?rand=' + new Date().getTime();
+}, 1000);
 
 /* Event Listeners for Buttons */
 let video = document.getElementById('video');
@@ -32,7 +49,7 @@ function loadJSON(callback) {
 }
 
 function updateStatus(status) {
-   console.log(status);
+   // console.log(status);
    let obj = JSON.parse(status);
    for (key in obj) {
       let element = document.getElementById(key);
@@ -41,3 +58,4 @@ function updateStatus(status) {
 }
 
 loadJSON(updateStatus);
+updateImage();
