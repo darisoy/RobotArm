@@ -24,12 +24,17 @@ Stepper::Stepper(uint8_t ID){
 
 void Stepper::setHome(uint8_t ID) {
     if(ID==1) {
-	    this->currentPositionAngle = 175.0;
-        this->currentPositionSteps = 7604;
+				this->currentPositionAngle = 175.0;
+				this->currentPositionSteps = 7604;
     } else if (ID==2) {
         this->currentPositionAngle = 36.0;
         this->currentPositionSteps = 7604;
-    } 
+    } else if (ID==3) {
+        this->scaler = 6.85;
+        this->limit = convertAngleToValue(170);
+        this->currentPositionAngle = 0; 
+        this->currentPositionSteps = 0; 
+    }
 }
 
 void Stepper::returnToHome() {
@@ -40,7 +45,8 @@ void Stepper::returnToHome() {
  *
  */
 void  Stepper::setMode() {
-    HAL_GPIO_WritePin(GPIOB, M2, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(ENABLE_Port, ENABLE, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOB, M2, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOB, M1, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOB, M0, GPIO_PIN_RESET);
     this->stepResolution = 16; 
@@ -65,6 +71,7 @@ bool  Stepper::setPosition(uint32_t value) {
     uint32_t delay = 400;
     int i; 
 		HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
+
     for(i = 0; i < steps; i++) {
         HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
         DWT_Delay(delay);

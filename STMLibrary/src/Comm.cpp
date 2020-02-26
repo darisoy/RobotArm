@@ -44,6 +44,8 @@ bool PacketHandler::readPacket() {
 			len = commandPackets.deQueue() + (commandPackets.deQueue() << 8) - 3;
 			instr_type = commandPackets.deQueue();
 			// get parameters
+			while(commandPackets.bytesUsed() < len
+				) HAL_Delay(10);
 			for (int i = 0; i < len; i++) params[i] = commandPackets.deQueue();
 			// remove check sums
 			commandPackets.deQueue(); commandPackets.deQueue();
@@ -75,10 +77,16 @@ void PacketHandler::executePacket(uint8_t instr, uint8_t len) {
 					for (int i = 0; i < 4; i++) {
 						this->move += params[2+i] << (8*(i));
 					}
-					stepper->setPosition(move);
+					stepper->setPosition(move);		
+					//HAL_GPIO_TogglePin(LED_Port, LED);
 				break;
 				case 0x1111:
 					stepper->setHome(node.ID);
+					HAL_GPIO_TogglePin(LED_Port, LED);
+					HAL_Delay(200);
+					HAL_GPIO_TogglePin(LED_Port, LED);
+					HAL_Delay(200);
+					HAL_GPIO_TogglePin(LED_Port, LED);
 				break;
 				default:
 				break;
@@ -238,7 +246,10 @@ void Queue::enQueue(uint8_t rx_packet) {
 uint8_t Queue::deQueue() {
 	 // error queue is empty
 	 // wait until there is more data
-	while (front == -1){}
+	//while (front == -1){}
+	if (front == -1){
+		return NULL;
+	}
 	
 	uint8_t data = arr[front];
 	if (front == rear) {
