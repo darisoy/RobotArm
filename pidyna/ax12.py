@@ -283,8 +283,8 @@ class Ax12_2:
     def move(self, id, position):
         #print(position)
         new_position = int(position)
-        if id == 6:
-            new_position = int(new_position/4)
+        #if id == 6:
+        #    new_position = int(new_position/4)
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
         p = [new_position&0xff, (new_position>>8)&0xff,0,0]
@@ -307,7 +307,6 @@ class Ax12_2:
         #print(outData.hex())
 
         outData += self.checksum(outData)
-        
         #print(outData.hex())
         Ax12_2.port.write(outData)
         while self.port.out_waiting: continue
@@ -320,11 +319,15 @@ class Ax12_2:
         #    return self.readData(id)
         #except axError as e:
             #return self.move(id,position)
+        self.direction(Ax12_2.RPI_DIRECTION_RX)
         sleep(0.05)
+        sleep(0.02)
+
+        
         return None
     
     def moveDegrees(self, id, position):
-        print(position)
+        print(id,'->',position)
         raw_pos = (position)*4096/360
         try:
             return self.move(id,raw_pos)
@@ -373,6 +376,7 @@ class Ax12_2:
             sleep(0.0011)
         #print('data sent')
         sleep(0.05)
+        self.direction(Ax12_2.RPI_DIRECTION_RX)
         return None
         return self.readData(id)
 
@@ -417,7 +421,7 @@ class Ax12_2:
 
             except Exception as detail:
                 if verbose : print("Error pinging servo #" + str(i) + ': ' + str(detail))
-                pass
+            sleep(0.5)  
         signal.alarm(0)
         return servoList
 

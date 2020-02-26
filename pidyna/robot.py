@@ -13,24 +13,33 @@ class Robot:
     forearm_wrist_joint = 5
     wrist_hand_joint = 6
     hand_tool_joint = 7
-    low_limits = [0,175,36,0,175,100,147]
+    low_limits = [0,175,36,0,175,90,147]
 
     def __init__(self):
         self.servo_bus = Ax12_2()
         self.urdf = "./niryo_one.urdf"
         self.chain = ikpy.chain.Chain.from_urdf_file(self.urdf)
         #self.servoIDs = self.servo_bus.learnServos(minValue = 4, maxValue=6,verbose=True)
-        print(self.servo_bus.learnServos(minValue = 4, maxValue=6,verbose=True)) 
-        self.servoIDs = [1,2,3,4]
+        #print(self.servo_bus.learnServos(minValue = 4, maxValue=6,verbose=True)) 
+        self.servoIDs = [1,2,3,4,5]
+        #self.servoIDs = [4,5,6]
         print('servoIDs = ',self.servoIDs)
-        print('enabling Torque on all servos')
-        #for i in self.servoIDs:
-        #    if i > 3:
-        #        self.servo_bus.setTorqueStatus(i, True,verbose=True)
+        #print('enabling Torque on all servos')
+        
+        for i in self.servoIDs:
+            if i > 3:
+                self.moveJoint(i,0)
+                self.servo_bus.setTorqueStatus(i, True,verbose=True)
         print('done initializing') 
+        '''
+        for i in range(3):
+            self.moveJoint(1,0)
+            self.moveJoint(2,-10)
+            self.moveJoint(3,90)
+        '''
 
     def moveJoint(self, joint, position, verbose=False):
-        if joint in self.servoIDs:
+        if joint in self.servoIDs:# and joint != 5:
             if verbose: print("moving joint ",joint," to position ", position)
             #if verbose: print("current position ", self.servo_bus.readPositionDegrees(joint))
             #print(position, Robot.low_limits[joint])
@@ -43,7 +52,7 @@ class Robot:
         degrees = self.chain.inverse_kinematics(target_frame) * (180 / np.pi) 
         print(degrees)
         self.moveJoint(Robot.elbow_forearm_joint, degrees[Robot.elbow_forearm_joint],verbose=True)
-    
+
     def record(self):
         for i in self.servoIDs:
             self.servo_bus.setTorqueStatus(i,False)
@@ -57,26 +66,55 @@ class Robot:
             print(e)
             return arr
 
+
+    def setPose(self,pose):
+        delay = 0.1
+        #self.moveJoint(Robot.base_shoulder_joint,pose[0]) 
+        #sleep(delay)
+        self.moveJoint(Robot.shoulder_arm_joint,pose[1])
+        #sleep(delay)
+        #self.moveJoint(Robot.arm_elbow_joint,pose[2])
+        #sleep(delay)
+        self.moveJoint(Robot.elbow_forearm_joint,pose[3])
+        #sleep(delay)
+        self.moveJoint(Robot.forearm_wrist_joint,pose[4])
+        
+        #sleep(delay)
+        #self.moveJoint(Robot.wrist_hand_joint,pose[5])
+        
+
     def goHome(self):
-        poses = [
-        [-90,10,10,45],
-        [90,40,80,-45]
-        ]
-        state = 0 
-        while 1:
-            state = (state+1) % 2 
-            val = poses[state]
-            self.moveJoint(Robot.base_shoulder_joint,val[0])
-            sleep(1)
-            self.moveJoint(Robot.shoulder_arm_joint,val[1])
-            sleep(1)
-            self.moveJoint(Robot.arm_elbow_joint,val[2])
-            sleep(1)
-            self.moveJoint(Robot.elbow_forearm_joint,val[3])
-            sleep(1)
-            sleep(10)
-            #self.moveJoint(Robot.elbow_forearm_joint, val,verbose=True)
-            #sleep(1)
-            #self.moveJoint(Robot.forearm_wrist_joint, val,verbose=True)
-            #sleep(1)
-            #self.moveJoint(Robot.wrist_hand_joint, val,verbose=True)
+        #for i in range(10):
+        #    self.setPose([0,0,0,0,0,0])
+
+        #poses = [0,30,50,30,30,30]
+        #self.setPose(poses)
+        
+        while True:
+            self.setPose([-30,30,50,-30,-30,-30])
+            sleep(2)
+            self.setPose([30,30,50,30,30,30])
+            sleep(2)
+        #self.setPose(poses)
+        #self.servo_bus.setTorqueStatus(5,0)
+        #self.moveJoint(5,0)
+        while True:
+            self.moveJoint(5, 30,verbose=True)
+            sleep(2)
+            self.moveJoint(5,-30,verbose=True)
+            sleep(2)
+        import sys
+        sys.exit(0)
+        target_vector = [ 1, 1, 1]
+        target_frame = np.eye(4)
+        target_frame[:3, 3] = target_vector
+        angles = self.chain.inverse_kinematics(target_frame)
+        result = np.zeros((6), dtype=int)
+        for i in range(6):
+            temp = int(angles[i+1] * 180 / np.pi)
+            if (i == 1):
+                temp = -1 * (temp + 90)
+            result[i] = temp
+        print(result)
+        self.setPose(result)
+        

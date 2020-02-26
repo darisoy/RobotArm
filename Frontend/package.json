@@ -1,0 +1,25 @@
+{
+  "name": "475-interface",
+  "version": "1.0.0",
+  "description": "Frontend interface for the robotic arm controls",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d1r1karsy/475wi20.git"
+  },
+  "author": "Khang Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/d1r1karsy/475wi20/issues"
+  },
+  "homepage": "https://github.com/d1r1karsy/475wi20#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.1"
+  }
+}
