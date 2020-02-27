@@ -44,14 +44,16 @@ int main(void)
 {
 
 	initialSetup();
-	HAL_Delay(100);	
-	HAL_UART_Transmit_IT(&huart1, bufferTX, sizeof(bufferTX));
+	//HAL_Delay(100);	
+	//HAL_UART_Transmit_IT(&huart1, bufferTX, sizeof(bufferTX));
 	HAL_Delay(100);
 
   while (1)
   { 
-		HAL_Delay(500);
-		packet.readPacket();
+		HAL_GPIO_TogglePin(LED_Port, LED);
+		HAL_Delay(1000);
+		//HAL_Delay(500);
+		//packet.readPacket();
 	}
 	return 0;
 }

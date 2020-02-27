@@ -181,9 +181,13 @@ void USART1_IRQHandler(void)
 	if(HAL_UART_Receive_IT(&huart1, bufferRX, sizeof(bufferRX)) == HAL_OK && bufferRX[0] != 0x00){
 		commandPackets.enQueue(bufferRX);
 	}
+
+	
 }
 
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
+
