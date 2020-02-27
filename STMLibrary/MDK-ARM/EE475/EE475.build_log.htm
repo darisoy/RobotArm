@@ -29,12 +29,13 @@ Project File Date:  02/01/2020
 *** Warning: You are compiling one or more files of source type C++ and have selected 'use MicroLIB'. MicroLIB does not support C++!
   
 Build target 'EE475'
-compiling Comm.cpp...
-..\src\Comm.cpp(95): warning:  #550-D: variable "display_temp"  was set but never used
-  	uint8_t display_temp;
-..\src\Comm.cpp: 1 warning, 0 errors
+compiling stm32f1xx_it.c...
+compiling main.cpp...
+..\src\main.cpp(58): warning:  #111-D: statement is unreachable
+  	return 0;
+..\src\main.cpp: 1 warning, 0 errors
 linking...
-Program Size: Code=7672 RO-data=296 RW-data=56 ZI-data=1904  
+Program Size: Code=7520 RO-data=296 RW-data=32 ZI-data=1904  
 FromELF: creating hex file...
 "EE475\EE475.axf" - 0 Error(s), 1 Warning(s).
 
@@ -59,7 +60,7 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: ARM::CMSIS:CORE:5.3.0
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

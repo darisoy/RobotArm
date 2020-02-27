@@ -1,0 +1,37 @@
+ROS-NOTES:
+
+/***************CHANGES MADE **********************/
+
+changed the controllers.launch file: line:
+	/niryo_one_bringup/launch/controllers.launch
+	<param name="can_enabled" type="bool" value="false" unless="$(arg disable_can_for_debug)" />
+
+changed niryo_one_motors.yaml:
+	/niryo_one_bringup/config/v2/niryo_one_motors.yaml
+	dxl_required_motors:
+		-2 # -> id of Axis 4 is now 4
+		-3 # -> id of Axis 5 is now 5
+		-6 # -> id of Axis 6 is still 6
+
+change port_handler_linux.cpp:
+	/dynamixel_sdk/src/port_handler_linux.cpp
+		line #75, GPIO_HALF_DUPLEX_DIRECTION 17 -> 4
+
+changed Button pin:
+	\niryo_one_rpi\scripts\niryo_one_button.py
+		line #29, BUTTON_GPIO = 4 -> 21
+
+
+/*****************USEFUL COMMANDS********************/
+to launch ros from terminal:
+	$ catkin_make
+	$ source /opt/ros/kinetic/setup.bash
+	$ source ~/catkin_ws/devel/setup.bash
+
+	$ roslaunch niryo_one_bringup rpi_setup.launch
+
+to SSH to RPi:
+	restart SSH service on Pi:
+		sudo service ssh restart
+	On virtual machine:
+		ssh niryo@10.10.10.10
