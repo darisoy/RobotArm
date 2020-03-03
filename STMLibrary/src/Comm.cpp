@@ -44,6 +44,8 @@ bool PacketHandler::readPacket() {
 			len = commandPackets.deQueue() + (commandPackets.deQueue() << 8) - 3;
 			instr_type = commandPackets.deQueue();
 			// get parameters
+			while(commandPackets.bytesUsed() < len
+				) HAL_Delay(10);
 			for (int i = 0; i < len; i++) params[i] = commandPackets.deQueue();
 			// remove check sums
 			commandPackets.deQueue(); commandPackets.deQueue();
@@ -57,20 +59,14 @@ bool PacketHandler::readPacket() {
 
 
 /*	Max length of response packet is 25 bytes */
-uint64_t PacketHandler::executePacket(uint8_t instr, uint8_t len) {
-	
-	uint16_t writeaddr =0;
-	uint8_t prefix[5]  = {0xFF, 0xFF, 0xFD, 0x00, node.ID};
-	
-	memcpy(tx_packet, prefix, 5);
-	
+void PacketHandler::executePacket(uint8_t instr, uint8_t len) {
+	uint16_t writeaddr = 0;
+	HAL_GPIO_TogglePin(LED_Port, LED);
 	switch(instr) {
-		HAL_GPIO_TogglePin(LED_Port, LED);
 		case INSTR_PING:
-			sendPacket(instr);
+			// sendPacket(instr);
 		break;
-		case INSTR_READ  :
-			//send back data
+		case INSTR_READ:
 			//read()
 		break;
 		case INSTR_WRITE:
@@ -81,10 +77,16 @@ uint64_t PacketHandler::executePacket(uint8_t instr, uint8_t len) {
 					for (int i = 0; i < 4; i++) {
 						this->move += params[2+i] << (8*(i));
 					}
-					stepper->setPosition(move);
+					stepper->setPosition(move);		
+					//HAL_GPIO_TogglePin(LED_Port, LED);
 				break;
 				case 0x1111:
 					stepper->setHome(node.ID);
+					HAL_GPIO_TogglePin(LED_Port, LED);
+					HAL_Delay(200);
+					HAL_GPIO_TogglePin(LED_Port, LED);
+					HAL_Delay(200);
+					HAL_GPIO_TogglePin(LED_Port, LED);
 				break;
 				default:
 				break;
@@ -112,6 +114,7 @@ uint64_t PacketHandler::executePacket(uint8_t instr, uint8_t len) {
 		case INSTR_BULKWR:
 		break;
 	}
+	// sendPacket(instr);
 	HAL_GPIO_TogglePin(LED_Port, LED);
 }
 
@@ -119,6 +122,9 @@ uint64_t PacketHandler::executePacket(uint8_t instr, uint8_t len) {
 
 bool PacketHandler::sendPacket(uint8_t instr) {
 	uint16_t packet_size = 0;
+	uint8_t prefix[5]  = {0xFF, 0xFF, 0xFD, 0x00, node.ID};
+	memcpy(tx_packet, prefix, 5);
+
 	switch(instr) {
 		case INSTR_PING:
 			// this->tx_packet[PKT_LENL] = 0x07;
@@ -240,7 +246,10 @@ void Queue::enQueue(uint8_t rx_packet) {
 uint8_t Queue::deQueue() {
 	 // error queue is empty
 	 // wait until there is more data
-	while (front == -1){}
+	//while (front == -1){}
+	if (front == -1){
+		return NULL;
+	}
 	
 	uint8_t data = arr[front];
 	if (front == rear) {
