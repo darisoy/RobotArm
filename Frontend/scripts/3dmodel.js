@@ -1,13 +1,9 @@
 'use strict';
 
-var THREE = require('three');
-
 let container;
 let camera, scene, renderer;
 let topDirectionalLight, leftDirectionalLight, rightDirectionalLight;
-let cube;
-let stats;
-
+let cube, stats;
 let stageGui, connectionGui;
 let mesh, lines, geometry;
 let tool;

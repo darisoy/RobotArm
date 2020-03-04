@@ -4,6 +4,8 @@
   "description": "Frontend interface for the robotic arm controls",
   "main": "script.js",
   "scripts": {
+    "start": "node server",
+    "dev": "nodemon server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,9 +20,10 @@
   "homepage": "https://github.com/d1r1karsy/475wi20#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "kinematics": "^1.0.2"
+    "python-shell": "^1.0.8"
   },
   "devDependencies": {
-    "http-server": "^0.12.1"
+    "http-server": "^0.12.1",
+    "nodemon": "^2.0.2"
   }
 }
