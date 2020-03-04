@@ -27,7 +27,7 @@ y_range_high = y_center + 20
 
 ik_chain = ikpy.chain.Chain.from_urdf_file("./ik/niryo_one.urdf")
 cam = camera.Cam(xlen, ylen)
-motion = motion.MotionControl()
+motion = motionControl.MotionControl()
 #motion.goReady()
 print("robot initialized")
 

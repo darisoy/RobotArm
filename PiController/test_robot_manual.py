@@ -1,7 +1,7 @@
-import robot
+import motionControl
 import time
 
-my_robot = robot.Robot()
+my_robot = motionControl.MotionControl()
 my_robot.goReady()
 
 while True:
