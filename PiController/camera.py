@@ -12,29 +12,28 @@ class Cam:
         self.frames = None
         self.detectedObjects = None
         self.gp = strawberryDetector.DetectStrawberries()
-        
-        print("loading camera")
         self.pipeline = rs.pipeline()
+        self.__loadCamera(width,height)
+        
+    def __loadCamera(self, width, height):
         config = rs.config()
         config.enable_stream(rs.stream.depth, width, height, rs.format.z16, 30)
         config.enable_stream(rs.stream.color, width, height, rs.format.bgr8, 30)
         self.pipeline.start(config)
         sleep(0.1)
         print("camera loaded")
+    
+    def detectStrawberriesOnFrame(self):
+        self.__getFrame()
+        self.gp.process(self.frame)
+        self.detectedObjects = self.gp.filter_contours_output
+        return self.detectedObjects
 
-    def stopCamera(self):
-        self.pipeline.stop()
-
-    def getFrame(self):
+    def __getFrame(self):
         self.frames = self.pipeline.wait_for_frames()
         color_frame = self.frames.get_color_frame()
         self.depth_frame = self.frames.get_depth_frame()
         self.frame = np.asanyarray(color_frame.get_data())
-    
-    def detectStrawberriesOnFrame(self):
-        self.gp.process(self.frame)
-        self.detectedObjects = self.gp.filter_contours_output
-        return self.detectedObjects
 
     def getDepth(self, x, y):
         return self.depth_frame.get_distance(x, y)
@@ -48,6 +47,12 @@ class Cam:
     
     def __drawBoxes(self):
         if len(self.detectedObjects):
-            self.frame = vis.plotBBoxes(self.frame, [(x, y, x + w, y + h) for x, y, w, h in self.detectedObjects], len(self.detectedObjects) * ['strawberry'], len(self.detectedObjects) * [0])
+            labels = len(self.detectedObjects) * ['strawberry']
+            confidence = len(self.detectedObjects) * [0]
+            coordinates = [(x, y, x + w, y + h) for x, y, w, h in self.detectedObjects]
+            self.frame = vis.plotBBoxes(self.frame, coordinates, labels, confidence)
         self.frame = vis.plotInfo(self.frame, 'Flint View')
         self.frame = cv.cvtColor(np.asarray(self.frame), cv.COLOR_BGR2RGB)
+
+    def stopCamera(self):
+        self.pipeline.stop()

@@ -13,10 +13,10 @@ class Messages:
     INSTR_RESET = 6
 
     #Protocol 2
-    PREFIX = b'\xff\xff\xfd\x00'
-    PING_LEN = b'\x03\x00'
+    PREFIX =    b'\xff\xff\xfd\x00'
+    PING_LEN =  b'\x03\x00'
     WRITE_LEN = b'\x09\x00'
-    READ_LEN = b'\x07\x00'
+    READ_LEN =  b'\x07\x00'
 
     # RPi constants
     DIRECTION_PIN = 4
@@ -24,18 +24,11 @@ class Messages:
     DIRECTION_RECIEVE = GPIO.LOW
     DIRECTION_SWITCH_DELAY = 0.0007
 
-    # static variables
-    port = None
-    gpioSet = False
-
     def __init__(self):
-        if(self.port == None):
-            self.port = Serial("/dev/ttyS0", baudrate=1000000, timeout=0.05)
-        if(not self.gpioSet):
-            GPIO.setwarnings(False)
-            GPIO.setmode(GPIO.BCM)
-            GPIO.setup(self.DIRECTION_PIN, GPIO.OUT)
-            self.gpioSet = True
+        self.port = Serial("/dev/ttyS0", baudrate=1000000, timeout=0.05)
+        GPIO.setwarnings(False)
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.DIRECTION_PIN, GPIO.OUT)
         self.__direction(self.DIRECTION_RECIEVE)
 
     def moveDegrees(self, id, position):

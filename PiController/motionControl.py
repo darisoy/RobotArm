@@ -27,17 +27,6 @@ class MotionControl:
                 self.servo_bus.enableTorque(i)
         print('done initializing')
 
-    def writeJSON(self):
-        f = open('../Frontend/status.json','w')
-        f.write(json.dumps({i : j for i, j in zip(self.joint_names, self.current_pose)}))
-        f.close()
-
-    def moveJoint(self, joint, position, verbose=True):
-        if joint in self.servoIDs:
-            if verbose: print("moving joint ", joint, " to position ", position)
-            self.servo_bus.moveDegrees(joint, position + self.low_limits[joint])
-            self.current_pose[joint] = position
-
     def moveJointRelative(self, joint, dp, verbose):
         self.moveJoint(joint, self.current_pose[joint] + dp, verbose=verbose)
 
@@ -55,6 +44,10 @@ class MotionControl:
     def moveGrab(self, dp):
         self.moveJointRelative(7, dp, verbose=True)
 
+    def goReady(self):
+        ready = [0,30,40,0,0,0,45]
+        self.setPose(ready)
+
     def setPose(self,pose):
         self.moveJoint(self.base_shoulder_joint, pose[0], verbose=True)
         self.moveJoint(self.shoulder_arm_joint, pose[1], verbose=True)
@@ -64,6 +57,13 @@ class MotionControl:
         self.moveJoint(self.wrist_hand_joint, pose[5], verbose=True)
         self.moveJoint(self.hand_tool_joint, pose[6], verbose=True)
 
-    def goReady(self):
-        ready = [0,30,40,0,0,0,45]
-        self.setPose(ready)
+    def moveJoint(self, joint, position, verbose=True):
+        if joint in self.servoIDs:
+            if verbose: print("moving joint ", joint, " to position ", position)
+            self.servo_bus.moveDegrees(joint, position + self.low_limits[joint])
+            self.current_pose[joint] = position
+    
+    def writeJSON(self):
+        f = open('../Frontend/status.json','w')
+        f.write(json.dumps({i : j for i, j in zip(self.joint_names, self.current_pose)}))
+        f.close()
