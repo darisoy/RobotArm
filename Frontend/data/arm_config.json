@@ -1,0 +1,9 @@
+{
+   "base" : 0,
+   "shoulder" : 45,
+   "arm" : 90,
+   "elbow" : 135, 
+   "forearm" : 180,
+   "wrist" : 225,
+   "hand" : 270
+}

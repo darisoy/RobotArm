@@ -29,7 +29,7 @@ const uint8_t BUFFER_SIZE = 1;		// Size of Buffer
 uint8_t bufferRX[BUFFER_SIZE];		   			// receives protocol
 uint8_t bufferTX[BUFFER_SIZE]; 	// ping packet
 Queue commandPackets(200);
-const int ID = 1;
+const int ID = 3;
 
 /* Objects --------------------------------------------------------------------*/
 Stepper stepper = Stepper(ID);
@@ -49,19 +49,7 @@ int main(void) {
 	stepper.setMode();
 	
 	while(1) {
-		
-		//stepper.setPosition(100);
-		
-		//LED PIN TOGGLE
-		//HAL_GPIO_TogglePin(LED_Port, LED);
-		//HAL_Delay(100);
-		
-		//STEPPER TESET
-		
-		//HAL_Delay(1000);
-		//stepper.setPosition(200);
-		//HAL_Delay(1000);
-		
+	
 		packet.readPacket();
 		
 	}
