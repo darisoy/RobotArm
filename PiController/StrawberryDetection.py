@@ -6,8 +6,34 @@ import numpy as np
 import ikpy
 import robot
 import camera
+import altusi.visualizer as vis
 
-initialize()
+SEARCH_LR = 0
+ALIGN_UD = 1
+IK = 2
+GRAB = 3
+HOME = 4
+
+stage = 0
+tracking = 0
+
+delay = 1.2 #seconds
+angle = 2 #degrees
+xlen = 640
+ylen = 480
+x_center = xlen / 2
+y_center = ylen / 2
+x_range_low  = x_center - 20
+x_range_high = x_center + 20
+y_range_low  = y_center - 20
+y_range_high = y_center + 20
+
+gp = grip.GripPipeline()
+my_chain = ikpy.chain.Chain.from_urdf_file("./ik/niryo_one.urdf")
+cam = camera.Cam(xlen, ylen)
+my_robot = robot.Robot()
+my_robot.goReady()
+print("robot initialized")
 
 start_time = 0
 while True:
@@ -62,8 +88,8 @@ while True:
             pose[6] = 0
             pose[7] = 0
             current_position_frame = my_chain.forward_kinematics(pose)
-            cyl_x = real_frame[:3,3][0]
-            cyl_z = real_frame[:3,3][2]
+            cyl_x = current_position_frame[:3,3][0]
+            cyl_z = current_position_frame[:3,3][2]
             target_vector = [cyl_x + z ,0, cyl_z]
             target_frame = np.eye(4)
             target_frame[:3, 3] = target_vector
@@ -104,34 +130,6 @@ while True:
     displayImage(frm)
 
 cam.stopCamera()
-
-def initialize():
-    SEARCH_LR = 0
-    ALIGN_UD = 1
-    IK = 2
-    GRAB = 3
-    HOME = 4
-
-    stage = 0
-    tracking = 0
-
-    delay = 1.2 # seconds
-    angle = 2 #degrees
-    xlen = 640
-    ylen = 480
-    x_center = xlen / 2
-    y_center = ylen / 2
-    x_range_low  = x_center - 20
-    x_range_high = x_center + 20
-    y_range_low  = y_center - 20
-    y_range_high = y_center + 20
-
-    gp = grip.GripPipeline()
-    my_chain = ikpy.chain.Chain.from_urdf_file("./ik/niryo_one.urdf")
-    cam = camera.Cam(xlen, ylen)
-    my_robot = robot.Robot()
-    my_robot.goReady()
-    print("robot initialized")
 
 def displayImage(frame):
     cv.imshow("Frame", frame)

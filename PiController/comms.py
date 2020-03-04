@@ -85,14 +85,14 @@ class Messages:
     def enableTorque(self, id):
         self.__direction(self.DIRECTION_TRANSMIT)
         self.port.flushInput()
-        comms_message = self.__constructEnableTorqueMessage(id, processed_position)
+        comms_message = self.__constructEnableTorqueMessage(id)
         self.port.write(comms_message)
         print('enabled torque on joint #',id)
         while self.port.out_waiting:
             continue
         self.__direction(self.DIRECTION_RECIEVE)
 
-    def __constructEnableTorqueMessage(self, id, processed_position):
+    def __constructEnableTorqueMessage(self, id):
         comms_message = self.PREFIX
         comms_message += bytes([id])
         comms_message += b'\x06\x00' #length write one param
