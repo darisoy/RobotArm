@@ -6,15 +6,17 @@ if len(sys.argv) != 1:
     print('usage: <pin #>')
 GPIO.setmode(GPIO.BOARD)
 
-PIN = int(sys.argv[1], 10)
+PIN = 33
+#int(sys.argv[1], 10)
 #VAL = int(sys.argv[2])
 
 print(PIN)
-GPIO.setup(PIN, GPIO.OUT)
+GPIO.setup(PIN, GPIO.IN)
 
-for i in range(30):
-    GPIO.output(PIN, 1)
-    time.sleep(0.6)
-    GPIO.output(PIN, 0)
-    time.sleep(0.6)
-GPIO.cleanup()
+try:
+        while True:
+            if GPIO.input(PIN):
+                print ("HOME PRESSED")
+            time.sleep(0.1)
+finally:
+    GPIO.cleanup()
