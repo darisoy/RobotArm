@@ -1,10 +1,9 @@
-
 import comms
 from time import sleep
 import numpy as np
 import json
 
-class Robot:
+class MotionControl:
 
     def __init__(self):
         self.servo_bus = comms.Messages()
@@ -25,7 +24,7 @@ class Robot:
         for i in self.servoIDs:
             if i > 3:
                 self.moveJoint(i,0)
-                self.servo_bus.enableTorque(i, True)
+                self.servo_bus.enableTorque(i)
         print('done initializing')
 
     def writeJSON(self):

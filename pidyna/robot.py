@@ -29,12 +29,14 @@ class Robot:
         #self.servoIDs = [4,5,6]
         print('servoIDs = ',self.servoIDs)
         #print('enabling Torque on all servos')
-
+        ''' RELEASE COMMENTS AFTER STM32 REVISION
         for i in self.servoIDs:
             if i > 3:
                 self.moveJoint(i,0)
                 self.servo_bus.setTorqueStatus(i, True,verbose=True)
-        print('done initializing') 
+        print('done initializing')
+        '''
+        
         '''
         for i in range(3):
             self.moveJoint(1,0)

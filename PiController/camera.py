@@ -1,11 +1,18 @@
 import pyrealsense2 as rs
 import numpy as np
 from time import sleep
+import cv2 as cv
+import altusi.visualizer as vis
+import strawberryDetector
 
 class Cam:
 
     def __init__(self, width, height):
         self.depth_frame = None
+        self.frames = None
+        self.detectedObjects = None
+        self.gp = strawberryDetector.DetectStrawberries()
+        
         print("loading camera")
         self.pipeline = rs.pipeline()
         config = rs.config()
@@ -18,11 +25,29 @@ class Cam:
     def stopCamera(self):
         self.pipeline.stop()
 
-    def getFrames(self):
-        frames = self.pipeline.wait_for_frames()
-        color_frame = frames.get_color_frame()
-        self.depth_frame = frames.get_depth_frame()
-        return np.asanyarray(color_frame.get_data())
+    def getFrame(self):
+        self.frames = self.pipeline.wait_for_frames()
+        color_frame = self.frames.get_color_frame()
+        self.depth_frame = self.frames.get_depth_frame()
+        self.frame = np.asanyarray(color_frame.get_data())
+    
+    def detectStrawberriesOnFrame(self):
+        self.gp.process(self.frame)
+        self.detectedObjects = self.gp.filter_contours_output
+        return self.detectedObjects
 
     def getDepth(self, x, y):
-        return self.depth_frame(x, y)
+        return self.depth_frame.get_distance(x, y)
+    
+    def displayImage(self):
+        self.__drawBoxes()
+        cv.imshow("Frame", self.frame)
+        cv.imwrite("../Frontend/frame.jpg", self.frame)
+        key = cv.waitKey(1)
+        return key
+    
+    def __drawBoxes(self):
+        if len(self.detectedObjects):
+            self.frame = vis.plotBBoxes(self.frame, [(x, y, x + w, y + h) for x, y, w, h in self.detectedObjects], len(self.detectedObjects) * ['strawberry'], len(self.detectedObjects) * [0])
+        self.frame = vis.plotInfo(self.frame, 'Flint View')
+        self.frame = cv.cvtColor(np.asarray(self.frame), cv.COLOR_BGR2RGB)
