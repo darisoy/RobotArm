@@ -6,27 +6,20 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-   <link rel="shortcut icon" href="favicon.png">
+   <!-- <link rel="shortcut icon" href="favicon.png"> -->
 
-   <link rel="stylesheet" href="css/main.css">
-   <link rel="stylesheet" href="css/type.css">
-   <link rel="stylesheet" href="css/style.css">
+   <link rel="stylesheet" href="/css/main.css" type="text/css">
+   <link rel="stylesheet" href="/css/type.css" type="text/css">
+   <link rel="stylesheet" href="/css/style.css" type="text/css">
 
-   <script src="./scripts/vendor/stats.js"></script>
-   <script src="./scripts/vendor/three.js"></script>
-   <script src="./scripts/vendor/OrbitControls.js"></script>
+   <script src="/scripts/vendor/stats.js"></script>
+   <script src="/scripts/vendor/three.js"></script>
+   <script src="/scripts/vendor/OrbitControls.js"></script>
 
-   <!-- <script data-main="./scripts/config" src="./scripts/require.js"></script> -->
    
 </head>
 
 <body>
-   <!-- <script>
-      require(['main', 'three', 'stats', 'OrbitControls'], function(THREE) {
-         require(['scripts/3dmodel']);
-      });
-   </script> -->
-
    <div class="grid-container main-container">
       <div class="lcol">
          <div class="section">
@@ -91,7 +84,7 @@
          <div class="section two-col-container ctrl-container">
 
             <div class="toggle-container" id="toggle">
-               <input type="checkbox" class="checkbox">
+               <input type="checkbox" class="checkbox" id="object-toggle">
                <div class="knobs">
                   <span>Strawberries</span>
                </div>

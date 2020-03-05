@@ -59,6 +59,11 @@ h1 {
   margin-bottom: 16px;
 }
 
+#start-page h1 {
+	font-size: 3rem;
+	margin-bottom: 0px;
+}
+
 h2 {
   font-family: "Golos Bold", sans-serif;
   font-size: 1rem;
@@ -73,6 +78,19 @@ p {
   margin-bottom: 20px;
   color: #ffffff;
   /* margin-bottom: 0.75rem; */
+}
+
+#start-page p {
+	font-size: 2rem;
+	margin-bottom: 40px;
+}
+
+a {
+	text-decoration: none;
+	font-family: "Golos Regular", sans-serif;
+	font-size: 1.5rem;
+  	font-weight: 100;
+  	color: #222;
 }
 
 div, span, button {
