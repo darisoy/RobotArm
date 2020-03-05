@@ -22,13 +22,9 @@
 #include "utility.h"
 #include "Comm.h"
 #include "stm32f1xx_it.h"
-
+#include "Comm.h"
 
 /* External variables --------------------------------------------------------*/
-extern UART_HandleTypeDef huart1;
-extern Queue commandPackets;
-extern uint8_t bufferRX[1];
-
 
 /* USER CODE BEGIN EV */
 
@@ -184,8 +180,9 @@ void USART1_IRQHandler(void)
  *	This waits until the full message is received before it loads it into the 
  *  Queue.
  */
-  HAL_UART_Receive_IT(&huart1, bufferRX, sizeof(bufferRX));
-	commandPackets.enQueue(bufferRX[0]);
+  HAL_UART_Receive_IT(&huart1, &bufferRX, sizeof(bufferRX));
+	commandPackets.enQueue(bufferRX);
+	//packet.readPacket();
 }
 
 /* USER CODE BEGIN 1 */

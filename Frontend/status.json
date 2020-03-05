@@ -1,6 +1,1 @@
-{
-   "MLStat" : "5 Objects Detected.",
-   "BackendStat" : "Computing Route...",
-   "CommStat" : "Waiting for Backend.",
-   "ArmStat" : "Currently Idle."
-}
+{"base": 0, "shoulder": 0, "arm": 0, "elbow": 0, "forearm": 0, "wrist": 0, "hand": 0}

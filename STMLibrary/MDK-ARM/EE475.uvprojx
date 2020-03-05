@@ -532,11 +532,6 @@
               <FileType>8</FileType>
               <FilePath>..\src\StepCtrl.cpp</FilePath>
             </File>
-            <File>
-              <FileName>dwt_delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\STM32F1xx_HAL_Driver\Src\dwt_delay.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
