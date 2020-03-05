@@ -29,28 +29,34 @@ app.get('/', (req, res) => {
 
 // function for GET request on main page
 app.get('/main', (req, res) => {
-	// route to main control page ------------
-	res.sendFile( __dirname+'/client/main.html' );
 	
+	res.sendFile( __dirname+'/client/main.html' );
+
 	// start python script -------------------
 	// let main_script = req.body.program;
 	// let file = fs.writeFileSync(main_script_filename, main_script);
 
-	// let options = { // set python shell options
-	// 	pythonPath : 'python', // use python 2
-	// 	pythonOptions: ['u'],
-	// 	args: [ main_script_filename ]
-	// };
+	let options = { // set python shell options
+		// scriptPath : ''
+		// pythonPath : 'python', // use python 2
+		// pythonOptions: ['u']
+		// args: [ main_script_filename ]
+	};
 
-	shell = new py.PythonShell('../PiController/strawberryPicker.py', null, (err) => {
+	console.log('in /main GET');
+
+	// shell = new py.PythonShell('../PiController/strawberryPicker.py', null, (err) => {
+	shell = new py.PythonShell('../PiController/test_frontend.py', null, (err) => {
 		if (err) throw err;
 		console.log("Pyscript completed.");
 	});
 
-	// send print statements from pyscript to 
+	
+	// send print statements from pyscript to server backend
 	shell.on('message', (message) => console.log(message));
 
-	// res.status(200).send('in Main.');
+	// route to main control page ------------
+	res.status(200);
 });
 
 
