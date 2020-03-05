@@ -26,7 +26,7 @@ TARGET_Y_MAX = FRAME_Y_CENTER + TARGET_OFFSET
 ik_chain = ikpy.chain.Chain.from_urdf_file("./ik/niryo_one.urdf")
 cam = camera.Cam(FRAME_WIDTH, FRAME_HEIGHT)
 motion = motionControl.MotionControl()
-#motion.goReady()
+motion.goReady()
 print("robot initialized")
 
 stage = 0
@@ -48,10 +48,10 @@ while True:
             if stage == SEARCH_LR:
                 if (xmid < TARGET_X_MIN):
                     print("move LEFT")
-                    #motion.moveLR(increment)
+                    motion.moveLR(increment)
                 elif (xmid > TARGET_X_MAX):
                     print("move RIGHT")
-                    #motion.moveLR(-1 * increment)
+                    motion.moveLR(-1 * increment)
                 else:
                     print("DO NOT MOVE, in the middle X")
                     stage = ALIGN_UD
@@ -60,10 +60,10 @@ while True:
             if stage == ALIGN_UD:
                 if (ymid < TARGET_Y_MIN):
                     print("move UP")
-                    #motion.moveUD(increment)
+                    motion.moveUD(increment)
                 elif (ymid > TARGET_Y_MAX):
                     print("move DOWN")
-                    #motion.moveUD(-1 * increment)
+                    motion.moveUD(-1 * increment)
                 else:
                     print("DO NOT MOVE, in the middle Y")
                     stage = IK
@@ -84,7 +84,7 @@ while True:
                 target_frame[:3, 3] = target_vector
                 target_angles = ik_chain.inverse_kinematics(target_frame)
                 target_pose = [motion.current_pose[1],target_angles[2],target_angles[3],0,target_angles[5],0,45]
-                #motion.setPose(target_pose)
+                motion.setPose(target_pose)
                 time.sleep(4)
                 stage = GRAB
                 continue
@@ -107,7 +107,7 @@ while True:
         elif (len(strawberries) == 0):
             tracking = 0
             stage = SEARCH_LR
-            #motion.goReady()
+            motion.goReady()
             print("go to ready position, can't see anything")
         
         start_time = time.time()
