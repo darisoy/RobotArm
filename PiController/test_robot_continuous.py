@@ -2,7 +2,7 @@ import motionControl
 import time
 
 my_robot = motionControl.MotionControl()
-#my_robot.goReady()
+my_robot.goReady()
 delay = 4
 angle = 30
 

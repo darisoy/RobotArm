@@ -31,31 +31,31 @@ class MotionControl:
         self.moveJoint(joint, self.current_pose[joint] + dp, verbose=verbose)
 
     def moveLR(self, dp):
-        self.moveJointRelative(1, dp, verbose=True)
+        self.moveJointRelative(1, dp, verbose=False)
 
     def moveFB(self, dp):
-        self.moveJointRelative(2, -dp / 2, verbose=True)
-        self.moveJointRelative(3, dp / 2, verbose=True)
+        self.moveJointRelative(2, -dp / 2, verbose=False)
+        self.moveJointRelative(3, dp / 2, verbose=False)
 
     def moveUD(self, dp):
-        self.moveJointRelative(3, dp, verbose=True)
-        self.moveJointRelative(5, dp, verbose=True)
+        self.moveJointRelative(3, dp, verbose=False)
+        self.moveJointRelative(5, dp, verbose=False)
 
     def moveGrab(self, dp):
-        self.moveJointRelative(7, dp, verbose=True)
+        self.moveJointRelative(7, dp, verbose=False)
 
     def goReady(self):
         ready = [0,30,40,0,0,0,45]
         self.setPose(ready)
 
     def setPose(self,pose):
-        self.moveJoint(self.base_shoulder_joint, pose[0], verbose=True)
-        self.moveJoint(self.shoulder_arm_joint, pose[1], verbose=True)
-        self.moveJoint(self.arm_elbow_joint, pose[2], verbose=True)
-        self.moveJoint(self.elbow_forearm_joint, pose[3], verbose=True)
-        self.moveJoint(self.forearm_wrist_joint, pose[4], verbose=True)
-        self.moveJoint(self.wrist_hand_joint, pose[5], verbose=True)
-        self.moveJoint(self.hand_tool_joint, pose[6], verbose=True)
+        self.moveJoint(self.base_shoulder_joint, pose[0], verbose=False)
+        self.moveJoint(self.shoulder_arm_joint,  pose[1], verbose=False)
+        self.moveJoint(self.arm_elbow_joint,     pose[2], verbose=False)
+        self.moveJoint(self.elbow_forearm_joint, pose[3], verbose=False)
+        self.moveJoint(self.forearm_wrist_joint, pose[4], verbose=False)
+        self.moveJoint(self.wrist_hand_joint,    pose[5], verbose=False)
+        self.moveJoint(self.hand_tool_joint,     pose[6], verbose=False)
 
     def moveJoint(self, joint, position, verbose=True):
         if joint in self.servoIDs:
