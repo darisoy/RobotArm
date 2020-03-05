@@ -5,8 +5,7 @@
 
 /* External Variables --------------------------------------------------------- */
 
-extern Queue commandPackets;
-extern int8_t bufferTX[25]; 	
+extern Queue commandPackets;	
 extern UART_HandleTypeDef huart1;
 
 
@@ -26,33 +25,59 @@ PacketHandler::~PacketHandler() {}
 
 
 bool PacketHandler::readPacket() {
-	uint8_t instr_type, len, id;
-	while(1){
-		HAL_Delay(50);
-		// if enough data is in, then continue
-		if(commandPackets.isEmpty()) continue;
-		if(commandPackets.peek() != 0xFF) commandPackets.deQueue();
-		if(commandPackets.bytesUsed() < 10) continue;
-		// packet is invalid
-		if(commandPackets.peekBy(4) != 0xFFFFFD00) {
-			commandPackets.deQueue();
-		} else { // packet is valid
-			// dequeue instruction prefix
-			for (int i = 0; i < 4; i++) commandPackets.deQueue();
-			// extract packet data
-			id = commandPackets.deQueue();
-			len = commandPackets.deQueue() + (commandPackets.deQueue() << 8) - 3;
-			instr_type = commandPackets.deQueue();
-			// get parameters
-			while(commandPackets.bytesUsed() < len
-				) HAL_Delay(10);
-			for (int i = 0; i < len; i++) params[i] = commandPackets.deQueue();
-			// remove check sums
-			commandPackets.deQueue(); commandPackets.deQueue();
-			// execute data if packet ID == system ID
-			if(id == node.ID) executePacket(instr_type, len);
+		uint8_t instr_type, len, id;
+	
+		while(commandPackets.getSize()>11){
+				if (commandPackets.peekBy(4) != 0xFFFFFD00){
+					commandPackets.deQueue();
+				} else {
+					// packet is valid
+					// dequeue instruction prefix
+					for (int i = 0; i < 4; i++) commandPackets.deQueue();
+					// extract packet data
+					id = commandPackets.deQueue();
+					len = commandPackets.deQueue() + (commandPackets.deQueue() << 8) - 3;
+					instr_type = commandPackets.deQueue();
+					// get parameters
+					//while(commandPackets.bytesUsed() < len	) HAL_Delay(10);
+					for (int i = 0; i < len; i++) params[i] = commandPackets.deQueue();
+					// remove check sums
+					commandPackets.deQueue(); commandPackets.deQueue();
+					// execute data if packet ID == system ID
+					if(id == node.ID) executePacket(instr_type, len);
+				}
 		}
+	
+	
+	
+	/*
+	uint8_t instr_type, len, id;
+
+		while(commandPackets.getSize()>10){
+			if(commandPackets.peek() != 0xFF) {
+				commandPackets.deQueue();
+			}
+			if(commandPackets.peekBy(4) != 0xFFFFFD00) {
+				commandPackets.deQueue();
+			} else { // packet is valid
+				// dequeue instruction prefix
+				for (int i = 0; i < 4; i++) commandPackets.deQueue();
+				// extract packet data
+				id = commandPackets.deQueue();
+				len = commandPackets.deQueue() + (commandPackets.deQueue() << 8) - 3;
+				instr_type = commandPackets.deQueue();
+				// get parameters
+				//while(commandPackets.bytesUsed() < len	) HAL_Delay(10);
+				for (int i = 0; i < len; i++) params[i] = commandPackets.deQueue();
+				// remove check sums
+				commandPackets.deQueue(); commandPackets.deQueue();
+				// execute data if packet ID == system ID
+				if(id == node.ID) executePacket(instr_type, len);
+			}
 	}
+		*/
+	
+	
 	return true;
 }
 
@@ -77,101 +102,21 @@ void PacketHandler::executePacket(uint8_t instr, uint8_t len) {
 					for (int i = 0; i < 4; i++) {
 						this->move += params[2+i] << (8*(i));
 					}
-					stepper->setPosition(move);		
-					//HAL_GPIO_TogglePin(LED_Port, LED);
+					stepper->setTarget(move);		
 				break;
 				case 0x1111:
 					stepper->setHome(node.ID);
-					HAL_GPIO_TogglePin(LED_Port, LED);
-					HAL_Delay(200);
-					HAL_GPIO_TogglePin(LED_Port, LED);
-					HAL_Delay(200);
 					HAL_GPIO_TogglePin(LED_Port, LED);
 				break;
 				default:
 				break;
 			}
 		break;
-
-		case INSTR_REGWR :
-		break;
-		case INSTR_ACTION:
-		break;
-		case INSTR_FCTRY :
-		break;
-		case INSTR_REBOOT:
-		break;
-		case INSTR_CLEAR :
-		break;
-		case INSTR_STATUS:
-		break;
-		case INSTR_SYNCRD:
-		break;
-		case INSTR_SYNCWR:
-		break;
-		case INSTR_BULKRD:
-		break;
-		case INSTR_BULKWR:
-		break;
 	}
-	// sendPacket(instr);
 	HAL_GPIO_TogglePin(LED_Port, LED);
 }
 
 
-
-bool PacketHandler::sendPacket(uint8_t instr) {
-	uint16_t packet_size = 0;
-	uint8_t prefix[5]  = {0xFF, 0xFF, 0xFD, 0x00, node.ID};
-	memcpy(tx_packet, prefix, 5);
-
-	switch(instr) {
-		case INSTR_PING:
-			// this->tx_packet[PKT_LENL] = 0x07;
-			// this->tx_packet[PKT_LENH] = 0x00;
-			// this->tx_packet[PKT_INSTR] = INSTR_STATUS;
-			// this->tx_packet[PKT_ERROR] = 0x00;
-			// this->tx_packet[PKT_PARAM1] = 0x06; 
-			// this->tx_packet[PKT_PARAM2] = 0x04;
-			// this->tx_packet[PKT_PARAM3] = 0x26;
-			// updateCRC(0, tx_packet+12, 12); // function currently inaccurate
-			// tx_packet[12] = 0x00;
-			// tx_packet[13] = 0x00;
-			packet_size = 14;
-		break;
-		case INSTR_READ  :
-			//send back data
-			//read()
-		break;
-		case INSTR_WRITE:
-		break;
-		case INSTR_REGWR :
-		break;
-		case INSTR_ACTION:
-		break;
-		case INSTR_FCTRY :
-		break;
-		case INSTR_REBOOT:
-		break;
-		case INSTR_CLEAR :
-		break;
-		case INSTR_STATUS:
-		break;
-		case INSTR_SYNCRD:
-		break;
-		case INSTR_SYNCWR:
-		break;
-		case INSTR_BULKRD:
-		break;
-		case INSTR_BULKWR:
-		break;
-	}
-
-	HAL_GPIO_WritePin(DIR_Port, DIR, GPIO_PIN_SET);
-	HAL_UART_Transmit_IT(&huart1, tx_packet, sizeof(tx_packet));
-	HAL_GPIO_WritePin(DIR_Port, DIR, GPIO_PIN_RESET);
-	return true;
-}
 
 
 
@@ -238,15 +183,13 @@ void Queue::enQueue(uint8_t rx_packet) {
 	} else {
 		rear++;
 	}
+	size++;
 	arr[rear] = rx_packet;
 }
 
 
 
 uint8_t Queue::deQueue() {
-	 // error queue is empty
-	 // wait until there is more data
-	//while (front == -1){}
 	if (front == -1){
 		return NULL;
 	}
@@ -259,6 +202,7 @@ uint8_t Queue::deQueue() {
 	}	else {
 		front++;
 	}
+	size--;
 	return data;
 }
 
@@ -271,9 +215,12 @@ uint8_t Queue::peek() {
 
 
 uint8_t Queue::peekAhead(int i ) {
-	return *(arr + ((i + front) % queueSize));
+	uint8_t temp = *(arr + ((i + front) % queueSize));
+	return temp;
 }
-
+int Queue::getSize(){
+	return size;
+}
 
 bool Queue::isEmpty() {
 	if(rear==front && rear == -1){
@@ -300,5 +247,5 @@ uint64_t Queue::peekBy(uint8_t val) {
 
 
 uint8_t Queue::bytesUsed() {
-	return (rear > front) ? rear - front : front + queueSize - rear;
+	return size;
 }

@@ -43,23 +43,27 @@ class Stepper{
         void setHome(uint8_t ID);
         void returnToHome();
         void setMode();
-        bool setPosition(uint32_t value);
+        bool goToTarget();
         void setDirection(bool);
         float getPosition();
+				void setTarget(uint32_t value);
         int  getDivisor();
         void enable(bool);
         void disable(bool);
     private:
         //used
         float divisor;
+				int targetSteps;
         int currentPositionSteps;
-        float currentPositionAngle;
+			  int limitSteps;
         float scaler;
-        uint16_t limit;
+		
         int stepResolution;
         int direction;
         int accelerate();
-        int calculateSteps(float angle);
+		
+				int convertValueToSteps(uint32_t value);
+        int convertAngleToSteps(float angle);
         float getCurrentAngle();
         float convertValueToAngle(uint32_t value);
         uint16_t convertAngleToValue(float angle);

@@ -1,0 +1,72 @@
+NiryoImage Password: root pasword is 475, username osboxes password is 475
+
+launch doruk_moveit_config: roslaunch doruk_moveit_config demo.launch
+
+
+cd /home/osboxes/Downloads/moveit_tutorials-master/doc/move_group_python_interface/scripts/move_group_python_interface_tutorial.py
+
+
+
+
+CHANGES:
+	\niryo_one_ros-master\niryo_one_bringup\launch\rpi_setup.launch
+		<param name="modbus_server_enabled" type="boolean" value="true" /> --> <param name="modbus_server_enabled" type="boolean" value="false" />
+
+	\niryo_one_ros-master\niryo_one_bringup\launch\controllers.launch
+		<arg name="disable_can_for_debug" default="false" /> --> <arg name="disable_can_for_debug" default="true" />
+		<param name="can_enabled" type="bool" value="true"  unless="$(arg disable_can_for_debug)" /> --> <param name="can_enabled" type="bool" value="false"  unless="$(arg disable_can_for_debug)" />
+
+	\niryo_one_ros-master\niryo_one_bringup\config\v2\niryo_one_motors.yaml
+
+		dxl_required_motors: # axis 4, 5 and 6 of Niryo One.
+    			# Edit only for debug purposes (ex : you want to test some motors separately and detached from the robot)
+    			# --> Commented ids will make associated motor disable (and thus not trigger an error if not connected)
+    			# Before editing, please be sure that you know what you're doing
+			- 4 # -> id of Axis 4
+	        	- 5 # -> id of Axis 5
+	        	- 6 # -> id of Axis 6
+		dxl_authorized_motors: # here include all Dynamixel tools that can possibly be attached to Niryo One
+    			- 4 # -> id of Axis 4
+    			- 5 # -> id of Axis 5
+    			- 6 # -> id of Axis 6
+    			- 11 # id of Gripper 1
+    			- 12 # id of Gripper 2
+    			- 13 # id of Gripper 3
+    			- 31 # if of Vacuum Pump 1
+
+	\niryo_one_bringup\config\niryo_one_driver.yaml		
+		# Dynamixel bus
+		dxl_baudrate:         57600
+		dxl_uart_device_name: "/dev/serial0"
+
+	\niryo_one_ros-master\niryo_one_driver\include\hw_comm\dxl_communication.h
+		
+		#define DXL_MOTOR_4_ID   4 // V2 - axis 4
+		#define DXL_MOTOR_5_ID   5 // V2 - axis 5
+		#define DXL_MOTOR_5_1_ID 4 // V1 - axis 5 (1)
+		#define DXL_MOTOR_5_2_ID 5 // V1 - axis 5 (2)
+		#define DXL_MOTOR_6_ID   6
+
+	
+	\niryo_one_ros-master\niryo_one_rpi\scripts\niryo_one_button.py
+		line # 29 BUTTON_GPIO = 21 //was 4
+
+	C:\Users\EE475\475wi20\NiryoGit\niryo_one_ros-master\niryo_one_driver\src\hw_comm\dxl_communication.cpp
+		line #1105 // added result = COMM_SUCCESS;
+
+	\niryo_one_ros-master\dynamixel_sdk\src\port_handler_linux.cpp
+		line #75 #define GPIO_HALF_DUPLEX_DIRECTION 4 // was 21	
+	
+	\niryo_one_ros-master\niryo_one_rpi\src\niryo_one_rpi\rpi_ros_utils.py
+		line #241 - #265
+
+	\niryo_one_ros-master\niryo_one_rpi\scripts\motor_debug.py
+            for id in dxl_ids:
+                if id not in [4,5,6]:
+                    dxl_ids.remove(id)
+	
+	c:\Users\EE475\475wi20\NiryoGit\niryo_one_ros-master\niryo_one_driver\src\hw_comm\niryo_one_communication.cpp
+		#commented out 229
+
+	\niryo_one_communication.cpp
+		commented out manage DxlConnectionLoop and CheckHardwareVesrionFromDxlMotors loop

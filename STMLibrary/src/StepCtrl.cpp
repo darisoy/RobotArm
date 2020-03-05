@@ -3,39 +3,41 @@
 #include "dwt_delay.h"
 #include <stdlib.h>
 
-Stepper::Stepper(uint8_t ID){
+Stepper::Stepper(uint8_t ID){	
+    this->divisor = .1125; // 1.8 degrees / 16
+	
     if(ID==1) {
         this->scaler = 4.8888;
-        this->limit = convertAngleToValue(350.0);
-	    this->currentPositionAngle = 175.0;
-        this->currentPositionSteps = 7604;
+        this->limitSteps = convertAngleToSteps(350.0);
+        this->currentPositionSteps = convertAngleToSteps(175.0);
+				this->targetSteps = convertAngleToSteps(175.0);
     } else if (ID==2) {
         this->scaler = 6.85;
-        this->limit = convertAngleToValue(126);
-        this->currentPositionAngle = 36.0; 
-        this->currentPositionSteps = 2192; 
+			  this->limitSteps = convertAngleToSteps(126.0);
+        this->currentPositionSteps = convertAngleToSteps(36.0);
+				this->targetSteps = convertAngleToSteps(36.0);
     } else if (ID==3) {
         this->scaler = 6.85;
-        this->limit = convertAngleToValue(170);
-        this->currentPositionAngle = 0; 
-        this->currentPositionSteps = 0; 
+			  this->limitSteps = convertAngleToSteps(170.0);
+        this->currentPositionSteps = convertAngleToSteps(0.0);
+				this->targetSteps = convertAngleToSteps(0.0);
     }
+		
 }
 
 void Stepper::setHome(uint8_t ID) {
     if(ID==1) {
-				this->currentPositionAngle = 175.0;
-				this->currentPositionSteps = 7604;
+        this->currentPositionSteps = convertAngleToSteps(175.0);
+				this->targetSteps = convertAngleToSteps(175.0);
     } else if (ID==2) {
-        this->currentPositionAngle = 36.0;
-        this->currentPositionSteps = 7604;
+        this->currentPositionSteps = convertAngleToSteps(36.0);
+				this->targetSteps = convertAngleToSteps(36.0);
     } else if (ID==3) {
-        this->scaler = 6.85;
-        this->limit = convertAngleToValue(170);
-        this->currentPositionAngle = 0; 
-        this->currentPositionSteps = 0; 
+        this->currentPositionSteps = convertAngleToSteps(0);
+				this->targetSteps = convertAngleToSteps(0);
     }
 }
+
 
 void Stepper::returnToHome() {
 
@@ -50,39 +52,57 @@ void  Stepper::setMode() {
     HAL_GPIO_WritePin(GPIOB, M1, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOB, M0, GPIO_PIN_RESET);
     this->stepResolution = 16; 
-    this->divisor = .1125; // 1.8 degrees / 16
 }
 
- 
-bool  Stepper::setPosition(uint32_t value) {
+void Stepper::setTarget(uint32_t value){
+		this->targetSteps = convertValueToSteps(value);
+}
 
-    if(value > this->limit) {
+bool  Stepper::goToTarget() {
+
+    if(this->targetSteps > this->limitSteps) {
         return false;
     }
-    int stepsFromZero = calculateSteps(convertValueToAngle(value));
     int tempSteps;
-		tempSteps = stepsFromZero - this->currentPositionSteps;
+		tempSteps = this->targetSteps - this->currentPositionSteps;
     int steps  =  getAbs(tempSteps);
     if (tempSteps < 0) {
         setDirection(false);
     } else {
         setDirection(true);
     }
-    uint32_t delay = 400;
     int i; 
 		HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
+		
+		uint32_t delay = 400;
 
     for(i = 0; i < steps; i++) {
         HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
-        DWT_Delay(delay);
+        DWT_Delay_us(delay);
+				//HAL_Delay(delay);
         HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_RESET);
-        DWT_Delay(delay);
+        DWT_Delay_us(delay);
+				//HAL_Delay(delay);
     }
+		
     /*
+		while(this->currentPositionSteps != this->targetSteps){
+			if(this->targetSteps > this->currentPositionSteps){
+				setDirection(true);
+				this->currentPositionSteps++;
+			} else if(this->targetSteps < this->currentPositionSteps) {
+				setDirection(false);
+				this->currentPositionSteps--;
+			}
+			HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
+      DWT_Delay(delay);
+      HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_RESET);			
+      DWT_Delay(delay);
+		}
     if magnetic encoder says position is off:
         move until position is right
     */
-	this->currentPositionSteps += (steps * this->direction);
+		this->currentPositionSteps += (steps * this->direction);
     
     return true;
 }
@@ -111,8 +131,12 @@ void  Stepper::disable(bool) {
 
 /** PRIVATE FUNCTIONS **/
 
-int Stepper::calculateSteps(float angle){
+int Stepper::convertAngleToSteps(float angle){
     return (int) ( (angle/this->divisor)*(this->scaler) );
+}
+
+int Stepper::convertValueToSteps(uint32_t value){
+	  return convertAngleToSteps(convertValueToAngle(value));
 }
 
 float Stepper::convertValueToAngle(uint32_t value){
