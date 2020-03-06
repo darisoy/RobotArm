@@ -4,28 +4,32 @@ import RPi.GPIO as GPIO
 import signal
 
 class Messages:
-    #Instruction Set
-    INSTR_PING = 1
-    INSTR_READ_DATA = 2
-    INSTR_WRITE_DATA = 3
-    INSTR_REG_WRITE = 4
-    INSTR_ACTION = 5
-    INSTR_RESET = 6
-
-    #Protocol 2
-    PREFIX =    b'\xff\xff\xfd\x00'
-    PING_LEN =  b'\x03\x00'
-    WRITE_LEN = b'\x09\x00'
-    READ_LEN =  b'\x07\x00'
-
-    # RPi constants
-    DIRECTION_PIN = 4
-    DIRECTION_TRANSMIT = GPIO.HIGH
-    DIRECTION_RECIEVE = GPIO.LOW
-    DIRECTION_SWITCH_DELAY = 0.0007
-
     def __init__(self):
-        self.port = Serial("/dev/ttyS0", baudrate=1000000, timeout=0.05)
+        #Instruction Set
+        self.INSTR_PING = 1
+        self.INSTR_READ_DATA = 2
+        self.INSTR_WRITE_DATA = 3
+        self.INSTR_REG_WRITE = 4
+        self.INSTR_ACTION = 5
+        self.INSTR_RESET = 6
+        
+        self.WRIST_HAND_JOINT = 6
+        
+        self.BAUDRATE = 57600
+
+        #Protocol 2
+        self.PREFIX =    b'\xff\xff\xfd\x00'
+        self.PING_LEN =  b'\x03\x00'
+        self.WRITE_LEN = b'\x09\x00'
+        self.READ_LEN =  b'\x07\x00'
+
+        # RPi constants
+        self.DIRECTION_PIN = 4
+        self.DIRECTION_TRANSMIT = GPIO.HIGH
+        self.DIRECTION_RECIEVE = GPIO.LOW
+        self.DIRECTION_SWITCH_DELAY = 0.0007
+        
+        self.port = Serial("/dev/ttyS0", baudrate=self.BAUDRATE, timeout=0.05)
         GPIO.setwarnings(False)
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.DIRECTION_PIN, GPIO.OUT)
@@ -56,7 +60,7 @@ class Messages:
     def __constructMoveMessage(self, id, position):
         comms_message = self.PREFIX
         comms_message += bytes([id])
-        if id >=6:
+        if id >= 6:
             comms_message += b'\x07\x00'
             comms_message += bytes([self.INSTR_WRITE_DATA])
             comms_message += b'\x1e\x00'
@@ -70,7 +74,7 @@ class Messages:
         return comms_message
 
     def __delayAfterMoveMessage(self, id):
-        if id < 6:
+        if id < self.WRIST_HAND_JOINT:
             sleep(0.0018)
         else:
             sleep(0.0014)
@@ -94,12 +98,12 @@ class Messages:
             comms_message+=b'\x18\x00'
         else:
             comms_message += b'\x40\x00'
-        comms_message += b'\x01'
+        comms_message += b'\x00'
         comms_message += self.__checksum(comms_message)
         return comms_message
 
     def __delayAfterEnableTorque(self, id):
-        if (id < 6):
+        if (id < self.WRIST_HAND_JOINT):
             sleep(0.0014)
         else:
             sleep(0.0011)

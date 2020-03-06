@@ -144,7 +144,7 @@ class Ax12_2:
 
     def __init__(self):
         if(Ax12_2.port == None):
-            Ax12_2.port = Serial("/dev/ttyS0", baudrate=1000000, timeout=0.05)
+            Ax12_2.port = Serial("/dev/ttyS0", baudrate=57600, timeout=0.05)
         if(not Ax12_2.gpioSet):
             GPIO.setwarnings(False)
             GPIO.setmode(GPIO.BCM)

@@ -1,9 +1,13 @@
+#import os
+#os.chdir("/home/dev/475wi20/PiController")
+
 import time
 import numpy as np
 import ikpy
+# from .PiController.motionControl import motionControl
+# from .PiController.camera import camera
 import motionControl
 import camera
-
 
 SEARCH_LR = 0
 ALIGN_UD = 1
@@ -23,7 +27,7 @@ TARGET_X_MAX = FRAME_X_CENTER + TARGET_OFFSET
 TARGET_Y_MIN  = FRAME_Y_CENTER - TARGET_OFFSET
 TARGET_Y_MAX = FRAME_Y_CENTER + TARGET_OFFSET
 
-ik_chain = ikpy.chain.Chain.from_urdf_file("./ik/niryo_one.urdf")
+ik_chain = ikpy.chain.Chain.from_urdf_file("../PiController/ik/niryo_one.urdf")
 cam = camera.Cam(FRAME_WIDTH, FRAME_HEIGHT)
 motion = motionControl.MotionControl()
 motion.goReady()
@@ -43,7 +47,7 @@ while True:
             y2 = y1 + h
             xmid = int((x1 + x2) /2)
             ymid = int((y1 + y2) /2)
-            increment = 5
+            increment = 2
             
             if stage == SEARCH_LR:
                 if (xmid < TARGET_X_MIN):
@@ -79,13 +83,22 @@ while True:
                 cyl_x = current_position_frame[:3,3][0]
                 cyl_z = current_position_frame[:3,3][2]
                 z = cam.getDepth(xmid, ymid)
+                print("Z: ", z)
                 target_vector = [cyl_x + z ,0, cyl_z]
                 target_frame = np.eye(4)
                 target_frame[:3, 3] = target_vector
                 target_angles = ik_chain.inverse_kinematics(target_frame)
-                target_pose = [motion.current_pose[1],target_angles[2],target_angles[3],0,target_angles[5],0,45]
+                second = 90 + int(np.degrees(target_angles[2]))
+                target_pose = [motion.current_pose[1],
+                               second,
+                               int(np.degrees(target_angles[3])),
+                               0,
+                               int(np.degrees(target_angles[5])),
+                               0,
+                               45]
+                print(target_pose)
                 motion.setPose(target_pose)
-                time.sleep(4)
+                time.sleep(2)
                 stage = GRAB
                 continue
 

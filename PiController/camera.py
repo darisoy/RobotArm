@@ -41,7 +41,7 @@ class Cam:
     def displayImage(self):
         self.__drawBoxes()
         cv.imshow("Frame", self.frame)
-        cv.imwrite("../Frontend/frame.jpg", self.frame)
+        cv.imwrite("../Frontend/client/data/frame.jpg", self.frame)
         key = cv.waitKey(1)
         return key
     

@@ -37,7 +37,7 @@ app.get('/main', (req, res) => {
 	// let file = fs.writeFileSync(main_script_filename, main_script);
 
 	let options = { // set python shell options
-		// scriptPath : ''
+		scriptPath : '../PiController/'
 		// pythonPath : 'python', // use python 2
 		// pythonOptions: ['u']
 		// args: [ main_script_filename ]
@@ -45,8 +45,8 @@ app.get('/main', (req, res) => {
 
 	console.log('in /main GET');
 
-	// shell = new py.PythonShell('../PiController/strawberryPicker.py', null, (err) => {
-	shell = new py.PythonShell('../PiController/test_frontend.py', null, (err) => {
+	shell = new py.PythonShell('../PiController/strawberryPicker.py', options, (err) => {
+	// shell = new py.PythonShell('../PiController/test_frontend.py', null, (err) => {
 		if (err) throw err;
 		console.log("Pyscript completed.");
 	});
