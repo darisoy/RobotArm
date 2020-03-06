@@ -64,6 +64,8 @@ class MotionControl:
             self.current_pose[joint] = position
     
     def writeJSON(self):
-        f = open('../Frontend/status.json','w')
-        f.write(json.dumps({i : j for i, j in zip(self.joint_names, self.current_pose)}))
+        f = open('../Frontend/client/data/log.json','a')
+        obj = json.load(f)
+        obj["arm_config"] = {i : j for i, j in zip(self.joint_names, self.current_pose)} 
+        f.write(json.dumps(obj))
         f.close()
