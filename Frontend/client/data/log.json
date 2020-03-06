@@ -1,18 +1,18 @@
 {
-   "change" : 1,
-   "status" : {
-      "MLStat" : "5 Objects Detected.",
-      "BackendStat" : "Computing Route...",
-      "CommStat" : "Waiting for Backend.",
-      "ArmStat" : "Currently Idle."
+   "change": 1,
+   "status": {
+      "MLStat": "3 strawberries detected.",
+      "BackendStat": "Computing Route...",
+      "CommStat": "Instructions sent.",
+      "ArmStat": "Moving to position..."
    },
-   "arm_config" : {
-      "base" : 0,
-      "shoulder" : 45,
-      "arm" : 90,
-      "elbow" : 135, 
-      "forearm" : 180,
-      "wrist" : 225,
-      "hand" : 270
+   "arm_config": {
+      "base": 0,
+      "shoulder": -30,
+      "arm": 30,
+      "elbow": 40,
+      "forearm": 0,
+      "wrist": 0,
+      "hand": 0
    }
 }
