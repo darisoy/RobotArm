@@ -60,7 +60,7 @@ class Messages:
     def __constructMoveMessage(self, id, position):
         comms_message = self.PREFIX
         comms_message += bytes([id])
-        if id >= 6:
+        if id >= self.WRIST_HAND_JOINT:
             comms_message += b'\x07\x00'
             comms_message += bytes([self.INSTR_WRITE_DATA])
             comms_message += b'\x1e\x00'
@@ -94,7 +94,7 @@ class Messages:
         comms_message += bytes([id])
         comms_message += b'\x06\x00' #length write one param
         comms_message += bytes([self.INSTR_WRITE_DATA])
-        if id >= 6:
+        if id >= self.WRIST_HAND_JOINT:
             comms_message+=b'\x18\x00'
         else:
             comms_message += b'\x40\x00'
