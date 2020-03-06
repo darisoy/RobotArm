@@ -55,7 +55,7 @@ document.getElementById("object-toggle")
 setInterval(() => {
    loadJSON("log.json", updateLog);
 //    loadJSON('arm_config.json', updateConfig);
-   // updateFeed();
+      updateFeed();
 //    // while (!img.complete) x.style.visibility = 'hidden';
 //    // x.style.visibility = 'visible';
 //    // console.log(img.src);

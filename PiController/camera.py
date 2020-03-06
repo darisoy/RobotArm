@@ -39,10 +39,15 @@ class Cam:
         return self.depth_frame.get_distance(x, y)
     
     def displayImage(self):
+        print("line 1")
         self.__drawBoxes()
+        print("line 2")
         cv.imshow("Frame", self.frame)
+        print("line 3")
         cv.imwrite("../Frontend/client/data/frame.jpg", self.frame)
+        print("line 4")
         key = cv.waitKey(1)
+        print("line 5")
         return key
     
     def __drawBoxes(self):

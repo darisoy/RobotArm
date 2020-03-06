@@ -45,15 +45,15 @@ app.get('/main', (req, res) => {
 
 	console.log('in /main GET');
 
-	shell = new py.PythonShell('../PiController/strawberryPicker.py', options, (err) => {
+	// shell = new py.PythonShell('../PiController/strawberryPicker.py', options, (err) => {
 	// shell = new py.PythonShell('../PiController/test_frontend.py', null, (err) => {
-		if (err) throw err;
-		console.log("Pyscript completed.");
-	});
+	//	if (err) throw err;
+	//	console.log("Pyscript completed.");
+	//});
 
 	
 	// send print statements from pyscript to server backend
-	shell.on('message', (message) => console.log(message));
+	// shell.on('message', (message) => console.log(message));
 
 	// route to main control page ------------
 	res.status(200);
