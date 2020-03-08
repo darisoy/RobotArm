@@ -16,44 +16,57 @@
 /* Includes--------------------------------------------------------------------*/
 #include <stdio.h>
 #include <string.h>
+#include "dwt_delay.h"
 #include "utility.h"
 #include "StepCtrl.h"
 #include "Comm.h"
+#include "mag_encoder.h"
 
 
 
 /* Private Variables-----------------------------------------------------------*/
 UART_HandleTypeDef huart1;	 			// interrupt handler
-const uint8_t BUFFER_SIZE = 24;		// Size of Buffer
+SPI_HandleTypeDef hspi1;
+const uint8_t BUFFER_SIZE = 1;		// Size of Buffer
 uint8_t bufferRX[BUFFER_SIZE];		   			// receives protocol
-uint8_t bufferTX[BUFFER_SIZE]={0xFF, 0xFF, 0xFD, 0x00, 0xFE, 0x03, 0x00, 0x01, 0x31, 0x42}; // ping packet
-Queue commandPackets;
-
-
+uint8_t bufferTX[BUFFER_SIZE]; 	// ping packet
+Queue commandPackets(200);
+const int ID = 2;
 
 /* Objects --------------------------------------------------------------------*/
-Stepper stepper = Stepper();
-PacketHandler packet = PacketHandler();
+Stepper stepper = Stepper(ID);
+Queue buffer_queue = Queue(200); // queue that holds 200 characters
+PacketHandler packet = PacketHandler(ID, 1000000, &stepper);
 
+
+
+float true_angle = 0.0f;
 
 /**
   * @brief  The application entry point.
   * @retval int
   */
-int main(void)
-{
-
+int main(void) {
+	
 	initialSetup();
-	//HAL_Delay(100);	
-	//HAL_UART_Transmit_IT(&huart1, bufferTX, sizeof(bufferTX));
+	DWT_Init();
 	HAL_Delay(100);
+	stepper.setMode();
+	
+	uint8_t tx = 0xff;
 
-  while (1)
-  { 
-		HAL_GPIO_TogglePin(LED_Port, LED);
-		HAL_Delay(1000);
-		//HAL_Delay(500);
+	
+	while(1) {
+			
 		//packet.readPacket();
+		stepper.setPosition(50);
+		HAL_Delay(1000);
+		stepper.setPosition(1024);
+		HAL_Delay(1000);
+		
+		
 	}
+ 
+
 	return 0;
 }

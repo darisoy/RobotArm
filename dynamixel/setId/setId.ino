@@ -49,7 +49,7 @@ void setup() {
     int i,j;
     for(i=0; i<10; i++){
       // set a new ID for DYNAMIXEL. Do not use ID 200
-      dxl.setID(i, 2);
+      dxl.setID(i, 7);
       DEBUG_SERIAL.println("ID has been successfully changed to 100");
       for(j=0; j<i; j++){
           if(dxl.ping(i)){

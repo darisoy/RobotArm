@@ -134,10 +134,10 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4101</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
-          <Flash2>STLink\ST-LINKIII-KEIL_SWO.dll</Flash2>
+          <Flash2>BIN\UL2CM3.DLL</Flash2>
           <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
@@ -403,11 +403,6 @@
               <FilePath>../Src/stm32f1xx_hal_msp.c</FilePath>
             </File>
             <File>
-              <FileName>utility.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\utility.c</FilePath>
-            </File>
-            <File>
               <FileName>main.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\src\main.cpp</FilePath>
@@ -523,14 +518,24 @@
               <FilePath>..\src\Comm.cpp</FilePath>
             </File>
             <File>
-              <FileName>MagEncode.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>..\src\MagEncode.cpp</FilePath>
-            </File>
-            <File>
               <FileName>StepCtrl.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>..\src\StepCtrl.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>dwt_delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\STM32F1xx_HAL_Driver\Src\dwt_delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>mag_encoder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\mag_encoder.c</FilePath>
+            </File>
+            <File>
+              <FileName>utility.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\utility.c</FilePath>
             </File>
           </Files>
         </Group>

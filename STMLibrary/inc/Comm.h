@@ -6,7 +6,8 @@
 #define COMM_H_
 
 #include <stdint.h>
-
+#include "utility.h"
+#include "StepCtrl.h"
 /* instructions to receive
 Ping packet
 |  H1  |  H2   | H3  |	RSRV |  ID  | LEN1 | LEN2 | INST | CRC1 | CRC2
@@ -17,6 +18,11 @@ Write 512(0x00000200) to Goal Position(116, 0x0074, 4[byte])
 
 |  H1	 |  H2  |  H3	| RSRV |  ID  | LEN1 | LEN2 | INST |  P1	|  P2	 |  P3  |  P4  |  P5	 | P6   | CRC1 | CRC2 |
 | 0xFF |	0xFF | 0xFD	| 0x00 | 0x01 | 0x09 | 0x00 | 0x03 | 0x74 | 0x00 |	0x00 | 0x02 | 0x00 | 0x00 | 0xCA | 0x89 |
+
+
+// Set Baud Rate
+
+Set ID
 
 Set Torque
 
@@ -33,16 +39,29 @@ In the future: read position
 
 /* Packet structure ----------------------------------------------------------- */
 
-#define PKT_HEADER0 	0
-#define PKT_HEADER1 	1
-#define PKT_HEADER2 	2
-#define PKT_RESERVED 	3
-#define PKT_ID 			4
-#define PKT_LENGTH_L 	5
-#define PKT_LENGTH_H 	6
-#define PKT_INSTRUCTION 7	
-#define PKT_ERROR 		8
-#define PKT_PARAMETER0 	8
+#define PKT_HEAD0 	0
+#define PKT_HEAD1 	1
+#define PKT_HEAD2 	2
+//<<<<<<< HEAD
+#define PKT_RSVD 	3
+#define PKT_ID 		4
+#define PKT_LENL 	5
+#define PKT_LENH 	6
+#define PKT_INSTR   7	
+#define PKT_ERROR   8
+#define PKT_PARAM0 	8
+#define PKT_PARAM1 	9
+#define PKT_PARAM2 	10
+#define PKT_PARAM3 	11
+//=======
+#define PKT_RSVED 	3
+#define PKT_ID 		4
+#define PKT_LENL 	5
+#define PKT_LENH 	6
+#define PKT_INSTR   7	
+#define PKT_ERROR 	8
+#define PKT_PRAM0 	8
+
 
 /* Instruction Types ----------------------------------------------------------- */
 
@@ -71,40 +90,65 @@ In the future: read position
 #define ERRNUM_ACCESS      7  // Access error
 
 
-class PacketHandler {
-	public:
-		PacketHandler();
-		~PacketHandler(void);
-		bool readPacket();
-		char * getRxType(uint8_t *);
-		char * getRxContent(uint8_t *);
-		// send status type back to Pi
-		char * sendStatus(uint8_t * status_type, uint8_t * status_packet);
+#ifdef __cplusplus
+ extern "C" {
+#endif 
 
+
+
+typedef struct Queue {
+	
+	/* variables */
+	int rear, front, queueSize;
+	// circular queue is 2D array where it contains up to 
+	// 10 message of 24 bytes
+	uint8_t arr[200];
+	Queue(uint16_t size){
+		queueSize = size;
+		rear = front = -1;
+	}
+	
+	/* functions */
+	void enQueue(uint8_t packetRX);
+	uint8_t deQueue();
+	uint8_t peek();
+	uint64_t peekBy(uint8_t);
+	uint8_t peekAhead(int i);
+	bool isEmpty();
+	uint8_t bytesUsed();
+
+}Queue;
+
+typedef struct Settings{
+	uint8_t ID;
+	int BAUD_RATE;
+} Settings;
+
+class PacketHandler {
+	
+	public:
+		PacketHandler(uint8_t ID, uint32_t BAUD, Stepper * stepper);
+		~PacketHandler(void);
+		bool readPacket(void);
+		bool sendPacket(uint8_t size);
+		void executePacket(uint8_t instr, uint8_t len);
+	
 	private:
-		//Queue * queue;
-		//uint8_t* packet;
+		unsigned short updateCRC(uint16_t, uint8_t*, uint16_t);
+		// Queue * packet_queue;
+		// uint8_t* packet;
+		Settings node;
+		uint8_t instruction;
+		uint8_t tx_packet[24];
+		uint8_t params[20];
+		
+		Stepper * stepper;
+		uint32_t move;
 };
 
-
-typedef struct Queue_t{
-
-	// initialize front and rear
-	int rear, front;
-	int queueSize, packetSize;
-	Queue_t(){
-		rear = front = -1;
-		queueSize = 10;
-		packetSize = 24;
-	}
-	// circular queue is 2D array where it contains up to 
-	// 10 message of 24 bytes 
-	uint8_t arr [10][24];
-	void enQueue(uint8_t *packetRX);
-	void loadArray(int element, uint8_t *packetRX);
-	uint8_t* deQueue();
-} Queue;
-
+#ifdef __cplusplus
+  }
+#endif /* __cplusplus */
 
 #endif
 

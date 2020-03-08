@@ -23,6 +23,9 @@ void initialSetup(void){
 
     /* Initialize UART Interrupt */
 		__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE); 
+	
+	// RXNEIE
+	
 }
 
 
@@ -40,12 +43,19 @@ void MX_GPIO_Init(void){
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LED|STEP|ENABLE, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LED|STEP|ENABLE|GPIO_PIN_4, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, DIR|M2|M1|M0 
                           |DATA_DIR, GPIO_PIN_RESET);
 
+	/*Configure GPIO pin : PA4 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	
   /*Configure GPIO pins : LED_Pin STEP_Pin */
   GPIO_InitStruct.Pin = LED|STEP;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -58,7 +68,7 @@ void MX_GPIO_Init(void){
   GPIO_InitStruct.Pin = DIR|M2|M1|M0 
                           |DATA_DIR;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
@@ -159,7 +169,7 @@ void MX_ADC1_Init(void)
   */
 void MX_SPI1_Init(void)
 {
-  SPI_HandleTypeDef hspi1;
+  extern SPI_HandleTypeDef hspi1;
 
   /* SPI1 parameter configuration*/
   hspi1.Instance = SPI1;
@@ -169,7 +179,7 @@ void MX_SPI1_Init(void)
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -253,7 +263,7 @@ void MX_USART1_UART_Init(void)
 	
   /*  USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 57600;
+  huart1.Init.BaudRate = 1000000;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
@@ -264,8 +274,7 @@ void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-	//HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
-	//HAL_NVIC_EnableIRQ(USART1_IRQn);
+
 
 }
 
