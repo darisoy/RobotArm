@@ -1,0 +1,18 @@
+{
+   "change": 1,
+   "status": {
+      "MLStat": "3 strawberries detected.",
+      "BackendStat": "Computing Route...",
+      "CommStat": "Instructions sent.",
+      "ArmStat": "Moving to position..."
+   },
+   "arm_config": {
+      "base": 0,
+      "shoulder": -30,
+      "arm": 30,
+      "elbow": 40,
+      "forearm": 0,
+      "wrist": 0,
+      "hand": 0
+   }
+}

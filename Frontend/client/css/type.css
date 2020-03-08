@@ -1,0 +1,101 @@
+/* 
+Formats:
+  - embedded-opentype: IE6 - IE8
+	- woff2: super modern browsers
+	- woff: modern browsers
+	- truetype: safari, android, ios
+  - svg: legacy ios
+*/
+
+@font-face {
+	font-family: 'Golos Bold';
+	src: url('../assets/Golos%20Text_Bold.eot');
+	src: url('../assets/Golos%20Text_Bold.eot?#iefix') format('embedded-opentype'),
+	     url('../assets/Golos%20Text_Bold.woff2') format('woff2'),
+	     url('../assets/Golos%20Text_Bold.woff') format('woff'),
+	     url('../assets/Golos%20Text_Bold.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Golos DemiBold';
+	src: url('../assets/Golos%20Text_DemiBold.eot');
+	src: url('../assets/Golos%20Text_DemiBold.eot?#iefix') format('embedded-opentype'),
+	     url('../assets/Golos%20Text_DemiBold.woff2') format('woff2'),
+	     url('../assets/Golos%20Text_DemiBold.woff') format('woff'),
+	     url('../assets/Golos%20Text_DemiBold.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+ font-family: 'Golos Regular';
+ src: url('../assets/Golos%20Text_Regular.eot');
+ src: url('../assets/Golos%20Text_Regular.eot?#iefix') format('embedded-opentype'),
+      url('../assets/Golos%20Text_Regular.woff2') format('woff2'),
+      url('../assets/Golos%20Text_Regular.woff') format('woff'),
+      url('../assets/Golos%20Text_Regular.ttf') format('truetype');
+ font-weight: normal;
+ font-style: normal;
+}
+
+@font-face {
+	font-family: 'Golos VF';
+	src: url('../assets/Golos%20Text_VF.eot');
+	src: url('../assets/Golos%20Text_VF.eot?#iefix') format('embedded-opentype'),
+	     url('../assets/Golos%20Text_VF.woff2') format('woff2'),
+	     url('../assets/Golos%20Text_VF.woff') format('woff'),
+	     url('../assets/Golos%20Text_VF.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+ 
+h1 {
+  font-family: "Golos Bold", sans-serif;
+  font-size: 1.25rem;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+#start-page h1 {
+	font-size: 3rem;
+	margin-bottom: 0px;
+}
+
+h2 {
+  font-family: "Golos Bold", sans-serif;
+  font-size: 1rem;
+  text-transform: uppercase;
+  color: #a6a6a6;
+  margin-bottom: 4px;
+}
+
+p {
+  font-family: "Golos Regular", sans-serif;
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+  /* margin-bottom: 0.75rem; */
+}
+
+#start-page p {
+	font-size: 2rem;
+	margin-bottom: 40px;
+}
+
+a {
+	text-decoration: none;
+	font-family: "Golos Regular", sans-serif;
+	font-size: 1.5rem;
+  	font-weight: 100;
+  	color: #222;
+}
+
+div, span, button {
+  font-family: "Golos Regular", sans-serif;
+  font-size: 1.2rem;
+  margin: 0;
+  color: #ffffff;
+}

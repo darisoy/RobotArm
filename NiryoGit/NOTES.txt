@@ -1,3 +1,12 @@
+NiryoImage Password: root pasword is 475, username osboxes password is 475
+
+launch doruk_moveit_config: roslaunch doruk_moveit_config demo.launch
+
+
+cd /home/osboxes/Downloads/moveit_tutorials-master/doc/move_group_python_interface/scripts/move_group_python_interface_tutorial.py
+
+
+
 
 CHANGES:
 	\niryo_one_ros-master\niryo_one_bringup\launch\rpi_setup.launch

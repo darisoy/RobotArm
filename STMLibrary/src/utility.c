@@ -1,6 +1,7 @@
 #include "utility.h"
 
 extern UART_HandleTypeDef huart1;
+extern int BAUD_RATE;
 
 void delay(uint16_t val){
   HAL_Delay(val);
@@ -16,7 +17,7 @@ void initialSetup(void){
 		
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
-    MX_SPI1_Init();
+    MX_SPI1_Init();  
     MX_TIM2_Init();
     MX_USART1_UART_Init();
     MX_ADC1_Init();

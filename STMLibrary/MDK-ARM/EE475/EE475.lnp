@@ -23,9 +23,12 @@
 "ee475\system_stm32f1xx.o"
 "ee475\comm.o"
 "ee475\stepctrl.o"
+<<<<<<< HEAD
 "ee475\dwt_delay.o"
 "ee475\mag_encoder.o"
 "ee475\utility.o"
+=======
+>>>>>>> 7213dad5ec7124301ffa63520b2de9aa2631a53e
 --library_type=microlib --strict --scatter "EE475\EE475.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

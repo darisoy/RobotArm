@@ -25,7 +25,14 @@
 #ifdef __cplusplus
  extern "C" {
 #endif 
+	 
+extern const int ID;
+extern UART_HandleTypeDef huart1;
+extern Queue commandPackets;
+extern uint8_t bufferRX;
+extern PacketHandler packet;
 
+	 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 

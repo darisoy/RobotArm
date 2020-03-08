@@ -145,7 +145,6 @@ class Ax12_2:
     def __init__(self):
         if(Ax12_2.port == None):
             Ax12_2.port = Serial("/dev/ttyS0", baudrate=57600, timeout=0.05)
-            #print(Ax12_2.port)
         if(not Ax12_2.gpioSet):
             GPIO.setwarnings(False)
             GPIO.setmode(GPIO.BCM)
@@ -291,26 +290,26 @@ class Ax12_2:
         #print(p)
         outData = Ax12_2.PREFIX
         outData += bytes([id])
-        if id ==6:
+        if id >=6:
             outData += b'\x07\x00'
         else:
             outData += Ax12_2.WRITE_LEN
         outData += bytes([Ax12_2.AX_WRITE_DATA])
         #0x0074 is the goal position register
         #print(outData.hex())
-        if id ==6 :
+        if id >= 6 :
             outData += b'\x1e\x00'
             outData += bytes(p[:2])
         else:
             outData += b'\x74\x00'
             outData += bytes(p)
-        #print(outData.hex())
+        print(outData.hex())
 
         outData += self.checksum(outData)
         #print(outData.hex())
         Ax12_2.port.write(outData)
         while self.port.out_waiting: continue
-        if id != 6:
+        if id < 6:
             sleep(0.0018)
         else:
             sleep(0.0014)
@@ -358,7 +357,7 @@ class Ax12_2:
         outData += bytes([id])
         outData += b'\x06\x00' #length write one param
         outData += bytes([Ax12_2.AX_WRITE_DATA])
-        if id == 6:
+        if id >= 6:
             outData+=b'\x18\x00'
         else:
             outData += b'\x40\x00'
@@ -370,7 +369,7 @@ class Ax12_2:
         if verbose: print('set torque: ', status, ' on servo #',id)
         Ax12_2.port.write(outData)
         while self.port.out_waiting: continue
-        if (id != 6):
+        if (id < 6):
             sleep(0.0014)
         else:
             sleep(0.0011)
@@ -425,7 +424,7 @@ class Ax12_2:
         signal.alarm(0)
         return servoList
 
-    def resetHome(self, id, ):
+    def resetHome(self, id):
         self.direction(Ax12_2.RPI_DIRECTION_TX)
         Ax12_2.port.flushInput()
         outData = Ax12_2.PREFIX

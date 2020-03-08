@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <title>Harvest</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <!-- <link rel="shortcut icon" href="favicon.png"> -->
+
+   <link rel="stylesheet" href="/css/main.css" type="text/css">
+   <link rel="stylesheet" href="/css/type.css" type="text/css">
+   <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+   <script src="/scripts/vendor/stats.js"></script>
+   <script src="/scripts/vendor/three.js"></script>
+   <script src="/scripts/vendor/OrbitControls.js"></script>
+
+   
+</head>
+
+<body>
+   <div class="grid-container main-container">
+      <div class="lcol">
+         <div class="section">
+            <h1>Kinematics</h1>
+            <div id="plot">
+               <!-- <p>plot of something</p> -->
+            </div>
+         </div>
+
+         <div class="section">
+            <!-- <h1>Arm Configuration</h1> -->
+            <form>
+               <div class="two-col-container">
+                  <div class="two-col-child">
+                     <div class="input-row">
+                        <h2 class="input-label">Base</h2>
+                        <input type="number" id="base" placeholder="0º" name="base" min="-175" max="175">
+                     </div>
+                     <div class="input-row">
+                        <h2 class="input-label">Shoulder</h2>
+                        <input type="number" id="shoulder" placeholder="0º" name="shoulder" min="-90" max="36.7°">
+                     </div>
+                     <div class="input-row">
+                        <h2 class="input-label">Arm</h2>
+                        <input type="number" id="arm" placeholder="0º" name="arm" min="-80" max="90">
+                     </div>
+                     
+                  </div>
+                  <div class="two-col-child">
+                     <div class="input-row">
+                        <h2 class="input-label">Elbow</h2>
+                        <input type="number" id="elbow" placeholder="0º" name="elbow" min="-175" max="175">
+                     </div>
+                     <div class="input-row">
+                        <h2 class="input-label">Forearm</h2>
+                        <input type="number" id="forearm" placeholder="0º" name="forearm" min="-100" max="110">
+                     </div>
+                     <div class="input-row">
+                        <h2 class="input-label">Wrist</h2>
+                        <input type="number" id="wrist" placeholder="0º" name="wrist" min="-147.5" max="147.5">
+                     </div>
+                     <!-- <div class="input-row">
+                        <h2 class="input-label">Hand</h2>
+                        <input type="number" id="hand"    placeholder="0º" name="hand"     min="0"      max="100">
+                     </div> -->
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+
+      <div class="rcol">
+
+         <div class="section">
+            <h1>Live Feed</h1>
+            <div class="vid-container">
+               <!-- <video id="video" autoplay></video> -->
+               <img id="livefeed" src="./data/frame.jpg"/>
+            </div>
+         </div>
+
+         <div class="section two-col-container ctrl-container">
+
+            <div class="toggle-container" id="toggle">
+               <input type="checkbox" class="checkbox" id="object-toggle">
+               <div class="knobs">
+                  <span>Strawberries</span>
+               </div>
+            </div>
+
+            <div class="button-container">
+               <div>
+                  <button id="home-button" type="button">Home</button>
+                  <button id="harvest-button" type="button">Harvest</button>
+               </div>
+
+            </div>
+         </div>
+
+         <div class="section line"></div>
+
+         <div class="section two-col-container">
+            <div class="two-col-child">
+               <h2>ML Status</h2>
+               <p id="MLStat"></p>
+               <h2>Comm Status</h2>
+               <p id="CommStat"></p>
+            </div>
+            <div class="two-col-child">
+               <h2>Backend Status</h2>
+               <p id="BackendStat"></p>
+               <h2>Arm Status</h2>
+               <p id="ArmStat"></p>
+            </div>
+         </div>
+
+      </div>
+   </div>
+   <!-- <a href="http://127.0.0.1:8080/setup.html" class="button">Go to other site</a> -->
+   
+   <!-- <script src="./scripts/main.js"></script> -->
+   
+</body>
+
+<script src="./scripts/3dmodel.js"></script>
+<script src="./scripts/main.js"></script>
+
+</html>
