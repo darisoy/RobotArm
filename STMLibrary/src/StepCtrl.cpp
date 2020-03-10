@@ -48,7 +48,7 @@ void Stepper::returnToHome() {
  */
 void  Stepper::setMode() {
     HAL_GPIO_WritePin(ENABLE_Port, ENABLE, GPIO_PIN_RESET);
-	  HAL_GPIO_WritePin(GPIOB, M2, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOB, M2, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOB, M1, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOB, M0, GPIO_PIN_RESET);
     this->stepResolution = 16; 
