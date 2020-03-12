@@ -33,12 +33,8 @@ ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
 ee475\main.o: ../Inc/utility.h
+ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/dwt_delay.h
 ee475\main.o: ../Inc/StepCtrl.h
 ee475\main.o: ../Inc/Comm.h
 ee475\main.o: ../Inc/StepCtrl.h
-<<<<<<< HEAD
-ee475\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/dwt_delay.h
-ee475\main.o: ../Inc/mag_encoder.h
-=======
 ee475\main.o: ../Inc/stm32f1xx_it.h
->>>>>>> 7213dad5ec7124301ffa63520b2de9aa2631a53e

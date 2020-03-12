@@ -30,3 +30,5 @@ ee475\utility.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h
 ee475\utility.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 ee475\utility.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 ee475\utility.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+ee475\utility.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/dwt_delay.h
+ee475\utility.o: ../Inc/utility.h

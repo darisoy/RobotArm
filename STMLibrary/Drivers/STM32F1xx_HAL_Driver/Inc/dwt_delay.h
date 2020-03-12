@@ -7,6 +7,7 @@ extern "C" {
  
  
 #include "stm32f1xx_hal.h"
+#include "utility.h"
 uint32_t DWT_Delay_Init(void);
  
  
@@ -22,7 +23,9 @@ __STATIC_INLINE void DWT_Delay_us(volatile uint32_t microseconds)
   microseconds *= (HAL_RCC_GetHCLKFreq() / 1000000);
  
   /* Delay till end */
+	
   while ((DWT->CYCCNT - clk_cycle_start) < microseconds);
+	
 }
  
  

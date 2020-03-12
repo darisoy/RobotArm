@@ -21,12 +21,44 @@ void initialSetup(void){
     MX_TIM2_Init();
     MX_USART1_UART_Init();
     MX_ADC1_Init();
-
+		if(DWT_Delay_Init()){
+			HAL_GPIO_WritePin(LED_Port, LED, GPIO_PIN_SET);
+		}
     /* Initialize UART Interrupt */
 		__HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE); 
 	
-	// RXNEIE
+
 	
+}
+
+
+/**
+ * @brief Initializes DWT_Clock_Cycle_Count for DWT_Delay_us function
+ * @return Error DWT counter
+ * 1: clock cycle counter not started
+ * 0: clock cycle counter works
+ */
+uint32_t DWT_Delay_Init(void) {
+ /* Disable TRC */
+ CoreDebug->DEMCR &= ~CoreDebug_DEMCR_TRCENA_Msk; // ~0x01000000;
+ /* Enable TRC */
+ CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk; // 0x01000000;
+ /* Disable clock cycle counter */
+ DWT->CTRL &= ~DWT_CTRL_CYCCNTENA_Msk; //~0x00000001;
+ /* Enable clock cycle counter */
+ DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk; //0x00000001;
+ /* Reset the clock cycle counter value */
+ DWT->CYCCNT = 0;
+
+ /* Check if clock cycle counter has started */
+if(DWT->CYCCNT)
+{
+ return 0; /*clock cycle counter started*/
+}
+else
+ {
+ return 1; /*clock cycle counter not started*/
+ }
 }
 
 

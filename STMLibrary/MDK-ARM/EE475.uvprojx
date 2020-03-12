@@ -522,24 +522,11 @@
               <FileType>8</FileType>
               <FilePath>..\src\StepCtrl.cpp</FilePath>
             </File>
-<<<<<<< HEAD
-            <File>
-              <FileName>dwt_delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\STM32F1xx_HAL_Driver\Src\dwt_delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>mag_encoder.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Src\mag_encoder.c</FilePath>
-            </File>
             <File>
               <FileName>utility.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\utility.c</FilePath>
             </File>
-=======
->>>>>>> 7213dad5ec7124301ffa63520b2de9aa2631a53e
           </Files>
         </Group>
         <Group>
