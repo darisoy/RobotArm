@@ -64,6 +64,7 @@ bool  Stepper::goToTarget() {
         return false;
     }
     int tempSteps;
+		int tempTarget = this->targetSteps;
 		tempSteps = this->targetSteps - this->currentPositionSteps;
     int steps  =  getAbs(tempSteps);
     if (tempSteps < 0) {
@@ -74,35 +75,29 @@ bool  Stepper::goToTarget() {
     int i; 
 		HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
 		
-		uint32_t delay = 400;
+		uint32_t delayFAST = 200;
+		uint32_t delay = 600;
+		
 
     for(i = 0; i < steps; i++) {
+			// the target has been changed during loop
+			if(tempTarget != this->targetSteps){
+				break;
+			}
+			
+			if( i < steps/2 && delay > delayFAST){
+				delay--;
+			} else if (i > (steps - 800) ){
+				delay++;
+			}
         HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
         DWT_Delay_us(delay);
-				//HAL_Delay(delay);
         HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_RESET);
-        DWT_Delay_us(delay);
-				//HAL_Delay(delay);
+			  DWT_Delay_us(delay);
+	
+				this->currentPositionSteps += (1 * this->direction);
     }
-		
-    /*
-		while(this->currentPositionSteps != this->targetSteps){
-			if(this->targetSteps > this->currentPositionSteps){
-				setDirection(true);
-				this->currentPositionSteps++;
-			} else if(this->targetSteps < this->currentPositionSteps) {
-				setDirection(false);
-				this->currentPositionSteps--;
-			}
-			HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_SET);
-      DWT_Delay(delay);
-      HAL_GPIO_WritePin(GPIOA, STEP, GPIO_PIN_RESET);			
-      DWT_Delay(delay);
-		}
-    if magnetic encoder says position is off:
-        move until position is right
-    */
-		this->currentPositionSteps += (steps * this->direction);
+
     
     return true;
 }

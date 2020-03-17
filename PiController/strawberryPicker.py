@@ -4,10 +4,9 @@
 import time
 import numpy as np
 import ikpy
-# from .PiController.motionControl import motionControl
-# from .PiController.camera import camera
 import motionControl
 import camera
+import json
 
 SEARCH_LR = 0
 ALIGN_UD = 1
@@ -53,11 +52,14 @@ def moveRobotWithIK():
     target_angles_degree = np.degrees(target_angles_radian).astype(int)
     target_pose = [motion.current_pose[1], 90 + target_angles_degree[2], target_angles_degree[3],
                     0, target_angles_degree[5], 0, 45]
+    print(target_pose)
     motion.setPose(target_pose)
 
 # main loop
 stage = SEARCH_LR
 start_time = 0
+scan = -45
+motion.moveLR(scan)
 while True:
     strawberries = cam.detectStrawberriesOnFrame()
 
@@ -66,7 +68,7 @@ while True:
             x1, y1, w, h = strawberries[0]
             xmid = int(x1 + (w / 2))
             ymid = int(y1 + (h / 2))
-            increment = 5
+            increment = 3
             
             if stage == SEARCH_LR:
                 if (xmid < TARGET_X_MIN):
@@ -108,6 +110,10 @@ while True:
                 motion.goReady()
                 time.sleep(2 * DELAY)
                 stage = SEARCH_LR
+                scan += 15
+                if (scan > 45):
+                    scan = -45
+                motion.moveLR(scan)
                 continue
 
             motion.writeJSON()
@@ -115,11 +121,16 @@ while True:
         elif (len(strawberries) == 0):
             stage = SEARCH_LR
             motion.goReady()
+            scan += 15
+            if (scan > 45):
+                scan = -45
+            motion.moveLR(scan)
             print("go to ready position, can't see anything")
         
         start_time = time.time()
-
+    print("before displayImage")
     key = cam.displayImage()
+    print("after displayImage")
     if key in [27, ord('q')]:
             break
         

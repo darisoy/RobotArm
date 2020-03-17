@@ -78,8 +78,7 @@ function animate() {
    renderer.render( scene, camera );
 }
 
-initModel();
-createBox();
-var controls = new THREE.OrbitControls( camera, renderer.domElement );
-// controls.enableDamping();
-animate();
+// initModel();
+// createBox();
+// var controls = new THREE.OrbitControls( camera, renderer.domElement );
+// animate();

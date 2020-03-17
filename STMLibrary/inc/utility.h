@@ -21,7 +21,8 @@ extern "C" { // link CPP files
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
 #include <stdint.h>
-
+#include "dwt_delay.h"
+	
 /* Private defines -----------------------------------------------------------*/
 #define LED             GPIO_PIN_3
 #define DIR             GPIO_PIN_12
@@ -58,6 +59,7 @@ void MX_SPI1_Init(void);
 void MX_TIM2_Init(void);
 void MX_USART1_UART_Init(void);
 void MX_ADC1_Init(void);
+uint32_t DWT_Delay_Init(void);
 
 
 

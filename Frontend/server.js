@@ -30,58 +30,81 @@ app.get('/', (req, res) => {
 // function for GET request on main page
 app.get('/main', (req, res) => {
 	
+	// route to main control page ------------
 	res.sendFile( __dirname+'/client/main.html' );
+	res.status(200);
 
 	// start python script -------------------
 	// let main_script = req.body.program;
 	// let file = fs.writeFileSync(main_script_filename, main_script);
 
-	let options = { // set python shell options
-		scriptPath : '../PiController/'
+	// let options = { // set python shell options
+		// scriptPath : '../PiController/'
 		// pythonPath : 'python', // use python 2
 		// pythonOptions: ['u']
 		// args: [ main_script_filename ]
-	};
+	// };
 
-	console.log('in /main GET');
-
-	shell = new py.PythonShell('../PiController/strawberryPicker.py', options, (err) => {
+	// shell = new py.PythonShell('../PiController/strawberryPicker.py', options, (err) => {
 	// shell = new py.PythonShell('../PiController/test_frontend.py', null, (err) => {
-		if (err) throw err;
-		console.log("Pyscript completed.");
-	});
+	//	if (err) throw err;
+	//	console.log("Pyscript completed.");
+	//});
+
+	// send print statements from pyscript to server backend
+	// shell.on('message', (message) => console.log(message));
 
 	
-	// send print statements from pyscript to server backend
-	shell.on('message', (message) => console.log(message));
-
-	// route to main control page ------------
-	res.status(200);
+	
 });
 
 
 // POST REQUEST HANDLERS ------------------------
 
 app.post('/home', (req, res) => {
-	// shell.send('home');
+
+	let obj = JSON.parse(fs.readFileSync("./client/data/settings.json"));
+	obj['instr'] = 'home';
+	fs.writeFile("./client/data/settings.json", JSON.stringify(obj), (err) => {
+			if (err) console.error(err);
+		});
+
 	res.status(200).send(`Received POST: ${req.url}`);
 });
 
 
 app.post('/harvest', (req, res) => {
-	// shell.send('harvest');
+	
+	let obj = JSON.parse(fs.readFileSync("./client/data/settings.json"));
+	obj['instr'] = 'harvest';
+	fs.writeFile("./client/data/settings.json", JSON.stringify(obj), (err) => {
+			if (err) console.error(err);
+		});
+
 	res.status(200).send(`Received POST: ${req.url}`);
 });
 
 
 app.post('/human', (req, res) => {
-	// shell.send('harvest');
+
+	let obj = JSON.parse(fs.readFileSync("./client/data/settings.json"));
+	obj['object'] = 'human';
+	fs.writeFile("./client/data/settings.json", JSON.stringify(obj), (err) => {
+			if (err) console.error(err);
+		});
+	
 	res.status(200).send(`Received POST: ${req.url}`);
 });
 
 
 app.post('/straw', (req, res) => {
-	// shell.send('harvest');
+	
+	let obj = JSON.parse(fs.readFileSync("./client/data/settings.json"));
+	obj['object'] = 'straw';
+	fs.writeFile("./client/data/settings.json", JSON.stringify(obj), (err) => {
+			if (err) console.error(err);
+		});
+
 	res.status(200).send(`Received POST: ${req.url}`);
 });
 

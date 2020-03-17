@@ -54,12 +54,12 @@ document.getElementById("object-toggle")
 
 setInterval(() => {
    loadJSON("log.json", updateLog);
+   updateFeed();
 //    loadJSON('arm_config.json', updateConfig);
-   // updateFeed();
 //    // while (!img.complete) x.style.visibility = 'hidden';
 //    // x.style.visibility = 'visible';
 //    // console.log(img.src);
-}, 500);
+}, 0);
 
 let loadJSON = (filename, callback) => {   
    let xhr = new XMLHttpRequest();

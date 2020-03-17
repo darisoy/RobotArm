@@ -147,8 +147,8 @@ def plotInfo(image, info, color='Chartreuse', use_rgb=False):
     draw = ImageDraw.Draw(image)
 
     font = ImageFont.truetype(font=cfg.FONT, 
-                size=np.floor(3e-2*min(H, W) + 0.5).astype('int32') )
-
+               size=np.floor(3e-2*min(H, W) + 0.5).astype('int32') )
+    
     label_size = draw.textsize(info, font)
     text_coor = np.array([5, 0])
     rec_coor = np.array([0, 0])

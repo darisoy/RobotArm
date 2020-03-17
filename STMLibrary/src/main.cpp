@@ -26,9 +26,10 @@
 
 /* Private Variables-----------------------------------------------------------*/
 UART_HandleTypeDef huart1;	 			// interrupt handler
+SPI_HandleTypeDef hspi1;
 const int BUFFER_SIZE = 14;		// Size of Buffer
 const int BAUD_RATE = 57600;
-const int ID = 1;
+const int ID = 3;
 uint8_t bufferRX;
 Queue commandPackets(200);
 
@@ -38,6 +39,9 @@ Stepper stepper = Stepper(ID);
 Queue buffer_queue = Queue(200); // queue that holds 200 characters
 PacketHandler packet = PacketHandler(ID, BAUD_RATE, &stepper);
 
+
+
+float true_angle = 0.0f;
 
 /**
   * @brief  The application entry point.
@@ -49,7 +53,7 @@ int main(void) {
 	stepper.setMode();
 	
 	while(1) {
-		stepper.goToTarget();
+	
 		packet.readPacket();
 	}
  

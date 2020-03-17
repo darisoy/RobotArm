@@ -87,6 +87,7 @@ class Messages:
         print('enabled torque on joint #',id)
         while self.port.out_waiting:
             continue
+        self.__delayAfterEnableTorque(id)
         self.__direction(self.DIRECTION_RECIEVE)
 
     def __constructEnableTorqueMessage(self, id):
@@ -98,7 +99,8 @@ class Messages:
             comms_message+=b'\x18\x00'
         else:
             comms_message += b'\x40\x00'
-        comms_message += b'\x00'
+        status = True
+        comms_message += b'\x01' if status else b'\x00'
         comms_message += self.__checksum(comms_message)
         return comms_message
 
@@ -108,6 +110,7 @@ class Messages:
         else:
             sleep(0.0011)
         sleep(0.05)
+
 
     def __direction(self,d):
         GPIO.output(self.DIRECTION_PIN, d)

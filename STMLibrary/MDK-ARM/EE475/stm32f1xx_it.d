@@ -30,7 +30,8 @@ ee475\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h
 ee475\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 ee475\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 ee475\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
+ee475\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/dwt_delay.h
+ee475\stm32f1xx_it.o: ../Inc/utility.h
 ee475\stm32f1xx_it.o: ../Inc/Comm.h
 ee475\stm32f1xx_it.o: ../Inc/StepCtrl.h
-ee475\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/dwt_delay.h
 ee475\stm32f1xx_it.o: ../Inc/stm32f1xx_it.h
