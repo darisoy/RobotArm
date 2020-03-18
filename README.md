@@ -1,4 +1,4 @@
-# 475wi20
+# Robot Arm
 
 ##### Strawberry picker robot arm capstone project for UW ECE/CSE 475
 
